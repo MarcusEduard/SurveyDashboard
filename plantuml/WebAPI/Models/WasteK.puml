@@ -1,0 +1,8 @@
+@startuml
+class WasteK {
+    + WasteId : int <<get>> <<set>>
+    + Unit : string? <<get>> <<set>>
+    + TotalWaste : double <<get>> <<set>>
+}
+WasteK --> "Year" DateTime
+@enduml

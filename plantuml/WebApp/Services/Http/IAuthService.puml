@@ -1,0 +1,11 @@
+@startuml
+interface IAuthService {
+    + LoginAsync(username:string, password:string) : Task
+    + LogoutAsync() : Task
+    + RegisterAsync(user:User) : Task
+    + GetAuthAsync() : Task<ClaimsPrincipal>
+}
+class "Action`1"<T> {
+}
+IAuthService --> "OnAuthStateChanged<ClaimsPrincipal>" "Action`1"
+@enduml

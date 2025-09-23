@@ -9,95 +9,103 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebApp
 build_property.RootNamespace = WebApp
-build_property.ProjectDir = C:\Users\marcu\Downloads\Nilfisk\ESG\WebApp\
+build_property.ProjectDir = C:\Users\marcu\Downloads\Nilfisk\BachelorProject\ESG\WebApp\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\marcu\Downloads\Nilfisk\ESG\WebApp
+build_property.MSBuildProjectDirectory = C:\Users\marcu\Downloads\Nilfisk\BachelorProject\ESG\WebApp
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/App.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/App.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/About.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Layout/ChartComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcQ2hhcnRDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/About.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBYm91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/ClimateAndEnergy.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/ClimateAndEnergy.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDbGltYXRlQW5kRW5lcmd5LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/DataFromApi.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/DataFromApi.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXRhRnJvbUFwaS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/EnvironmentalKPI.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/EnergyCharts.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbmVyZ3lDaGFydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/EnvironmentalKPI.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbnZpcm9ubWVudGFsS1BJLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/Error.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/EnvironmentalManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFbnZpcm9ubWVudGFsTWFuYWdlbWVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/GoverenceKPI.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHb3ZlcmVuY2VLUEkucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/Home.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/MustBeLoggedInToView.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNdXN0QmVMb2dnZWRJblRvVmlldy5yYXpvcg==
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/SurveyDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdXJ2ZXlEYXNoYm9hcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/MustBeTeacherToView.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNdXN0QmVUZWFjaGVyVG9WaWV3LnJhem9y
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/SurveyEditor.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdXJ2ZXlFZGl0b3IucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/PolicyExampleManual.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQb2xpY3lFeGFtcGxlTWFudWFsLnJhem9y
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/SurveyManager.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdXJ2ZXlNYW5hZ2VyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/PolicyExampleWithComponent.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQb2xpY3lFeGFtcGxlV2l0aENvbXBvbmVudC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/ShowCredentialsFromAuthState.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaG93Q3JlZGVudGlhbHNGcm9tQXV0aFN0YXRlLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/ShowCredentialsFromContext.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTaG93Q3JlZGVudGlhbHNGcm9tQ29udGV4dC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Routes.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/_Imports.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Layout/MainLayout.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-pui3qmsk44
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Layout/NavMenu.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-cfr3pjxbop
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/Login.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-iq1362wwd4
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Pages/ViewTodos.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/Survey.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdXJ2ZXkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-rpvergvip2
+
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/SurveyAdmin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdXJ2ZXlBZG1pbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-916mmfsk8t
+
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Pages/ViewTodos.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWaWV3VG9kb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-nf87gtgnau
 
-[C:/Users/marcu/Downloads/Nilfisk/ESG/WebApp/Components/Shared/LoginButtons.razor]
+[C:/Users/marcu/Downloads/Nilfisk/BachelorProject/ESG/WebApp/Components/Shared/LoginButtons.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTG9naW5CdXR0b25zLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-wxsoq6b4hs

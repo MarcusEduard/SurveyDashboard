@@ -1,0 +1,5 @@
+@startuml
+class AuthorizationPolicies <<static>> {
+    + {static} AddPolicies(services:IServiceCollection) : void
+}
+@enduml

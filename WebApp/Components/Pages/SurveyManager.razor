@@ -1,0 +1,384 @@
+@page "/survey-manager"
+@attribute [Authorize(Policy = "MustBeAdmin")]
+@using WebAPI.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient httpClient
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="survey-manager-container">
+    <h2>📋 Survey Management</h2>
+    <p>Create and send surveys to customers, and track their responses.</p>
+
+    <!-- Create New Survey Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>🆕 Create New Survey</h4>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Customer Name *</label>
+                    <input type="text" class="form-control" @bind="newSurvey.CustomerName" placeholder="e.g. Grundfos" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Sector *</label>
+                    <select class="form-select" @bind="newSurvey.Sector">
+                        <option value="">Select Sector</option>
+                        <option value="Energy">Energy</option>
+                        <option value="Health">Health</option>
+                        <option value="Tech">Tech</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Project Name *</label>
+                    <input type="text" class="form-control" @bind="newSurvey.ProjectName" placeholder="e.g. Energy Efficiency Audit" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Project Duration *</label>
+                    <input type="text" class="form-control" @bind="newSurvey.ProjectDuration" placeholder="e.g. 3 months" />
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <button class="btn btn-primary" @onclick="CreateSurvey" disabled="@(!IsNewSurveyValid())">
+                    <i class="fas fa-plus"></i> Create Survey & Generate Link
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Surveys (Sent but not completed) -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>⏳ Pending Surveys</h4>
+        </div>
+        <div class="card-body">
+            @if (pendingSurveys.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Survey ID</th>
+                                <th>Customer</th>
+                                <th>Project</th>
+                                <th>Sector</th>
+                                <th>Date Sent</th>
+                                <th>Survey Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var survey in pendingSurveys.OrderByDescending(s => s.DateSent))
+                            {
+                                <tr>
+                                    <td><code>@GetShortSurveyId(survey.SurveyId)</code></td>
+                                    <td>@survey.CustomerName</td>
+                                    <td>@survey.ProjectName</td>
+                                    <td><span class="badge bg-info">@survey.Sector</span></td>
+                                    <td>@survey.DateSent?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" @onclick="() => CopyLink(survey.SurveyId)">
+                                            <i class="fas fa-copy"></i> Copy Link
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteSurvey(survey.SurveyResponseId)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-muted text-center py-4">
+                    <i class="fas fa-inbox fa-3x mb-3"></i>
+                    <p>No pending surveys found.</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Recently Completed Surveys -->
+    <div class="card">
+        <div class="card-header">
+            <h4>✅ Recently Completed Surveys</h4>
+        </div>
+        <div class="card-body">
+            @if (completedSurveys.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Survey ID</th>
+                                <th>Customer</th>
+                                <th>Project</th>
+                                <th>Completed</th>
+                                <th>Overall Score</th>
+                                <th>Time to Complete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var survey in completedSurveys.Take(10).OrderByDescending(s => s.DateCompleted))
+                            {
+                                var timeToComplete = survey.DateCompleted.HasValue && survey.DateSent.HasValue 
+                                    ? (survey.DateCompleted.Value - survey.DateSent.Value).TotalDays 
+                                    : 0;
+                                
+                                <tr>
+                                    <td><code>@GetShortSurveyId(survey.SurveyId)</code></td>
+                                    <td>@survey.CustomerName</td>
+                                    <td>@survey.ProjectName</td>
+                                    <td>@survey.DateCompleted?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <span class="badge @(survey.Question1 >= 8 ? "bg-success" : survey.Question1 >= 6 ? "bg-info" : survey.Question1 >= 4 ? "bg-warning" : "bg-danger")">
+                                            @survey.Question1/10
+                                        </span>
+                                    </td>
+                                    <td>@Math.Round(timeToComplete, 1) days</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-muted text-center py-4">
+                    <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                    <p>No completed surveys found.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (showLinkModal)
+{
+    <div class="modal fade show" style="display: block;" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">📋 Survey Link Created</h5>
+                    <button type="button" class="btn-close" @onclick="() => showLinkModal = false"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Survey created successfully!</strong></p>
+                    <p>Customer: <strong>@newSurvey.CustomerName</strong></p>
+                    <p>Project: <strong>@newSurvey.ProjectName</strong></p>
+                    
+                    <div class="alert alert-info">
+                        <strong>Survey Link:</strong>
+                        <div class="input-group mt-2">
+                            <input type="text" class="form-control" value="@currentSurveyLink" readonly />
+                            <button class="btn btn-outline-primary" @onclick="() => CopyLink(createdSurveyId)">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted small">Share this link with your customer. They can complete the survey using this link.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="() => showLinkModal = false">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+<style>
+    .survey-manager-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-radius: 12px;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border-radius: 12px 12px 0 0 !important;
+        border: none;
+    }
+
+    .card-header h4 {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table th {
+        border-top: none;
+        font-weight: 600;
+        color: #333;
+    }
+
+    code {
+        background: #f1f3f4;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+    }
+
+    .bg-success { background-color: #28a745 !important; }
+    .bg-info { background-color: #17a2b8 !important; }
+    .bg-warning { background-color: #ffc107 !important; color: #333; }
+    .bg-danger { background-color: #dc3545 !important; }
+
+    .modal.show {
+        background: rgba(0,0,0,0.5);
+    }
+
+    .btn {
+        border-radius: 8px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 8px;
+    }
+</style>
+
+@code {
+    SurveyResponse newSurvey = new SurveyResponse();
+    List<SurveyResponse> pendingSurveys = new List<SurveyResponse>();
+    List<SurveyResponse> completedSurveys = new List<SurveyResponse>();
+    
+    bool showLinkModal = false;
+    string currentSurveyLink = "";
+    string createdSurveyId = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSurveys();
+    }
+
+    async Task LoadSurveys()
+    {
+        try
+        {
+            var response = await httpClient.GetAsync("http://localhost:5555/api/survey");
+            if (response.IsSuccessStatusCode)
+            {
+                var allSurveys = await response.Content.ReadFromJsonAsync<List<SurveyResponse>>();
+                
+                // Split into pending and completed
+                pendingSurveys = allSurveys.Where(s => !s.DateCompleted.HasValue).ToList();
+                completedSurveys = allSurveys.Where(s => s.DateCompleted.HasValue).ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle error
+            Console.WriteLine($"Error loading surveys: {ex.Message}");
+        }
+    }
+
+    bool IsNewSurveyValid()
+    {
+        return !string.IsNullOrWhiteSpace(newSurvey.CustomerName) &&
+               !string.IsNullOrWhiteSpace(newSurvey.Sector) &&
+               !string.IsNullOrWhiteSpace(newSurvey.ProjectName) &&
+               !string.IsNullOrWhiteSpace(newSurvey.ProjectDuration);
+    }
+
+    async Task CreateSurvey()
+    {
+        if (!IsNewSurveyValid()) return;
+
+        // Set the survey as sent but not completed
+        newSurvey.DateSent = DateTime.Now;
+        newSurvey.DateCompleted = null; // Not completed yet
+        
+        // Clear all question scores (will be set when customer fills it out)
+        newSurvey.Question1 = 0;
+        newSurvey.Question2 = 0;
+        newSurvey.Question3 = 0;
+        newSurvey.Question4 = 0;
+        newSurvey.Question5 = 0;
+        newSurvey.Question6 = 0;
+        newSurvey.Question7 = 0;
+        newSurvey.Question8 = 0;
+        newSurvey.Question9 = 0;
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5555/api/survey", newSurvey);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                // Generate the survey link
+                createdSurveyId = newSurvey.SurveyId;
+                currentSurveyLink = $"{Navigation.BaseUri}survey/{createdSurveyId}";
+                
+                // Show modal with link
+                showLinkModal = true;
+                
+                // Reset form
+                newSurvey = new SurveyResponse();
+                
+                // Reload surveys
+                await LoadSurveys();
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating survey: {ex.Message}");
+        }
+    }
+
+    async Task CopyLink(string surveyId)
+    {
+        var link = $"{Navigation.BaseUri}survey/{surveyId}";
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", link);
+        // Could show a toast notification here
+    }
+
+    async Task DeleteSurvey(int surveyResponseId)
+    {
+        try
+        {
+            var response = await httpClient.DeleteAsync($"http://localhost:5555/api/survey/{surveyResponseId}");
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadSurveys();
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting survey: {ex.Message}");
+        }
+    }
+
+    string GetShortSurveyId(string surveyId)
+    {
+        if (string.IsNullOrEmpty(surveyId))
+            return "N/A";
+            
+        if (surveyId.Length <= 8)
+            return surveyId;
+            
+        return surveyId.Substring(0, 8) + "...";
+    }
+}

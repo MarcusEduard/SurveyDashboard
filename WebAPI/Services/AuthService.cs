@@ -8,12 +8,45 @@ public class AuthService : IAuthService
     [
         new()
         {
-            Username = "9n10n2Guy",
-            Email = "kasper@gmail.com",
-            FullName = "Kasper Knop",
+            Username = "Guest",
+            Email = "guest@gmail.com",
+            FullName = "Guest User",
+            Domain = "Guest.com",
+            Password = "Guest1234",
+            Role = "Guest",
+            SecurityLevel = 2,
+            Birthday = new DateTime(1988, 3, 14)
+        },
+        new()
+        {
+            Username = "Marcus",
+            Email = "marcus@gmail.com",
+            FullName = "Marcus Eduard",
             Domain = "via.dk",
-            Password = "password",
-            Role = "Student",
+            Password = "Energy1234",
+            Role = "Energy",
+            SecurityLevel = 2,
+            Birthday = new DateTime(1988, 3, 14)
+        },
+        new()
+        {
+            Username = "Tech",
+            Email = "tech@gmail.com",
+            FullName = "Tech User",
+            Domain = "Tech.com",
+            Password = "Tech1234",
+            Role = "Tech",
+            SecurityLevel = 2,
+            Birthday = new DateTime(1988, 3, 14)
+        },
+        new()
+        {
+            Username = "Health",
+            Email = "health@gmail.com",
+            FullName = "Health User",
+            Domain = "Health.com",
+            Password = "Health1234",
+            Role = "Health",
             SecurityLevel = 2,
             Birthday = new DateTime(1988, 3, 14)
         },
@@ -24,7 +57,7 @@ public class AuthService : IAuthService
             FullName = "Jasmin Tazli",
             Domain = "admin.com",
             Password = "Fedeko",
-            Role = "Teacher",
+            Role = "Admin",
             SecurityLevel = 4,
             Birthday = new DateTime(1988, 3, 14)
         }
@@ -55,9 +88,6 @@ public class AuthService : IAuthService
         {
             throw new ValidationException("Password cannot be null");
         }
-        // Do more user info validation here
-
-        // save to persistence instead of list
 
         users.Add(user);
 

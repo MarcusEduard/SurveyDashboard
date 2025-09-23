@@ -10,7 +10,6 @@ namespace WebApp.Services.Http;
 
 public class JwtAuthService(HttpClient client, IJSRuntime jsRuntime) : IAuthService
 {
-    // this private variable for simple caching
     public string Jwt { get; private set; } = "";
 
     public Action<ClaimsPrincipal> OnAuthStateChanged { get; set; } = null!;

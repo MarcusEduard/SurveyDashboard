@@ -1,0 +1,35 @@
+Table Edata {
+    Environmentid int [pk]
+    Unit string
+    TotalEnergy double
+    CrudeFuel double
+    GasFuel double
+    PurchElec double
+    RenewEnergy double
+    FossilEnergy double
+    Year datetime
+}
+
+Table GreenHouse {
+    GreenHouseId int [pk]
+    Unit string
+    scope12Market double
+    scope12location double
+    scope3soldproducts double
+    Year datetime
+}
+
+Table Waste {
+    WasteId int [pk]
+    Unit string
+    TotalWaste double
+    Year datetime
+}
+
+Table Water {
+    WaterId int [pk]
+    Unit string
+    WaterConsumption double
+    WaterRecycled double
+    Year datetime
+}

@@ -1,14 +1,17 @@
-﻿@using Login
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    @if (!IsSurveyPage())
+    {
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+    }
 
-    <main>
+    <main class="main-content @(IsSurveyPage() ? "full-width" : "")">
         <div class="top-row px-4">
-            <LoginButtons />
+            <Login.LoginButtons />
         </div>
 
         <article class="content px-4">
@@ -22,3 +25,16 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code {
+    private bool IsSurveyPage()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var path = uri.LocalPath;
+        
+        // Kun skjul navigation for den offentlige survey form
+        // Tillad navigation på alle admin/management sider
+        return path.Equals("/survey", StringComparison.OrdinalIgnoreCase) ||
+               path.StartsWith("/survey/", StringComparison.OrdinalIgnoreCase);
+    }
+}

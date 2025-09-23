@@ -16,17 +16,22 @@
 }
 
 .top-row[b-cfr3pjxbop] {
-    height: 3.5rem; /* Højde på topbaren */
-    background-color: rgb(255, 255, 255); /* Mørk gennemsigtig baggrund */
+    height: 3.5rem; /* Mindre højde for at matche det professionelle look */
+    background: #ffffff; /* Ren hvid baggrund ligesom ministeriets hjemmeside */
     display: flex; /* Sørg for, at indholdet er justeret vandret */
     align-items: center; /* Vertikal justering */
     justify-content: flex-start; /* Start indholdet fra venstre */
-    padding-left: 1rem; /* Indrykning fra venstre */
+    padding: 0.3rem 0.8rem; /* Mindre padding for et mere kompakt udseende */
     width: 100%; /* Sørg for, at det fylder hele bredden */
+    border-bottom: 2px solid #dc3545; /* Rød bundstreg ligesom ministeriets design */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Meget diskret skygge */
 }
 
 .navbar-brand[b-cfr3pjxbop] {
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
 }
 
 .bi[b-cfr3pjxbop] {
@@ -35,7 +40,7 @@
     width: 1.25rem;
     height: 1.25rem;
     margin-right: 0.75rem;
-    top: -1px;
+    top: 0; /* Adjust this value to center the icon */
     background-size: cover;
 }
 
@@ -104,16 +109,24 @@
         display: block;
 
         /* Allow sidebar to scroll for tall menus */
-        height: calc(100vh - 3.5rem);
+        height: calc(100vh - 3.5rem); /* Tilbage til den oprindelige højde */
         overflow-y: auto;
     }
     
 }
 
-/* Logo styling */
+/* Logo styling - professionelt ministerie design */
 .navbar-logo[b-cfr3pjxbop] {
-    width: 300px;
-    height: 150px;
+    width: auto; /* Automatisk bredde baseret på højden */
+    height: 30px; /* Mindre størrelse for et mere diskret udseende */
+    max-width: 120px; /* Mindre maksimal bredde */
+    object-fit: contain; /* Bevar aspekt ratio */
+    border-radius: 0; /* Ingen afrundede hjørner for et mere officielt look */
+    box-shadow: none; /* Ingen skygge for et renere udseende */
+    transition: opacity 0.2s ease; /* Subtil hover effekt */
+    margin-right: 0.8rem; /* Mindre margin */
 }
 
-
+.navbar-logo:hover[b-cfr3pjxbop] {
+    opacity: 0.8; /* Subtil opacity ændring ved hover i stedet for scaling */
+}

@@ -1,0 +1,10 @@
+@startuml
+class FileContext {
+    + <<async>> SaveChangesAsync() : Task
+    + LoadData() : void
+}
+class "List`1"<T> {
+}
+FileContext --> "Users<User>" "List`1"
+FileContext --> "Datas<Data>" "List`1"
+@enduml

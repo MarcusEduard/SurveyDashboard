@@ -1,0 +1,7 @@
+@startuml
+class FileUserService {
+    + GetUsers() : List<User>
+    + <<async>> SaveUserAsync(user:User) : Task<User>
+}
+IUserService <|-- FileUserService
+@enduml

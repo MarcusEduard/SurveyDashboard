@@ -1,0 +1,9 @@
+@startuml
+class Water {
+    + WaterId : int <<get>> <<set>>
+    + Unit : string? <<get>> <<set>>
+    + WaterConsumption : double <<get>> <<set>>
+    + WaterRecycled : double <<get>> <<set>>
+}
+Water --> "Year" DateTime
+@enduml

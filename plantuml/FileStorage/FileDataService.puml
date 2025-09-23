@@ -1,0 +1,10 @@
+@startuml
+class FileDataService {
+    + FileDataService(context:FileContext)
+    + GetDatas() : List<Data>
+    + <<async>> RemoveDataAsync(id:int) : Task
+    + <<async>> SaveDataAsync(data:Data) : Task<Data>
+    + <<async>> UpdateDataAsync(data:Data) : Task
+}
+IDataService <|-- FileDataService
+@enduml

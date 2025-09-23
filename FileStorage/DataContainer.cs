@@ -5,5 +5,5 @@ namespace FileStorage;
 public record DataContainer
 {
     public List<User> Users { get; set; } = [];
-    public List<Todo> Todos { get; set; } = [];
+    public List<Data> Datas { get; set; } = [];
 }

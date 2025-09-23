@@ -1,0 +1,59 @@
+@startuml
+class EdataService {
+    + EdataService(context:ESGContext)
+    + <<async>> GetAllEdataAsync() : Task<List<Edata>>
+    + <<async>> GetEdataByIdAsync(id:int) : Task<Edata>
+    + <<async>> CreateEdataAsync(edata:Edata) : Task
+    + <<async>> UpdateEdataAsync(edata:Edata) : Task
+    + <<async>> DeleteEdataAsync(id:int) : Task
+    + <<async>> GetAllEdataKAsync() : Task<List<EdataK>>
+    + <<async>> GetEdataKByIdAsync(id:int) : Task<EdataK>
+    + <<async>> CreateEdataKAsync(edataK:EdataK) : Task
+    + <<async>> UpdateEdataKAsync(edataK:EdataK) : Task
+    + <<async>> DeleteEdataKAsync(id:int) : Task
+    + <<async>> GetAllGreenHouseKAsync() : Task<List<GreenHouseK>>
+    + <<async>> GetGreenhouseKByIdAsync(id:int) : Task<GreenHouseK>
+    + <<async>> CreateGreenhouseKAsync(greenhouseK:GreenHouseK) : Task
+    + <<async>> UpdateGreenHouseKAsync(greenhouseK:GreenHouseK) : Task
+    + <<async>> DeleteGreenhouseKAsync(id:int) : Task
+    + <<async>> GetAllGreenhouseTAsync() : Task<List<GreenHouseT>>
+    + <<async>> GetGreenhouseTByIdAsync(id:int) : Task<GreenHouseT>
+    + <<async>> CreateGreenhouseTAsync(greenhouseT:GreenHouseT) : Task
+    + <<async>> CreateGreenhouseAsync(greenhouse:GreenHouse) : Task
+    + <<async>> UpdateGreenhouseTAsync(greenhouseT:GreenHouseT) : Task
+    + <<async>> UpdateGreenHouseAsync(greenhouse:GreenHouse) : Task
+    + <<async>> GetAllGreenHouseTAsync() : Task<List<GreenHouseT>>
+    + <<async>> GetAllGreenHouseAsync() : Task<List<GreenHouse>>
+    + <<async>> GetGreenhouseByIdAsync(id:int) : Task<GreenHouse>
+    + <<async>> CreateGreenhousTeAsync(greenhouseT:GreenHouseT) : Task
+    + <<async>> UpdateGreenHouseTAsync(greenhouseT:GreenHouseT) : Task
+    + <<async>> DeleteGreenhouseTAsync(id:int) : Task
+    + <<async>> DeleteGreenhouseAsync(id:int) : Task
+    + <<async>> UpdateWaterAsync(water:Water) : Task
+    + <<async>> GetAllWasteKAsync() : Task<List<WasteK>>
+    + <<async>> GetWasteKByIdAsync(id:int) : Task<WasteK>
+    + <<async>> CreateWasteKAsync(wasteK:WasteK) : Task
+    + <<async>> UpdateWasteKAsync(wasteK:WasteK) : Task
+    + <<async>> DeleteWasteKAsync(id:int) : Task
+    + <<async>> GetAllWasteTAsync() : Task<List<WasteT>>
+    + <<async>> GetWasteTByIdAsync(id:int) : Task<WasteT>
+    + <<async>> CreateWasteTAsync(wasteT:WasteT) : Task
+    + <<async>> UpdateWasteTAsync(wasteT:WasteT) : Task
+    + <<async>> DeleteWasteTAsync(id:int) : Task
+    + <<async>> GetAllWaterAsync() : Task<List<Water>>
+    + <<async>> GetWaterByIdAsync(id:int) : Task<Water>
+    + <<async>> CreateWaterAsync(water:Water) : Task
+    + <<async>> UpdateWater(water:Water) : Task
+    + <<async>> DeleteWaterAsync(id:int) : Task
+    + <<async>> GetAllWaterKAsync() : Task<List<WaterK>>
+    + <<async>> GetWaterKByIdAsync(id:int) : Task<WaterK>
+    + <<async>> CreateWaterKAsync(waterK:WaterK) : Task
+    + <<async>> UpdateWaterKAsync(waterK:WaterK) : Task
+    + <<async>> DeleteWaterKAsync(id:int) : Task
+    + <<async>> GetAllWasteAsync() : Task<List<Waste>>
+    + <<async>> GetWasteByIdAsync(id:int) : Task<Waste>
+    + <<async>> CreateWasteAsync(waste:Waste) : Task
+    + <<async>> UpdateWasteAsync(waste:Waste) : Task
+    + <<async>> DeleteWasteAsync(id:int) : Task
+}
+@enduml

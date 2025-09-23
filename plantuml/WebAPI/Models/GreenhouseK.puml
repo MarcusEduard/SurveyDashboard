@@ -1,0 +1,9 @@
+@startuml
+class GreenHouseK {
+    + GreenHouseId : int <<get>> <<set>>
+    + Unit : string? <<get>> <<set>>
+    + scope12Market : double <<get>> <<set>>
+    + scope12location : double <<get>> <<set>>
+}
+GreenHouseK --> "Year" DateTime
+@enduml

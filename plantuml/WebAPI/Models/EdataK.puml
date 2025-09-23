@@ -1,0 +1,12 @@
+@startuml
+class EdataK {
+    + Environmentid : int <<get>> <<set>>
+    + Unit : string? <<get>> <<set>>
+    + TotalEnergy : double <<get>> <<set>>
+    + CrudeFuel : double <<get>> <<set>>
+    + GasFuel : double <<get>> <<set>>
+    + PurchElec : double <<get>> <<set>>
+    + FossilEnergy : double <<get>> <<set>>
+}
+EdataK --> "Year" DateTime
+@enduml

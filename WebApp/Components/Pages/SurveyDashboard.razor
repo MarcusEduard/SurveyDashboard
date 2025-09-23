@@ -171,6 +171,254 @@
                 </div>
             </div>
 
+            <!-- Satisfaction Trends Over Time -->
+            <div class="chart-container" id="trends">
+                <div class="chart-header">
+                    <h4>📈 Satisfaction Trends Over Time</h4>
+                    <div class="chart-controls">
+                        <button class="view-btn @(trendsView == "monthly" ? "active" : "")" @onclick='() => SetTrendsView("monthly")'>Monthly</button>
+                        <button class="view-btn @(trendsView == "weekly" ? "active" : "")" @onclick='() => SetTrendsView("weekly")'>Weekly</button>
+                        <button class="view-btn @(trendsView == "daily" ? "active" : "")" @onclick='() => SetTrendsView("daily")'>Daily</button>
+                    </div>
+                </div>
+                
+                @if (GetTrendData().Any())
+                {
+                    <div class="trends-container">
+                        <!-- Trend Summary Cards -->
+                        <div class="trend-summary-cards">
+                            <div class="trend-card">
+                                <div class="trend-icon">📈</div>
+                                <div class="trend-value @(GetTrendDirection() == "up" ? "positive" : GetTrendDirection() == "down" ? "negative" : "neutral")">
+                                    @GetTrendPercentage()%
+                                </div>
+                                <div class="trend-label">@GetTrendDirection().ToUpper() trend</div>
+                                <div class="trend-period">Last @trendsView</div>
+                            </div>
+                            
+                            <div class="trend-card">
+                                <div class="trend-icon">🎯</div>
+                                <div class="trend-value">@GetHighestPeriod().Score.ToString("F1")</div>
+                                <div class="trend-label">Highest Score</div>
+                                <div class="trend-period">@GetHighestPeriod().Period</div>
+                            </div>
+                            
+                            <div class="trend-card">
+                                <div class="trend-icon">⚠️</div>
+                                <div class="trend-value">@GetLowestPeriod().Score.ToString("F1")</div>
+                                <div class="trend-label">Lowest Score</div>
+                                <div class="trend-period">@GetLowestPeriod().Period</div>
+                            </div>
+                            
+                            <div class="trend-card">
+                                <div class="trend-icon">📊</div>
+                                <div class="trend-value">@GetTrendData().Count()</div>
+                                <div class="trend-label">Data Points</div>
+                                <div class="trend-period">@trendsView periods</div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Trend Chart -->
+                        <div class="trend-chart-container">
+                            <div class="visual-trend-chart">
+                                @{
+                                    var trendData = GetTrendData().ToList();
+                                }
+                                
+                                @if (trendData.Any())
+                                {
+                                    <div class="trend-chart-header">
+                                        <span class="chart-title">📈 Satisfaction Score Over Time</span>
+                                        <span class="chart-range">Scale: 0 - 10</span>
+                                    </div>
+                                    
+                                    <!-- Visual Line Chart -->
+                                    <div class="line-chart-container">
+                                        <div class="chart-grid">
+                                            <!-- Y-axis scale -->
+                                            <div class="y-axis">
+                                                @for (int i = 10; i >= 0; i -= 2)
+                                                {
+                                                    <div class="y-label" style="bottom: @(i * 10)%;">@i</div>
+                                                }
+                                            </div>
+                                            
+                                            <!-- Chart area -->
+                                            <div class="chart-area">
+                                                <!-- Grid lines -->
+                                                <div class="grid-lines">
+                                                    @for (int i = 0; i <= 10; i += 2)
+                                                    {
+                                                        <div class="grid-line-horizontal" style="bottom: @(i * 10)%;"></div>
+                                                    }
+                                                </div>
+                                                
+                                                <!-- Line chart content -->
+                                                <div class="line-chart-content">
+                                                    @if (trendData.Count > 1)
+                                                    {
+                                                        <!-- Background area -->
+                                                        <div class="trend-area" style="@GetTrendAreaPath(trendData)"></div>
+                                                        
+                                                        <!-- Main trend line -->
+                                                        <div class="trend-line" style="@GetTrendLinePath(trendData)"></div>
+                                                    }
+                                                    
+                                                    <!-- Data points -->
+                                                    @foreach (var (point, index) in trendData.Select((p, i) => (p, i)))
+                                                    {
+                                                        var leftPosition = trendData.Count > 1 ? (index * 100.0 / (trendData.Count - 1)) : 50;
+                                                        var bottomPosition = (point.Score / 10.0) * 100;
+                                                        var isRecent = index >= Math.Max(0, trendData.Count - 3);
+                                                        var pointClass = point.Score >= 8 ? "excellent" : point.Score >= 6 ? "good" : point.Score >= 4 ? "average" : "poor";
+                                                        
+                                                        <div class="data-point @pointClass @(isRecent ? "recent" : "") @(selectedTrendPoint == index ? "selected" : "")"
+                                                             style="left: @(leftPosition)%; bottom: @(bottomPosition)%;"
+                                                             @onclick="() => SelectTrendPoint(index)"
+                                                             @onmouseover="() => selectedTrendPoint = index"
+                                                             @onmouseleave="() => selectedTrendPoint = null">
+                                                            
+                                                            <div class="point-circle">
+                                                                <div class="point-value">@point.Score.ToString("F1")</div>
+                                                            </div>
+                                                            
+                                                            @if (selectedTrendPoint == index)
+                                                            {
+                                                                <div class="point-tooltip">
+                                                                    <div class="tooltip-header">
+                                                                        <strong>@point.Score.ToString("F1") / 10</strong>
+                                                                        <span class="score-badge @pointClass">@GetScoreCategory(point.Score)</span>
+                                                                    </div>
+                                                                    <div class="tooltip-period">@point.Period</div>
+                                                                    <div class="tooltip-details">
+                                                                        <span>📊 @GetPeriodResponseCount(point.Period) responses</span>
+                                                                        @if (isRecent)
+                                                                        {
+                                                                            <span class="recent-indicator">🔥 Recent</span>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
+                                                
+                                                <!-- X-axis labels -->
+                                                <div class="x-axis">
+                                                    @foreach (var (point, index) in trendData.Select((p, i) => (p, i)))
+                                                    {
+                                                        var leftPosition = trendData.Count > 1 ? (index * 100.0 / (trendData.Count - 1)) : 50;
+                                                        var showLabel = trendData.Count <= 8 || index % Math.Max(1, trendData.Count / 6) == 0;
+                                                        
+                                                        @if (showLabel)
+                                                        {
+                                                            <div class="x-label" style="left: @(leftPosition)%;">
+                                                                @point.ShortPeriod
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Chart Legend -->
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-dot excellent"></div>
+                                                <span>Excellent (8-10)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-dot good"></div>
+                                                <span>Good (6-7.9)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-dot average"></div>
+                                                <span>Average (4-5.9)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-dot poor"></div>
+                                                <span>Needs Improvement (0-3.9)</span>
+                                            </div>
+                                            <div class="legend-item recent-legend">
+                                                <div class="legend-dot recent"></div>
+                                                <span>Recent Data</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            
+                            <!-- Trend Insights -->
+                            <div class="trend-insights">
+                                <div class="insight-item">
+                                    <strong>Trend Analysis:</strong>
+                                    <span>@GetTrendAnalysis()</span>
+                                </div>
+                                @if (GetRecurringChallenges().Any())
+                                {
+                                    <div class="insight-item">
+                                        <strong>Recurring Challenges:</strong>
+                                        <span>@string.Join(", ", GetRecurringChallenges())</span>
+                                    </div>
+                                }
+                                <div class="insight-item">
+                                    <strong>Service Quality:</strong>
+                                    <span>@GetServiceQualityInsight()</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sector Trends Comparison -->
+                        @if (selectedFilter == "all" && sectorCounts.Count > 1)
+                        {
+                            <div class="sector-trends-comparison">
+                                <h5>📊 Sector Trends Comparison</h5>
+                                <div class="sector-trend-bars">
+                                    @foreach (var sector in sectorCounts.Keys)
+                                    {
+                                        var sectorTrend = GetSectorTrendData(sector);
+                                        @if (sectorTrend.Any())
+                                        {
+                                            var recentAvg = sectorTrend.TakeLast(3).Average(t => t.Score);
+                                            var earlyAvg = sectorTrend.Take(Math.Min(3, sectorTrend.Count())).Average(t => t.Score);
+                                            var sectorTrendPerc = earlyAvg > 0 ? ((recentAvg - earlyAvg) / earlyAvg) * 100 : 0;
+                                            var trendClass = sectorTrendPerc > 2 ? "positive" : sectorTrendPerc < -2 ? "negative" : "neutral";
+                                            
+                                            <div class="sector-trend-item">
+                                                <div class="sector-trend-header">
+                                                    <span class="sector-icon">@GetSectorIcon(sector)</span>
+                                                    <span class="sector-name">@sector</span>
+                                                    <span class="sector-trend-value @trendClass">
+                                                        @(sectorTrendPerc >= 0 ? "+" : "")@sectorTrendPerc.ToString("F1")%
+                                                    </span>
+                                                </div>
+                                                <div class="mini-trend-line">
+                                                    <svg viewBox="0 0 100 20" class="mini-svg">
+                                                        @{
+                                                            var miniPoints = sectorTrend.Select((t, i) => $"{i * (100.0 / Math.Max(sectorTrend.Count() - 1, 1))},{20 - (t.Score * 2)}");
+                                                        }
+                                                        <polyline points="@string.Join(" ", miniPoints)" 
+                                                                 fill="none" 
+                                                                 stroke="@GetSectorColor(sector)" 
+                                                                 stroke-width="2"/>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="no-trend-data">
+                        <p>📊 No trend data available yet. Complete more surveys to see satisfaction trends over time!</p>
+                    </div>
+                }
+            </div>
+
             <!-- Question Performance Chart -->
             <div class="chart-container">
                 <h4>📊 Question Performance</h4>
@@ -1645,6 +1893,642 @@
     .bg-info { background-color: #17a2b8 !important; color: white; }
     .bg-warning { background-color: #ffc107 !important; color: #333; }
     .bg-danger { background-color: #dc3545 !important; color: white; }
+
+    /* Satisfaction Trends Styles */
+    .trends-container {
+        margin-top: 20px;
+    }
+
+    .trend-summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 30px;
+    }
+
+    .trend-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        text-align: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid #007bff;
+    }
+
+    .trend-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .trend-icon {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .trend-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: #007bff;
+    }
+
+    .trend-value.positive {
+        color: #28a745;
+    }
+
+    .trend-value.negative {
+        color: #dc3545;
+    }
+
+    .trend-value.neutral {
+        color: #6c757d;
+    }
+
+    .trend-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 4px;
+    }
+
+    .trend-period {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .simple-trend-chart {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+    }
+
+    .visual-trend-chart {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border: 1px solid #e9ecef;
+    }
+
+    .line-chart-container {
+        margin-top: 20px;
+        position: relative;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #dee2e6;
+    }
+
+    .chart-grid {
+        display: flex;
+        height: 300px;
+        position: relative;
+    }
+
+    .y-axis {
+        width: 40px;
+        position: relative;
+        border-right: 2px solid #333;
+        margin-right: 10px;
+    }
+
+    .y-label {
+        position: absolute;
+        right: 50px;
+        transform: translateY(50%);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #666;
+        background: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+    }
+
+    .chart-area {
+        flex: 1;
+        position: relative;
+        border-bottom: 2px solid #333;
+        margin-left: 10px;
+    }
+
+    .grid-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .grid-line-horizontal {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: #e9ecef;
+        opacity: 0.7;
+    }
+
+    .line-chart-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .trend-area {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.2;
+        background: linear-gradient(to bottom, #007bff, transparent);
+        border-radius: 4px 4px 0 0;
+    }
+
+    .trend-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, #007bff, #28a745, #007bff);
+        height: 3px;
+        border-radius: 2px;
+        box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        z-index: 1;
+    }
+
+    .data-point {
+        position: absolute;
+        transform: translate(-50%, 50%);
+        z-index: 2;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .data-point:hover {
+        transform: translate(-50%, 50%) scale(1.2);
+        z-index: 10;
+    }
+
+    .data-point.selected {
+        transform: translate(-50%, 50%) scale(1.3);
+        z-index: 10;
+    }
+
+    .point-circle {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 3px solid white;
+        position: relative;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .data-point.excellent .point-circle {
+        background: #28a745;
+        border-color: #1e7e34;
+    }
+
+    .data-point.good .point-circle {
+        background: #17a2b8;
+        border-color: #117a8b;
+    }
+
+    .data-point.average .point-circle {
+        background: #ffc107;
+        border-color: #d39e00;
+    }
+
+    .data-point.poor .point-circle {
+        background: #dc3545;
+        border-color: #bd2130;
+    }
+
+    .data-point.recent .point-circle {
+        border-width: 4px;
+        border-color: #007bff;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.2), 0 0 0 4px rgba(0,123,255,0.3);
+    }
+
+    .point-value {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        position: absolute;
+        white-space: nowrap;
+    }
+
+    .point-tooltip {
+        position: absolute;
+        bottom: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.95);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        z-index: 20;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .point-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 8px solid transparent;
+        border-top-color: rgba(0,0,0,0.95);
+    }
+
+    .tooltip-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .tooltip-header strong {
+        font-size: 1.1rem;
+        color: #fff;
+    }
+
+    .score-badge {
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .score-badge.excellent {
+        background: #28a745;
+        color: white;
+    }
+
+    .score-badge.good {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .score-badge.average {
+        background: #ffc107;
+        color: #333;
+    }
+
+    .score-badge.poor {
+        background: #dc3545;
+        color: white;
+    }
+
+    .tooltip-period {
+        color: #ccc;
+        margin-bottom: 6px;
+        font-size: 0.8rem;
+    }
+
+    .tooltip-details {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.75rem;
+        color: #ddd;
+    }
+
+    .recent-indicator {
+        color: #ffc107 !important;
+        font-weight: 600;
+    }
+
+    .x-axis {
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        right: 0;
+        height: 20px;
+    }
+
+    .x-label {
+        position: absolute;
+        transform: translateX(-50%);
+        font-size: 0.8rem;
+        color: #666;
+        font-weight: 500;
+        background: white;
+        padding: 2px 4px;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+    }
+
+    .chart-legend {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .legend-dot.excellent {
+        background: #28a745;
+    }
+
+    .legend-dot.good {
+        background: #17a2b8;
+    }
+
+    .legend-dot.average {
+        background: #ffc107;
+    }
+
+    .legend-dot.poor {
+        background: #dc3545;
+    }
+
+    .legend-dot.recent {
+        background: #007bff;
+        border-color: #0056b3;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.3);
+    }
+
+    .recent-legend {
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    .trend-chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .chart-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .chart-range {
+        font-size: 0.9rem;
+        color: #666;
+        background: #e9ecef;
+        padding: 4px 8px;
+        border-radius: 8px;
+    }
+
+    .trend-bars-container {
+        display: flex;
+        gap: 8px;
+        align-items: end;
+        min-height: 200px;
+        padding: 20px 0;
+        overflow-x: auto;
+    }
+
+    .trend-bar-item {
+        flex: 1;
+        min-width: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .trend-bar-item:hover, .trend-bar-item.selected {
+        transform: scale(1.05);
+    }
+
+    .trend-bar {
+        width: 100%;
+        max-width: 40px;
+        min-height: 20px;
+        border-radius: 8px 8px 4px 4px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 4px;
+        position: relative;
+        transition: all 0.4s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .trend-bar.excellent {
+        background: linear-gradient(180deg, #28a745, #20c997);
+        border-left: 3px solid #1e7e34;
+    }
+
+    .trend-bar.good {
+        background: linear-gradient(180deg, #17a2b8, #20c997);
+        border-left: 3px solid #117a8b;
+    }
+
+    .trend-bar.average {
+        background: linear-gradient(180deg, #ffc107, #ffcd39);
+        border-left: 3px solid #d39e00;
+    }
+
+    .trend-bar.poor {
+        background: linear-gradient(180deg, #dc3545, #e55a5a);
+        border-left: 3px solid #bd2130;
+    }
+
+    .trend-bar.recent {
+        border: 2px solid #007bff;
+        box-shadow: 0 4px 16px rgba(0,123,255,0.3);
+    }
+
+    .trend-bar-value {
+        color: white;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        margin-bottom: 2px;
+    }
+
+    .trend-bar-label {
+        font-size: 0.75rem;
+        color: #666;
+        font-weight: 500;
+        margin-top: 8px;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin: center;
+        white-space: nowrap;
+    }
+
+    .trend-tooltip-simple {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        z-index: 10;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .trend-tooltip-simple::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0,0,0,0.9);
+    }
+
+    .trend-insights {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid #17a2b8;
+        margin-bottom: 20px;
+    }
+
+    .insight-item {
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .insight-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .insight-item strong {
+        color: #333;
+        margin-right: 8px;
+    }
+
+    .insight-item span {
+        color: #666;
+    }
+
+    .sector-trends-comparison {
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        border-top: 4px solid #ffc107;
+    }
+
+    .sector-trends-comparison h5 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.3rem;
+    }
+
+    .sector-trend-bars {
+        display: grid;
+        gap: 16px;
+    }
+
+    .sector-trend-item {
+        padding: 16px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .sector-trend-item:hover {
+        background: #e9ecef;
+        transform: translateX(4px);
+    }
+
+    .sector-trend-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .sector-name {
+        font-weight: 600;
+        color: #333;
+        margin-left: 8px;
+    }
+
+    .sector-trend-value {
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+    }
+
+    .sector-trend-value.positive {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .sector-trend-value.negative {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .sector-trend-value.neutral {
+        background: #e2e3e5;
+        color: #383d41;
+    }
+
+    .mini-trend-line {
+        height: 20px;
+    }
+
+    .mini-svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    .no-trend-data {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+        font-size: 1.1rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+    }
 </style>
 
 @code {
@@ -1664,6 +2548,10 @@
     string? hoveredMiniBar = null;
     int? selectedQuestion = null;
     int? hoveredPoint = null;
+    
+    // Trends states
+    string trendsView = "monthly";
+    int? selectedTrendPoint = null;
     
     // Hierarchical navigation states
     string? selectedCustomer = null;
@@ -1749,6 +2637,13 @@
     void SetDetailView(string view)
     {
         detailView = view;
+        StateHasChanged();
+    }
+
+    void SetTrendsView(string view)
+    {
+        trendsView = view;
+        selectedTrendPoint = null; // Reset selection when changing view
         StateHasChanged();
     }
 
@@ -1847,6 +2742,12 @@
     void SelectQuestionPoint(int question)
     {
         selectedQuestion = selectedQuestion == question ? null : question;
+        StateHasChanged();
+    }
+
+    void SelectTrendPoint(int index)
+    {
+        selectedTrendPoint = selectedTrendPoint == index ? null : index;
         StateHasChanged();
     }
 
@@ -2180,5 +3081,262 @@
             points.Add($"{x},{y}");
         }
         return string.Join(" ", points);
+    }
+
+    // Trend Analysis Methods
+    public class TrendDataPoint
+    {
+        public double Score { get; set; }
+        public string Period { get; set; } = "";
+        public string ShortPeriod { get; set; } = "";
+        public DateTime Date { get; set; }
+        public int ResponseCount { get; set; }
+    }
+
+    IEnumerable<TrendDataPoint> GetTrendData()
+    {
+        var completedResponses = surveyResponses.Where(r => r.DateCompleted.HasValue).ToList();
+        
+        if (!completedResponses.Any()) return new List<TrendDataPoint>();
+
+        var groupedData = trendsView switch
+        {
+            "weekly" => GroupByWeeks(completedResponses),
+            "daily" => GroupByDays(completedResponses),
+            _ => GroupByMonths(completedResponses) // default to monthly
+        };
+
+        return groupedData.OrderBy(t => t.Date);
+    }
+
+    IEnumerable<TrendDataPoint> GroupByMonths(List<SurveyResponse> responses)
+    {
+        return responses
+            .GroupBy(r => new { r.DateCompleted!.Value.Year, r.DateCompleted!.Value.Month })
+            .Select(g => new TrendDataPoint
+            {
+                Score = Math.Round(g.Average(r => r.Question1), 1),
+                Period = $"{GetMonthName(g.Key.Month)} {g.Key.Year}",
+                ShortPeriod = $"{GetMonthName(g.Key.Month).Substring(0, 3)} '{g.Key.Year.ToString().Substring(2)}",
+                Date = new DateTime(g.Key.Year, g.Key.Month, 1),
+                ResponseCount = g.Count()
+            })
+            .OrderBy(t => t.Date);
+    }
+
+    IEnumerable<TrendDataPoint> GroupByWeeks(List<SurveyResponse> responses)
+    {
+        return responses
+            .GroupBy(r => GetWeekOfYear(r.DateCompleted!.Value))
+            .Select(g => new TrendDataPoint
+            {
+                Score = Math.Round(g.Average(r => r.Question1), 1),
+                Period = $"Week {g.Key.Week} of {g.Key.Year}",
+                ShortPeriod = $"W{g.Key.Week}",
+                Date = GetDateFromWeek(g.Key.Year, g.Key.Week),
+                ResponseCount = g.Count()
+            })
+            .OrderBy(t => t.Date);
+    }
+
+    IEnumerable<TrendDataPoint> GroupByDays(List<SurveyResponse> responses)
+    {
+        return responses
+            .GroupBy(r => r.DateCompleted!.Value.Date)
+            .Select(g => new TrendDataPoint
+            {
+                Score = Math.Round(g.Average(r => r.Question1), 1),
+                Period = g.Key.ToString("MMMM dd, yyyy"),
+                ShortPeriod = g.Key.ToString("dd/MM"),
+                Date = g.Key,
+                ResponseCount = g.Count()
+            })
+            .OrderBy(t => t.Date);
+    }
+
+    IEnumerable<TrendDataPoint> GetSectorTrendData(string sector)
+    {
+        var sectorResponses = surveyResponses.Where(r => r.Sector == sector && r.DateCompleted.HasValue).ToList();
+        
+        if (!sectorResponses.Any()) return new List<TrendDataPoint>();
+
+        var groupedData = trendsView switch
+        {
+            "weekly" => GroupByWeeks(sectorResponses),
+            "daily" => GroupByDays(sectorResponses),
+            _ => GroupByMonths(sectorResponses)
+        };
+
+        return groupedData.OrderBy(t => t.Date);
+    }
+
+    string GetTrendDirection()
+    {
+        var data = GetTrendData().ToList();
+        if (data.Count < 2) return "stable";
+
+        var recentAvg = data.TakeLast(Math.Min(3, data.Count)).Average(t => t.Score);
+        var earlierAvg = data.Take(Math.Min(3, data.Count)).Average(t => t.Score);
+
+        var diff = recentAvg - earlierAvg;
+        return diff > 0.2 ? "up" : diff < -0.2 ? "down" : "stable";
+    }
+
+    double GetTrendPercentage()
+    {
+        var data = GetTrendData().ToList();
+        if (data.Count < 2) return 0;
+
+        var recentAvg = data.TakeLast(Math.Min(3, data.Count)).Average(t => t.Score);
+        var earlierAvg = data.Take(Math.Min(3, data.Count)).Average(t => t.Score);
+
+        if (earlierAvg == 0) return 0;
+        return Math.Round(((recentAvg - earlierAvg) / earlierAvg) * 100, 1);
+    }
+
+    TrendDataPoint GetHighestPeriod()
+    {
+        var data = GetTrendData().ToList();
+        return data.Any() ? data.OrderByDescending(t => t.Score).First() : new TrendDataPoint();
+    }
+
+    TrendDataPoint GetLowestPeriod()
+    {
+        var data = GetTrendData().ToList();
+        return data.Any() ? data.OrderBy(t => t.Score).First() : new TrendDataPoint();
+    }
+
+    string GetTrendAnalysis()
+    {
+        var data = GetTrendData().ToList();
+        if (data.Count < 2) return "Insufficient data for trend analysis.";
+
+        var direction = GetTrendDirection();
+        var percentage = Math.Abs(GetTrendPercentage());
+
+        return direction switch
+        {
+            "up" => $"Your satisfaction scores are trending upward by {percentage}%, indicating improving service quality and customer relationships.",
+            "down" => $"Your satisfaction scores are declining by {percentage}%. Consider reviewing recent service delivery and customer feedback.",
+            _ => "Your satisfaction scores remain stable. Maintain current service standards to ensure continued customer satisfaction."
+        };
+    }
+
+    List<string> GetRecurringChallenges()
+    {
+        var challenges = new List<string>();
+        var data = GetTrendData().ToList();
+        
+        if (data.Count < 3) return challenges;
+
+        // Check for consistently low periods
+        var lowPeriods = data.Where(t => t.Score < 6).Count();
+        if (lowPeriods > data.Count * 0.3)
+        {
+            challenges.Add("Recurring low satisfaction periods");
+        }
+
+        // Check for declining trend in recent periods
+        var recentData = data.TakeLast(5).ToList();
+        if (recentData.Count >= 3)
+        {
+            var isDeclinig = true;
+            for (int i = 1; i < recentData.Count; i++)
+            {
+                if (recentData[i].Score >= recentData[i - 1].Score)
+                {
+                    isDeclinig = false;
+                    break;
+                }
+            }
+            if (isDeclinig) challenges.Add("Recent declining trend");
+        }
+
+        return challenges;
+    }
+
+    string GetServiceQualityInsight()
+    {
+        var avgScore = GetTrendData().Any() ? GetTrendData().Average(t => t.Score) : 0;
+        
+        return avgScore switch
+        {
+            >= 8.5 => "Outstanding service quality - customers are highly satisfied!",
+            >= 7.5 => "Good service quality - customers are generally satisfied.",
+            >= 6.5 => "Acceptable service quality - room for improvement exists.",
+            >= 5.5 => "Below average service quality - attention needed.",
+            _ => "Service quality needs significant improvement - priority action required."
+        };
+    }
+
+    int GetPeriodResponseCount(string period)
+    {
+        var data = GetTrendData().FirstOrDefault(t => t.Period == period);
+        return data?.ResponseCount ?? 0;
+    }
+
+    // Helper methods
+    string GetMonthName(int month)
+    {
+        return new DateTime(2000, month, 1).ToString("MMMM");
+    }
+
+    (int Year, int Week) GetWeekOfYear(DateTime date)
+    {
+        var culture = System.Globalization.CultureInfo.CurrentCulture;
+        var weekOfYear = culture.Calendar.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        return (date.Year, weekOfYear);
+    }
+
+    DateTime GetDateFromWeek(int year, int week)
+    {
+        var jan1 = new DateTime(year, 1, 1);
+        var daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
+        var firstMonday = jan1.AddDays(daysOffset);
+        var weekNum = week - 1;
+        return firstMonday.AddDays(weekNum * 7);
+    }
+
+    // Visual chart helper methods
+    string GetTrendLinePath(List<TrendDataPoint> data)
+    {
+        if (data.Count < 2) return "";
+        
+        var points = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - (point.Score / 10.0) * 100; // Invert Y for CSS positioning
+            return $"{x}% {y}%";
+        });
+        
+        return $"clip-path: polygon({string.Join(", ", points)});";
+    }
+
+    string GetTrendAreaPath(List<TrendDataPoint> data)
+    {
+        if (data.Count < 2) return "";
+        
+        var topPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - (point.Score / 10.0) * 100; // Invert Y for CSS positioning
+            return $"{x}% {y}%";
+        });
+        
+        var bottomPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            return $"{x}% 100%";
+        }).Reverse();
+        
+        return $"clip-path: polygon({string.Join(", ", topPoints)}, {string.Join(", ", bottomPoints)});";
+    }
+
+    string GetScoreCategory(double score)
+    {
+        return score switch
+        {
+            >= 8 => "Excellent",
+            >= 6 => "Good", 
+            >= 4 => "Average",
+            _ => "Poor"
+        };
     }
 }

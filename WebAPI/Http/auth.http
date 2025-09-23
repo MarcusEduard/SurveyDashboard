@@ -1,4 +1,4 @@
-POST http://localhost:5124/auth/login
+POST http://localhost:5555/auth/login
 Content-Type: application/json
 
 { "Username": "Admin", "Password": "onetwo3FOUR"}
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5124/test/authorized
+GET http://localhost:5555/test/authorized
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJKV1RTZXJ2aWNlQWNjZXNzVG9rZW4iLCJqdGkiOiI4MjgyMGQ3YS0zNTY3LTRhZGItYmM2Ny0xMzU4M2U2ZDc0YzMiLCJpYXQiOjE3MzA0MDI2MzAsInVuaXF1ZV9uYW1lIjoiQWRtaW4iLCJyb2xlIjoiVGVhY2hlciIsIkZ1bGxuYW1lIjoiSmFrb2IgVHJpZ2dlciBLbm9wIiwiRW1haWwiOiJqa25yQHZpYS5kayIsIkJpcnRoZGF5IjoiMTQvMDMvMTk4OCIsIkRvbWFpbiI6ImFkbWluLmNvbSIsIlNlY3VyaXR5TGV2ZWwiOiI0IiwibmJmIjoxNzMwNDAyNjMwLCJleHAiOjE3MzA0MDYyMzAsImlzcyI6IkpXVEF1dGhlbnRpY2F0aW9uU2VydmVyIiwiYXVkIjoiSldUU2VydmljZUJsYXpvckNsaWVudCJ9.f6ZwVAO0PnapRCPnOt2_ZO38hID1K3obPe8LwrBFeT8
 
 ###

@@ -1,0 +1,18 @@
+@startuml
+class ESGContext {
+    + ESGContext(options:DbContextOptions<ESGContext>)
+}
+class "DbSet`1"<T> {
+}
+DbContext <|-- ESGContext
+ESGContext --> "EModels<Edata>" "DbSet`1"
+ESGContext --> "GHModels<GreenHouse>" "DbSet`1"
+ESGContext --> "WModels<Waste>" "DbSet`1"
+ESGContext --> "WaModels<Water>" "DbSet`1"
+ESGContext --> "EModelsK<EdataK>" "DbSet`1"
+ESGContext --> "GHModelsK<GreenHouseK>" "DbSet`1"
+ESGContext --> "WModelsK<WasteK>" "DbSet`1"
+ESGContext --> "WaModelsK<WaterK>" "DbSet`1"
+ESGContext --> "GHModelsT<GreenHouseT>" "DbSet`1"
+ESGContext --> "WModelsT<WasteT>" "DbSet`1"
+@enduml

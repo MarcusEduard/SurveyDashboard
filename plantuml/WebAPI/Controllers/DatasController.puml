@@ -1,0 +1,100 @@
+@startuml
+class DatasController {
+    + DatasController(dataService:IDataService)
+    + GetDatas() : ActionResult<IEnumerable<Data>>
+    + <<async>> SaveDataAsync(data:Data) : Task<ActionResult>
+    + <<async>> UpdateDataAsync(id:int, data:Data) : Task<ActionResult>
+    + <<async>> RemoveDataAsync(id:int) : Task<ActionResult>
+}
+class GreenHouseController {
+    + GreenHouseController(edataService:EdataService)
+    + <<async>> GetAllGreenHouse() : Task<ActionResult<List<GreenHouse>>>
+    + <<async>> CreateGreenhouse(greenhouse:GreenHouse) : Task<IActionResult>
+    + <<async>> GetGreenhouseById(id:int) : Task<ActionResult<GreenHouse>>
+    + <<async>> UpdateGreenHouse(greenHouseList:List<GreenHouse>) : Task<IActionResult>
+    + <<async>> DeleteGreenhouse(id:int) : Task<IActionResult>
+}
+class GreenHouseKController {
+    + GreenHouseKController(edataService:EdataService)
+    + <<async>> GetAllGreenHouseK() : Task<ActionResult<List<GreenHouseK>>>
+    + <<async>> CreateGreenhouseK(greenhouseK:GreenHouseK) : Task<IActionResult>
+    + <<async>> GetGreenhouseKById(id:int) : Task<ActionResult<GreenHouseK>>
+    + <<async>> UpdateGreenHouseK(greenHouseKList:List<GreenHouseK>) : Task<IActionResult>
+    + <<async>> DeleteGreenhouseK(id:int) : Task<IActionResult>
+}
+class GreenHouseTController {
+    + GreenHouseTController(edataService:EdataService)
+    + <<async>> GetAllGreenHouseT() : Task<ActionResult<List<GreenHouseT>>>
+    + <<async>> GetGreenhouseTById(id:int) : Task<ActionResult<GreenHouseT>>
+    + <<async>> CreateGreenhouseT(greenhouseT:GreenHouseT) : Task<IActionResult>
+    + <<async>> UpdateGreenHouseT(greenHouseTList:List<GreenHouseT>) : Task<IActionResult>
+    + <<async>> DeleteGreenhouseT(id:int) : Task<IActionResult>
+}
+class EdataController {
+    + EdataController(edataService:EdataService)
+    + <<async>> GetAllEdata() : Task<ActionResult<List<Edata>>>
+    + <<async>> CreateEdata(edata:Edata) : Task<IActionResult>
+    + <<async>> GetEdataById(id:int) : Task<ActionResult<Edata>>
+    + <<async>> UpdateEdata(edataList:List<Edata>) : Task<IActionResult>
+    + <<async>> DeleteEdata(id:int) : Task<IActionResult>
+}
+class WaterController {
+    + WaterController(edataService:EdataService)
+    + <<async>> GetAllWater() : Task<ActionResult<List<Water>>>
+    + <<async>> CreateWater(water:Water) : Task<IActionResult>
+    + <<async>> GetWaterById(id:int) : Task<ActionResult<Water>>
+    + <<async>> UpdateWater(waterList:List<Water>) : Task<IActionResult>
+    + <<async>> DeleteWater(id:int) : Task<IActionResult>
+}
+class WasteController {
+    + WasteController(edataService:EdataService)
+    + <<async>> GetAllWaste() : Task<ActionResult<List<Waste>>>
+    + <<async>> CreateWaste(waste:Waste) : Task<IActionResult>
+    + <<async>> GetWasteById(id:int) : Task<ActionResult<Waste>>
+    + <<async>> UpdateWaste(wasteList:List<Waste>) : Task<IActionResult>
+    + <<async>> DeleteWaste(id:int) : Task<IActionResult>
+}
+class WaterKController {
+    + WaterKController(edataService:EdataService)
+    + <<async>> GetAllWaterK() : Task<ActionResult<List<WaterK>>>
+    + <<async>> GetWaterKById(id:int) : Task<ActionResult<WaterK>>
+    + <<async>> CreateWaterK(waterK:WaterK) : Task<IActionResult>
+    + <<async>> UpdateWaterK(waterKList:List<WaterK>) : Task<IActionResult>
+    + <<async>> DeleteWaterK(id:int) : Task<IActionResult>
+}
+class EdataKController {
+    + EdataKController(edataService:EdataService)
+    + <<async>> GetAllEdataK() : Task<ActionResult<List<EdataK>>>
+    + <<async>> GetEdataKById(id:int) : Task<ActionResult<EdataK>>
+    + <<async>> CreateEdataK(edataK:EdataK) : Task<IActionResult>
+    + <<async>> UpdateEdataK(edataKList:List<EdataK>) : Task<IActionResult>
+    + <<async>> DeleteEdataK(id:int) : Task<IActionResult>
+}
+class WasteTController {
+    + WasteTController(edataService:EdataService)
+    + <<async>> GetAllWasteT() : Task<ActionResult<List<WasteT>>>
+    + <<async>> GetWasteTById(id:int) : Task<ActionResult<WasteT>>
+    + <<async>> CreateWasteT(wasteT:WasteT) : Task<IActionResult>
+    + <<async>> UpdateWasteT(wasteTList:List<WasteT>) : Task<IActionResult>
+    + <<async>> DeleteWasteT(id:int) : Task<IActionResult>
+}
+class WasteKController {
+    + WasteKController(edataService:EdataService)
+    + <<async>> GetAllWasteK() : Task<ActionResult<List<WasteK>>>
+    + <<async>> GetWasteKById(id:int) : Task<ActionResult<WasteK>>
+    + <<async>> CreateWasteK(wasteK:WasteK) : Task<IActionResult>
+    + <<async>> UpdateWasteK(wasteKList:List<WasteK>) : Task<IActionResult>
+    + <<async>> DeleteWasteK(id:int) : Task<IActionResult>
+}
+ControllerBase <|-- DatasController
+ControllerBase <|-- GreenHouseController
+ControllerBase <|-- GreenHouseKController
+ControllerBase <|-- GreenHouseTController
+ControllerBase <|-- EdataController
+ControllerBase <|-- WaterController
+ControllerBase <|-- WasteController
+ControllerBase <|-- WaterKController
+ControllerBase <|-- EdataKController
+ControllerBase <|-- WasteTController
+ControllerBase <|-- WasteKController
+@enduml

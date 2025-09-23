@@ -1,0 +1,6 @@
+@startuml
+interface IUserService {
+    + GetUsers() : List<User>
+    + SaveUserAsync(user:User) : Task<User>
+}
+@enduml

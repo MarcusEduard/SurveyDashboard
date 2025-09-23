@@ -1,0 +1,12 @@
+@startuml
+class "AddScoped`2"<T1,T2> {
+}
+class "AddDbContext`1"<T> {
+}
+class "AddScoped`1"<T> {
+}
+class "Configure`1"<T> {
+}
+class "MapRazorComponents`1"<T> {
+}
+@enduml

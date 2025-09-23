@@ -8,7 +8,7 @@ Content-Type: application/json
 POST http://localhost:5124/auth/login
 Content-Type: application/json
 
-{ "Username": "9n10n2Guy", "Password": "password"}
+{ "Username": "Jasmin", "Password": "Fedeko"}
 
 ###
 

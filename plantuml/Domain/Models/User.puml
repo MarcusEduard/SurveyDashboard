@@ -1,0 +1,13 @@
+@startuml
+class User <<record>> {
+    + Id : int <<get>> <<set>>
+    + Username : string <<get>> <<set>> = ""
+    + Password : string <<get>> <<set>> = ""
+    + Email : string <<get>> <<set>> = ""
+    + FullName : string <<get>> <<set>> = ""
+    + Domain : string <<get>> <<set>> = ""
+    + Role : string <<get>> <<set>> = ""
+    + SecurityLevel : int <<get>> <<set>>
+}
+User --> "Birthday" DateTime
+@enduml

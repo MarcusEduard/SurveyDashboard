@@ -1,17 +1,86 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\WebApp\\WebApp.csproj": {}
+    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\WebApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\Domain\\Domain.csproj": {
+    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\Domain\\Domain.csproj",
-        "projectName": "Domain",
-        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\Application.csproj",
+        "projectName": "Application",
+        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\marcu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\marcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\marcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -75,14 +144,14 @@
         }
       }
     },
-    "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\WebApp\\WebApp.csproj": {
+    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\FileStorage\\FileStorage.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\WebApp\\WebApp.csproj",
-        "projectName": "WebApp",
-        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\WebApp\\WebApp.csproj",
+        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\FileStorage\\FileStorage.csproj",
+        "projectName": "FileStorage",
+        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\FileStorage\\FileStorage.csproj",
         "packagesPath": "C:\\Users\\marcu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\WebApp\\obj\\",
+        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\FileStorage\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -104,8 +173,83 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\ESG\\Domain\\Domain.csproj"
+              "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\Application.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebAPI\\WebAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebAPI\\WebAPI.csproj",
+        "projectName": "WebAPI",
+        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebAPI\\WebAPI.csproj",
+        "packagesPath": "C:\\Users\\marcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\marcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Application\\Application.csproj"
+              },
+              "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\FileStorage\\FileStorage.csproj": {
+                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\FileStorage\\FileStorage.csproj"
               }
             }
           }
@@ -125,9 +269,148 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Blazorise": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "Blazorise.Bootstrap": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "Blazorise.Charts": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "Blazorise.Icons.FontAwesome": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.IdentityModel.JsonWebTokens": {
+              "target": "Package",
+              "version": "[7.1.2, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.1.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\WebApp.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\WebApp.csproj",
+        "projectName": "WebApp",
+        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\WebApp.csproj",
+        "packagesPath": "C:\\Users\\marcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\marcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebAPI\\WebAPI.csproj": {
+                "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebAPI\\WebAPI.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Blazorise.Bootstrap": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "Blazorise.Charts": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "Blazorise.Icons.FontAwesome": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Syncfusion.Blazor": {
+              "target": "Package",
+              "version": "[31.1.18, )"
             }
           },
           "imports": [

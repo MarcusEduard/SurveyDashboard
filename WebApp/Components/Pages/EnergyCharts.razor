@@ -1,0 +1,563 @@
+@page "/energycharts"
+@using WebAPI.Models
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+
+<button class="btn" @onclick="ShowTotalEnergyChart">Total Energy Consumption</button>
+<button class="btn" @onclick="ShowCrudeFuelChart">Crude Fuel</button>
+<button class="btn" @onclick="ShowGasFuelChart">Gas Fuel</button>
+<button class="btn" @onclick="ShowPurchElecChart">Purchased Electricity</button>
+<button class="btn" @onclick="ShowRenewEnergyChart">Renewable Energy</button>
+<button class="btn" @onclick="ShowFossilEnergyChart">Fossil Energy Chart</button>
+<button class="btn" @onclick="ShowScope12MarketChart">Scope 1 & 2 Market-based</button>
+<button class="btn" @onclick="ShowScope12LocationChart">Scope 1 & 2 Location-based</button>
+<button class="btn" @onclick="ShowScope3SoldProductsChart">Scope 3 Sold Products</button>
+<button class="btn" @onclick="ShowWaterConsumptionChart">Water Consumption</button>
+<button class="btn" @onclick="ShowWaterRecycledChart">Water Recycled</button>
+<button class="btn" @onclick="ShowTotalWasteChart">Total Waste</button>
+
+<div id="chartsContainer" style="display:none;">
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-container">
+        <div class="chart-column" id="totalEnergyChartContainer" style="display:none;">
+            <div class="chart-title">Total Energy Consumption</div>
+            <canvas id="totalEnergyChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column" id="recommendationContainer" style="display:none;">
+            <div class="recommendation-title">Recommendation</div>
+            <div id="recommendationText" class="recommendation-box"></div>
+        </div>
+        <div class="chart-column" id="edataGraphContainer" style="display:none;">
+            <div class="chart-title">Energy Data Graph</div>
+            <canvas id="edataGraph" width="300" height="200"></canvas>
+        </div>
+    </div>
+        <div class="chart-column-competitors" id="totalEnergyChartKContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+            <canvas id="totalEnergyChartK" width="300" height="200"></canvas>
+        </div>
+    <div class="chart-container">
+        <div class="chart-column" id="crudeFuelChartContainer" style="display:none;">
+            <div class="chart-title">Crude Fuel</div>
+            <canvas id="crudeFuelChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column1" id="recommendationContainer1" style="display:none;">
+            <div class="recommendation-title1">Recommendation</div>
+            <div id="recommendationText1" class="recommendation-box1"></div>
+        </div>
+        <div class="chart-column" id="crudeFuelLineChartContainer" style="display:none;">
+            <div class="chart-title">Crude Fuel Line Chart</div>
+            <canvas id="crudeFuelLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-column-competitors" id="crudeFuelChartKContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+            <canvas id="crudeFuelChartK" width="300" height="200"></canvas>
+        </div>
+    <div class="chart-container">
+        <div class="chart-column" id="gasFuelChartContainer" style="display:none;">
+            <div class="chart-title">Gas Fuel</div>
+            <canvas id="gasFuelChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column2" id="recommendationContainer2" style="display:none;">
+            <div class="recommendation-title2">Recommendation</div>
+            <div id="recommendationText2" class="recommendation-box2"></div>
+        </div>
+        <div class="chart-column" id="gasFuelLineChartContainer" style="display:none;">
+            <div class="chart-title">Gas Fuel Line Chart</div>
+            <canvas id="gasFuelLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-column-competitors" id="gasFuelChartKContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+            <canvas id="gasFuelChartK" width="300" height="200"></canvas>
+        </div>
+    <div class="chart-container">
+        <div class="chart-column" id="purchElecChartContainer" style="display:none;">
+            <div class="chart-title">Purchased Electricity</div>
+            <canvas id="purchElecChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column3" id="recommendationContainer3" style="display:none;">
+            <div class="recommendation-title3">Recommendation</div>
+            <div id="recommendationText3" class="recommendation-box3"></div>
+        </div>
+        <div class="chart-column" id="purchElecLineChartContainer" style="display:none;">
+            <div class="chart-title">Purchased Electricity Line Chart</div>
+            <canvas id="purchElecLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-column-competitors" id="purchElecChartKContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+            <canvas id="purchElecChartK" width="300" height="200"></canvas>
+        </div>
+    <div class="chart-container">
+        <div class="chart-column" id="renewEnergyChartContainer" style="display:none;">
+            <div class="chart-title">Renewable Energy</div>
+            <canvas id="renewEnergyChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column4" id="recommendationContainer4" style="display:none;">
+            <div class="recommendation-title4">Recommendation</div>
+            <div id="recommendationText4" class="recommendation-box4"></div>
+        </div>
+        <div class="chart-column" id="renewEnergyLineChartContainer" style="display:none;">
+            <div class="chart-title">Renewable Energy Line Chart</div>
+            <canvas id="renewEnergyLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-column" id="fossilEnergyChartContainer" style="display:none;">
+            <div class="chart-title">Fossil Energy</div>
+            <canvas id="fossilEnergyChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column5" id="recommendationContainer5" style="display:none;">
+            <div class="recommendation-title5">Recommendation</div>
+            <div id="recommendationText5" class="recommendation-box5"></div>
+        </div>
+        <div class="chart-column" id="fossilEnergyLineChartContainer" style="display:none;">
+            <div class="chart-title">Fossil Energy Line Chart</div>
+            <canvas id="fossilEnergyLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-column-competitors" id="fossilEnergyChartKContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+            <canvas id="fossilEnergyChartK" width="300" height="200"></canvas>
+        </div>
+    <div class="chart-container">
+        <div class="chart-column" id="scope12MarketChartContainer" style="display:none;">
+            <div class="chart-title">Scope 1 & 2 Market</div>
+            <canvas id="scope12MarketChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column6" id="recommendationContainer6" style="display:none;">
+            <div class="recommendation-title6">Recommendation</div>
+            <div id="recommendationText6" class="recommendation-box6"></div>
+        </div>
+        <div class="chart-column" id="scope12MarketLineChartContainer" style="display:none;">
+            <div class="chart-title">Scope 1 & 2 Market Line Chart</div>
+            <canvas id="scope12MarketLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-container">
+        <div class="chart-column-competitors" id="scope12MarketChartKContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+            <canvas id="scope12MarketChartK" width="300" height="200"></canvas>
+        </div>
+        <div class="chart-column-competitorsT" id="scope12MarketChartTContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/tennant.png" alt="Tennant Logo" class="competitor-logo" />
+        </div>
+            <canvas id="scope12MarketChartT" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-column" id="scope12LocationChartContainer" style="display:none;">
+            <div class="chart-title">Scope 1 & 2 Location</div>
+            <canvas id="scope12LocationChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column7" id="recommendationContainer7" style="display:none;">
+            <div class="recommendation-title7">Recommendation</div>
+            <div id="recommendationText7" class="recommendation-box7"></div>
+        </div>
+        <div class="chart-column" id="scope12LocationLineChartContainer" style="display:none;">
+            <div class="chart-title">Scope 1 & 2 Location Line Chart</div>
+            <canvas id="scope12LocationLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-column" id="scope3SoldProductsChartContainer" style="display:none;">
+            <div class="chart-title">Scope 3 Sold Products</div>
+            <canvas id="scope3SoldProductsChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column" id="recommendationContainer8" style="display:none;">
+            <div class="recommendation-title">Recommendation</div>
+            <div id="recommendationText8" class="recommendation-box"></div>
+        </div>
+        <div class="chart-column" id="scope3SoldProductsLineChartContainer" style="display:none;">
+            <div class="chart-title">Scope 3 Sold Products Line Chart</div>
+            <canvas id="scope3SoldProductsLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-column" id="waterConsumptionChartContainer" style="display:none;">
+            <div class="chart-title">Water Consumption</div>
+            <canvas id="waterConsumptionChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column9" id="recommendationContainer9" style="display:none;">
+            <div class="recommendation-title9">Recommendation</div>
+            <div id="recommendationText9" class="recommendation-box9"></div>
+        </div>
+        <div class="chart-column" id="waterConsumptionLineChartContainer" style="display:none;">
+            <div class="chart-title">Water Consumption Line Chart</div>
+            <canvas id="waterConsumptionLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-container">
+        <div class="chart-column-competitors" id="waterConsumptionChartKContainer" style="display:none;">
+            <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+            <canvas id="waterConsumptionChartK" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-column" id="waterRecycledChartContainer" style="display:none;">
+            <div class="chart-title">Water Recycled</div>
+            <canvas id="waterRecycledChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column10" id="recommendationContainer10" style="display:none;">
+            <div class="recommendation-title10">Recommendation</div>
+            <div id="recommendationText10" class="recommendation-box10"></div>
+        </div>
+        <div class="chart-column" id="waterRecycledLineChartContainer" style="display:none;">
+            <div class="chart-title">Water Recycled Line Chart</div>
+            <canvas id="waterRecycledLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-column" id="totalWasteChartContainer" style="display:none;">
+            <div class="chart-title">Total Waste</div>
+            <canvas id="totalWasteChart" width="300" height="200"></canvas>
+        </div>
+        <div class="recommendation-column11" id="recommendationContainer11" style="display:none;">
+            <div class="recommendation-title11">Recommendation</div>
+            <div id="recommendationText11" class="recommendation-box11"></div>
+        </div>
+        <div class="chart-column" id="totalWasteLineChartContainer" style="display:none;">
+            <div class="chart-title">Total Waste Line Chart</div>
+            <canvas id="totalWasteLineChart" width="300" height="200"></canvas>
+        </div>
+    </div>
+    <div id="separatorLine" class="separator-line" style="display:none;"></div>
+    <div class="chart-container">
+    <div class="chart-column-competitors" id="totalWasteChartKContainer" style="display:none;">
+        <div class="chart-title">
+            <img src="images/Kaercher_Logo_2015_CO.png" alt="Kaerscher Logo" class="competitor-logo" />
+        </div>
+        <canvas id="totalWasteChartK" width="300" height="200"></canvas>
+    </div>
+    <div class="chart-column-competitorsT" id="totalWasteChartTContainer" style="display:none;">
+        <div class="chart-title">
+            <img src="images/tennant.png" alt="Tennant Logo" class="competitor-logo" />
+        </div>
+        <canvas id="totalWasteChartT" width="300" height="200"></canvas>
+    </div>
+</div>
+</div>
+
+<style>
+    .separator-line {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px 0;
+    clear: both;
+}
+    .competitor-logo {
+        width: 300px;
+        height: auto;
+    }
+    .chart-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    }
+    .recommendation-box {
+        border: 2px solid #34495e;
+        padding: 10px;
+        margin: 20px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        text-align: center;
+        font-weight: bold;
+    }
+    .recommendation-box1, .recommendation-box2, .recommendation-box3, .recommendation-box4, .recommendation-box5, .recommendation-box6, .recommendation-box7, .recommendation-box8, .recommendation-box9, .recommendation-box10, .recommendation-box11 {
+        border: 2px solid #34495e;
+        padding: 10px;
+        margin: 20px 0;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        text-align: center;
+        font-weight: bold;
+    }
+    .chart-column {
+        width: 100%;
+        max-width: 400px;
+        margin: 10px;
+    }
+    canvas {
+        max-width: 100%;
+        height: 200px;
+    }
+    .chart-title, .recommendation-title, .recommendation-title1, .recommendation-title2, .recommendation-title3, .recommendation-title4, .recommendation-title5, .recommendation-title6, .recommendation-title7, .recommendation-title8, .recommendation-title9, .recommendation-title10, .recommendation-title11 {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        background-color: rgba(65, 75, 86);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-bottom: 10px;
+    }
+    .btn:hover {
+        background-color: rgba(65, 75, 86);
+    }
+    .btn:active {
+        background-color: rgba(65, 75, 86);
+    }
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(65, 75, 86);
+    }
+    .chart-column-competitors, .chart-column-competitorsT {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        margin: 10px;
+        margin-top: 20px;
+    }
+</style>
+
+@code {
+    private async Task ShowTotalEnergyChart()
+    {
+        await HideAllCharts();
+        var edataList = await Http.GetFromJsonAsync<List<Edata>>("api/edata");
+        var edataKList = await Http.GetFromJsonAsync<List<EdataK>>("api/edatak");
+        await JSRuntime.InvokeVoidAsync("drawTotalEnergyChart", edataList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('totalEnergyChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('edataGraphContainer').style.display = 'block';");
+        var totalEnergy = edataList.Sum(e => e.TotalEnergy);
+        var recommendation = totalEnergy > 70000 ? "Indicating high energy consumption without sufficient efficiency improvements" : "Indicating effective energy efficiency measures and optimized energy use";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText", recommendation);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("drawTotalEnergyChartK", edataKList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('totalEnergyChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+    }
+
+    private async Task ShowCrudeFuelChart()
+    {
+        await HideAllCharts();
+        var edataList = await Http.GetFromJsonAsync<List<Edata>>("api/edata");
+        var edataKList = await Http.GetFromJsonAsync<List<EdataK>>("api/edatak");
+        await JSRuntime.InvokeVoidAsync("drawCrudeFuelChart", edataList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('crudeFuelChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer1').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('crudeFuelLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('crudeFuelChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var crudeFuel = edataList.Sum(e => e.CrudeFuel);
+        var recommendation1 = crudeFuel > 18300 ? "Indicating heavy reliance on crude oil and petroleum products" : "Showing a shift towards greener alternatives";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText1", recommendation1);
+        await JSRuntime.InvokeVoidAsync("drawCrudeFuelChartK", edataKList);
+    }
+
+    private async Task ShowGasFuelChart()
+    {
+        await HideAllCharts();
+        var edataList = await Http.GetFromJsonAsync<List<Edata>>("api/edata");
+        var edataKList = await Http.GetFromJsonAsync<List<EdataK>>("api/edatak");
+        await JSRuntime.InvokeVoidAsync("drawGasFuelChart", edataList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('gasFuelChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer2').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('gasFuelLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('gasFuelChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var gasFuel = edataList.Sum(e => e.GasFuel);
+        var recommendation2 = gasFuel > 11000 ? "Indicating problematic reliance on natural gas" : "Representing a reduced dependence on natural gas";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText2", recommendation2);
+        await JSRuntime.InvokeVoidAsync("drawGasFuelChartK", edataKList);
+    }
+
+    private async Task ShowPurchElecChart()
+    {
+        await HideAllCharts();
+        var edataList = await Http.GetFromJsonAsync<List<Edata>>("api/edata");
+        var edataKList = await Http.GetFromJsonAsync<List<EdataK>>("api/edatak");
+        await JSRuntime.InvokeVoidAsync("drawPurchElecChart", edataList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('purchElecChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer3').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('purchElecLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('purchElecChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var purchElec = edataList.Sum(e => e.PurchElec);
+        var recommendation3 = purchElec > 50000 ? "Indicating high purchased electricity consumption" : "Showing efficient use of purchased electricity";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText3", recommendation3);
+        await JSRuntime.InvokeVoidAsync("drawPurchElecChartK", edataKList);
+    }
+
+    private async Task ShowRenewEnergyChart()
+    {
+        await HideAllCharts();
+        var edataList = await Http.GetFromJsonAsync<List<Edata>>("api/edata");
+        await JSRuntime.InvokeVoidAsync("drawRenewEnergyChart", edataList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('renewEnergyChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer4').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('renewEnergyLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var renewEnergy = edataList.Sum(e => e.RenewEnergy);
+        var recommendation4 = renewEnergy > 12000 ? "Demonstrating substantial use of renewables" : "Indicating insufficient adoption of renewable energy";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText4", recommendation4);
+    }
+
+    private async Task ShowFossilEnergyChart()
+    {
+        await HideAllCharts();
+        var edataList = await Http.GetFromJsonAsync<List<Edata>>("api/edata");
+        var edataKList = await Http.GetFromJsonAsync<List<EdataK>>("api/edatak");
+        await JSRuntime.InvokeVoidAsync("drawFossilEnergyChart", edataList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('fossilEnergyChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer5').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('fossilEnergyLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('fossilEnergyChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var fossilEnergy = edataList.Sum(e => e.FossilEnergy);
+        var recommendation5 = fossilEnergy > 45000 ? "Indicating critical reliance on fossil fuels" : "Indicating significant progress in reducing fossil fuel dependency";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText5", recommendation5);
+        await JSRuntime.InvokeVoidAsync("drawFossilEnergyChartK", edataKList);
+    }
+
+    private async Task ShowScope12MarketChart()
+    {
+        await HideAllCharts();
+        var greenHouseList = await Http.GetFromJsonAsync<List<GreenHouse>>("api/greenhouse");
+        var greenHouseKList = await Http.GetFromJsonAsync<List<GreenHouseK>>("api/greenhousek");
+        var greenHouseTList = await Http.GetFromJsonAsync<List<GreenHouseT>>("api/greenhouset");
+        await JSRuntime.InvokeVoidAsync("drawScope12MarketChart", greenHouseList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope12MarketChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer6').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope12MarketLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope12MarketChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope12MarketChartTContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var scope12Market = greenHouseList.Sum(g => g.scope12Market);
+        var recommendation6 = scope12Market > 15000 ? "Indicating high emissions from direct operations and purchased energy" : "Reflecting low emissions and substantial reliance on green energy";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText6", recommendation6);
+        await JSRuntime.InvokeVoidAsync("drawScope12MarketChartK", greenHouseKList);
+        await JSRuntime.InvokeVoidAsync("drawScope12MarketChartT", greenHouseTList);
+    }
+
+    private async Task ShowScope12LocationChart()
+    {
+        await HideAllCharts();
+        var greenHouseList = await Http.GetFromJsonAsync<List<GreenHouse>>("api/greenhouse");
+        await JSRuntime.InvokeVoidAsync("drawScope12LocationChart", greenHouseList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope12LocationChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer7').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope12LocationLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var scope12Location = greenHouseList.Sum(g => g.scope12location);
+        var recommendation7 = scope12Location > 15000 ? "Indicating a heavy reliance on carbon-intensive operations" : "Demonstrating effective energy efficiency measures";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText7", recommendation7);
+    }
+
+    private async Task ShowScope3SoldProductsChart()
+    {
+        await HideAllCharts();
+        var greenHouseList = await Http.GetFromJsonAsync<List<GreenHouse>>("api/greenhouse");
+        await JSRuntime.InvokeVoidAsync("drawScope3SoldProductsChart", greenHouseList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope3SoldProductsChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer8').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('scope3SoldProductsLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var scope3SoldProducts = greenHouseList.Sum(g => g.scope3soldproducts);
+        var recommendation8 = scope3SoldProducts > 1500000 ? "Indicating limited progress in mitigating emissions from sold products" : "Showing improved product efficiency and reduced lifecycle emissions";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText8", recommendation8);
+    }
+
+    private async Task ShowWaterConsumptionChart()
+    {
+        await HideAllCharts();
+        var waterList = await Http.GetFromJsonAsync<List<Water>>("api/water");
+        var waterKList = await Http.GetFromJsonAsync<List<WaterK>>("api/waterk");
+        await JSRuntime.InvokeVoidAsync("drawWaterConsumptionChart", waterList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('waterConsumptionChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer9').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('waterConsumptionLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('waterConsumptionChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var waterConsumption = waterList.Sum(w => w.WaterConsumption);
+        var recommendation9 = waterConsumption > 60000 ? "Indicating high water usage and lack of water-saving measures" : "Indicating strong water conservation practices";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText9", recommendation9);
+        await JSRuntime.InvokeVoidAsync("drawWaterConsumptionChartK", waterKList);
+    }
+
+    private async Task ShowWaterRecycledChart()
+    {
+        await HideAllCharts();
+        var waterList = await Http.GetFromJsonAsync<List<Water>>("api/water");
+        await JSRuntime.InvokeVoidAsync("drawWaterRecycledChart", waterList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('waterRecycledChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer10').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('waterRecycledLineChartContainer').style.display = 'block';"); 
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';");
+        var waterRecycled = waterList.Sum(w => w.WaterRecycled);
+        var recommendation10 = waterRecycled > 15000 ? "Demonstrating robust water recycling initiatives" : "Indicating insufficient efforts to reuse water resources";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText10", recommendation10);
+    }
+
+    private async Task ShowTotalWasteChart()
+    {
+        await HideAllCharts();
+        var wasteList = await Http.GetFromJsonAsync<List<Waste>>("api/waste");
+        var wasteKList = await Http.GetFromJsonAsync<List<WasteK>>("api/wastek");
+        var wasteTList = await Http.GetFromJsonAsync<List<WasteT>>("api/wastet");
+        await JSRuntime.InvokeVoidAsync("drawTotalWasteChart", wasteList);
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('totalWasteChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer11').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('totalWasteLineChartContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('totalWasteChartKContainer').style.display = 'block';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('totalWasteChartTContainer').style.display = 'block';");  
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('chartsContainer').style.display = 'block';"); 
+        var totalWaste = wasteList.Sum(w => w.TotalWaste);
+        var recommendation11 = totalWaste > 1500 ? "Indicating excessive waste generation without sufficient mitigation efforts" : "Reflecting effective waste reduction and management strategies";
+        await JSRuntime.InvokeVoidAsync("updateRecommendationText11", recommendation11);
+        await JSRuntime.InvokeVoidAsync("drawTotalWasteChartK", wasteKList);
+        await JSRuntime.InvokeVoidAsync("drawTotalWasteChartT", wasteTList);
+    }
+
+    private async Task HideAllCharts()
+    {
+        await JSRuntime.InvokeVoidAsync("hideAllCharts");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer1').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer2').style.display = 'none';"); 
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer3').style.display = 'none';"); 
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer4').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer5').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer6').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer7').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer8').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer9').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer10').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('recommendationContainer11').style.display = 'none';");
+        await JSRuntime.InvokeVoidAsync("eval", "var separator = document.getElementById('separator-line'); if (separator) separator.style.display = 'none';");
+    }
+}

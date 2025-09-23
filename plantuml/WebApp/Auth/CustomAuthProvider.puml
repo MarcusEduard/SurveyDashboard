@@ -1,0 +1,7 @@
+@startuml
+class CustomAuthProvider {
+    + CustomAuthProvider(authService:IAuthService)
+    + <<override>> <<async>> GetAuthenticationStateAsync() : Task<AuthenticationState>
+}
+AuthenticationStateProvider <|-- CustomAuthProvider
+@enduml

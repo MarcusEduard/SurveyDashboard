@@ -1,0 +1,559 @@
+@page "/survey"
+@page "/survey/{SurveyId}"
+@using WebAPI.Models
+@inject HttpClient httpClient
+
+<div class="survey-container">
+    <h2>Customer Satisfaction Survey</h2>
+    
+    @if (isLoading)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>Loading survey...</p>
+        </div>
+    }
+    else if (success || (isExistingSurvey && newResponse.DateCompleted.HasValue))
+    {
+        <div class="success-message">
+            <span>✅</span>
+            <h3>Survey Completed</h3>
+            <p>Thank you! This survey has been completed.</p>
+            @if (isExistingSurvey && newResponse.DateCompleted.HasValue)
+            {
+                <p class="completion-info">Completed on: @newResponse.DateCompleted.Value.ToString("dd/MM/yyyy HH:mm")</p>
+            }
+        </div>
+    }
+    else
+    {
+        @if (isExistingSurvey)
+        {
+            <div class="alert alert-info">
+                <strong>Survey Information:</strong><br>
+                Customer: <strong>@newResponse.CustomerName</strong><br>
+                Project: <strong>@newResponse.ProjectName</strong><br>
+                Sent: @newResponse.DateSent?.ToString("dd/MM/yyyy HH:mm")
+            </div>
+        }
+        
+        <div class="survey-form">
+        <div class="form-group">
+            <label for="company">Company Name</label>
+            <input id="company" type="text" class="form-control" @bind="newResponse.CustomerName" 
+                   placeholder="Enter your company name..." 
+                   disabled="@(isExistingSurvey)" />
+        </div>
+
+        <div class="form-group">
+            <label for="sector">Sector</label>
+            <select id="sector" class="form-control" @bind="newResponse.Sector" 
+                    disabled="@(isExistingSurvey)">
+                <option value="">Select a sector...</option>
+                <option value="Health">Health</option>
+                <option value="Tech & Digitalization">Tech & Digitalization</option>
+                <option value="Energy">Energy</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="projectname">Project Name</label>
+            <input id="projectname" type="text" class="form-control" @bind="newResponse.ProjectName" 
+                   placeholder="Enter project name..." 
+                   disabled="@(isExistingSurvey)" />
+        </div>
+
+        <div class="form-group">
+            <label for="projectduration">Project Duration (e.g. 6 months)</label>
+            <input id="projectduration" type="text" class="form-control" @bind="newResponse.ProjectDuration" 
+                   placeholder="Enter duration..." 
+                   disabled="@(isExistingSurvey)" />
+        </div>
+
+        <div class="question-group">
+            <label>How satisfied are you with the Trade Councils services overall?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question1 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(1, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question1 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question1</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>How would you rate the professionalism?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question2 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(2, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question2 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question2</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>To what extent did the project contribute to your company's international growth or market opportunities?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question3 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(3, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question3 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question3</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>How would you rate the value of the services, in relation to the cost?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question4 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(4, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question4 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question4</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>To what extent did the solutions provided meet your company's business needs?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question5 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(5, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question5 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question5</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>How would you rate the clarity and responsiveness of communication throughout the project?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question6 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(6, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question6 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question6</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>How satisfied are you with the timeliness and delivery of the project?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question7 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(7, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question7 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question7</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>How would you rate the expertise of the advisor?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question8 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(8, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question8 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question8</b></span>
+                }
+            </div>
+        </div>
+
+        <div class="question-group">
+            <label>How likely are you to use our services again?</label>
+            <div class="dots-row">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    int index = i;
+                    <button type="button"
+                            class="dot @(newResponse.Question9 == index ? "selected" : "")"
+                            @onclick="() => SelectDot(9, index)"
+                            title="Select @index">
+                        @index
+                    </button>
+                }
+            </div>
+            <div class="chosen-value">
+                @if (newResponse.Question9 > 0)
+                {
+                    <span>Selected: <b>@newResponse.Question9</b></span>
+                }
+            </div>
+        </div>
+
+        <button class="submit-btn"
+                @onclick="AddSurveyResponse"
+                disabled="@(!IsValid())">
+            Submit Response
+        </button>
+
+        @if (success)
+        {
+            <div class="success-message">
+                <span>✔</span> Thank you for your feedback!
+            </div>
+        }
+        </div>
+    }
+</div>
+
+<style>
+    .survey-container {
+        max-width: 500px;
+        margin: 40px auto;
+        background: #f8f9fa;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        padding: 32px 24px;
+    }
+    .survey-container h2 {
+        text-align: center;
+        margin-bottom: 32px;
+        color: #0056b3;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .survey-form .form-group {
+        margin-bottom: 28px;
+        text-align: center;
+    }
+    .form-control {
+        width: 80%;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1px solid #b0c4de;
+        font-size: 1.1rem;
+        margin-top: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        transition: border-color 0.2s;
+    }
+    .form-control:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    .question-group {
+        margin-bottom: 28px;
+        text-align: center;
+    }
+    .question-group label {
+        display: block;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+        color: #333;
+        font-weight: 500;
+    }
+    .dots-row {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    .dot {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #e0e7ef;
+        color: #555;
+        font-weight: 600;
+        font-size: 1.05rem;
+        cursor: pointer;
+        border: 2px solid #e0e7ef;
+        transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.1s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        outline: none;
+    }
+    .dot:hover, .dot:focus {
+        background: #b0c4de;
+        border-color: #007bff;
+        color: #0056b3;
+        transform: scale(1.1);
+    }
+    .dot.selected {
+        background: #007bff;
+        color: #fff;
+        border-color: #0056b3;
+        box-shadow: 0 0 0 3px #b0c4de;
+        transform: scale(1.15);
+    }
+    .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 12px 0;
+        background: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
+        color: #fff;
+        font-size: 1.15rem;
+        font-weight: 700;
+        border: none;
+        border-radius: 8px;
+        margin-top: 18px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: background 0.2s, transform 0.1s;
+    }
+    .submit-btn:hover {
+        background: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
+        transform: scale(1.03);
+    }
+    .success-message {
+        margin-top: 24px;
+        text-align: center;
+        color: #28a745;
+        font-size: 1.2rem;
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 32px 24px;
+        background: #f8fff9;
+        border: 2px solid #28a745;
+        border-radius: 12px;
+    }
+    .success-message h3 {
+        margin: 0;
+        color: #28a745;
+        font-size: 1.5rem;
+    }
+    .success-message span {
+        font-size: 2rem;
+    }
+    .completion-info {
+        font-size: 1rem;
+        color: #666;
+        margin-top: 8px;
+    }
+    .form-control:disabled {
+        background-color: #f8f9fa;
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+</style>
+
+@code {
+    [Parameter] 
+    public string SurveyId { get; set; }
+    
+    private SurveyResponse newResponse = new SurveyResponse();
+    private bool success = false;
+    private bool isExistingSurvey = false;
+    private bool isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(SurveyId))
+        {
+            // Load existing survey data
+            await LoadExistingSurvey();
+        }
+        else
+        {
+            // Set DateSent when survey is loaded/opened (new survey)
+            newResponse.DateSent = DateTime.Now;
+        }
+    }
+
+    async Task LoadExistingSurvey()
+    {
+        isLoading = true;
+        try
+        {
+            var response = await httpClient.GetAsync($"http://localhost:5555/api/survey/by-id/{SurveyId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var existingSurvey = await response.Content.ReadFromJsonAsync<SurveyResponse>();
+                if (existingSurvey != null)
+                {
+                    newResponse = existingSurvey;
+                    isExistingSurvey = true;
+                    
+                    // Check if already completed - show completed state immediately
+                    if (newResponse.DateCompleted.HasValue)
+                    {
+                        success = true; // This will trigger the completed view
+                    }
+                }
+            }
+            else
+            {
+                // Survey not found or error - could be invalid link
+                Console.WriteLine($"Survey not found or error loading: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading survey: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    void SelectDot(int question, int value)
+    {
+        switch (question)
+        {
+            case 1: newResponse.Question1 = value; break;
+            case 2: newResponse.Question2 = value; break;
+            case 3: newResponse.Question3 = value; break;
+            case 4: newResponse.Question4 = value; break;
+            case 5: newResponse.Question5 = value; break;
+            case 6: newResponse.Question6 = value; break;
+            case 7: newResponse.Question7 = value; break;
+            case 8: newResponse.Question8 = value; break;
+            case 9: newResponse.Question9 = value; break;
+        }
+        StateHasChanged();
+    }
+
+    bool IsValid()
+    {
+        return !string.IsNullOrWhiteSpace(newResponse.CustomerName) &&
+               !string.IsNullOrWhiteSpace(newResponse.Sector) &&
+               !string.IsNullOrWhiteSpace(newResponse.ProjectName) &&
+               !string.IsNullOrWhiteSpace(newResponse.ProjectDuration) &&
+               newResponse.Question1 > 0 &&
+               newResponse.Question2 > 0 &&
+               newResponse.Question3 > 0 &&
+               newResponse.Question4 > 0 &&
+               newResponse.Question5 > 0 &&
+               newResponse.Question6 > 0 &&
+               newResponse.Question7 > 0 &&
+               newResponse.Question8 > 0 &&
+               newResponse.Question9 > 0;
+    }
+
+    async Task AddSurveyResponse()
+    {
+        if (!IsValid()) return;
+
+        // Set completion timestamps
+        newResponse.DateCompleted = DateTime.Now;
+        newResponse.SubmittedAt = DateTime.Now; // Keep legacy field synchronized
+        
+        HttpResponseMessage response;
+        
+        if (isExistingSurvey)
+        {
+            // Update existing survey
+            response = await httpClient.PutAsJsonAsync($"http://localhost:5555/api/survey/{newResponse.SurveyResponseId}", newResponse);
+        }
+        else
+        {
+            // Create new survey
+            response = await httpClient.PostAsJsonAsync("http://localhost:5555/api/survey", newResponse);
+        }
+        
+        if (response.IsSuccessStatusCode)
+        {
+            success = true;
+            StateHasChanged();
+            
+            // Only reset for new surveys, not existing ones accessed via link
+            if (!isExistingSurvey)
+            {
+                _ = Task.Run(async () => 
+                {
+                    await Task.Delay(3000);
+                    success = false;
+                    newResponse = new SurveyResponse();
+                    await InvokeAsync(StateHasChanged);
+                });
+            }
+        }
+    }
+}

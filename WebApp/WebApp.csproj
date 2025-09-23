@@ -2,16 +2,22 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazorise.Bootstrap" Version="1.7.0" />
+    <PackageReference Include="Blazorise.Charts" Version="1.7.0" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+    <PackageReference Include="Syncfusion.Blazor" Version="31.1.18" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <StaticWebAssets>true</StaticWebAssets>
   </PropertyGroup>
 
 </Project>

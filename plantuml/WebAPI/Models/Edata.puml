@@ -1,0 +1,13 @@
+@startuml
+class Edata {
+    + Environmentid : int <<get>> <<set>>
+    + Unit : string? <<get>> <<set>>
+    + TotalEnergy : double <<get>> <<set>>
+    + CrudeFuel : double <<get>> <<set>>
+    + GasFuel : double <<get>> <<set>>
+    + PurchElec : double <<get>> <<set>>
+    + RenewEnergy : double <<get>> <<set>>
+    + FossilEnergy : double <<get>> <<set>>
+}
+Edata --> "Year" DateTime
+@enduml

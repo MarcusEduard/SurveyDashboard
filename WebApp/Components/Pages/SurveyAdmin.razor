@@ -1,0 +1,333 @@
+@page "/surveyadmin"
+@attribute [Authorize(Policy = "SectorDataAccess")]
+@using WebAPI.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inject HttpClient httpClient
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Survey Besvarelser</PageTitle>
+
+<div class="admin-container">
+    <div class="header-section">
+        <h1>Survey Besvarelser</h1>
+        <div class="stats-row">
+            @if (filteredResponses != null)
+            {
+                <div class="stat-card">
+                    <span class="stat-number">@filteredResponses.Count</span>
+                    <span class="stat-label">Total besvarelser</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">@filteredResponses.GroupBy(r => r.Sector).Count()</span>
+                    <span class="stat-label">Sektorer</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">@(filteredResponses.Any() ? filteredResponses.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0).ToString("F1") : "0")</span>
+                    <span class="stat-label">Gennemsnit</span>
+                </div>
+            }
+        </div>
+        @if (!string.IsNullOrEmpty(currentUserRole) && currentUserRole != "Admin")
+        {
+            <div class="role-indicator">
+                <span>Viser data for: @GetSectorDisplayName(currentUserRole)</span>
+            </div>
+        }
+    </div>
+
+    @if (filteredResponses == null)
+    {
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <span>Indlæser besvarelser...</span>
+        </div>
+    }
+    else if (!filteredResponses.Any())
+    {
+        <div class="empty-state">
+            <span class="empty-icon">📊</span>
+            <div>Ingen besvarelser endnu.</div>
+            <small>Besvarelser vil vises her når de modtages</small>
+        </div>
+    }
+    else
+    {
+        @foreach (var sectorGroup in filteredResponses.GroupBy(r => r.Sector ?? "Ikke angivet").OrderBy(g => g.Key))
+        {
+            var sectorKey = sectorGroup.Key;
+
+            <div class="sector-section @(expandedSectors.Contains(sectorKey) ? "open" : "")">
+                <div class="sector-header" @onclick="() => ToggleSector(sectorKey)">
+                    <h2>@sectorKey</h2>
+                    <span class="sector-count">@sectorGroup.Count() besvarelser</span>
+                </div>
+
+                @if (expandedSectors.Contains(sectorKey))
+                {
+                    @foreach (var companyGroup in sectorGroup.GroupBy(r => r.CustomerName ?? "Ukendt virksomhed").OrderBy(g => g.Key))
+                    {
+                        var companyKey = $"{sectorKey}::{companyGroup.Key}";
+                        var visibleCount = companyVisibleCounts.ContainsKey(companyKey) ? companyVisibleCounts[companyKey] : defaultVisible;
+
+                        <div class="company-section @(expandedCompanies.Contains(companyKey) ? "open" : "")">
+                            <div class="company-header" @onclick="() => ToggleCompany(companyKey)">
+                                <h3>@companyGroup.Key</h3>
+                                <span class="company-count">@companyGroup.Count() besvarelser</span>
+                            </div>
+
+                            @if (expandedCompanies.Contains(companyKey))
+                            {
+                                <div class="responses-grid">
+                                    @foreach (var response in companyGroup.OrderByDescending(r => r.SubmittedAt).Take(visibleCount))
+                                    {
+                                        <div class="response-card @(selected == response ? "selected" : "")" @onclick="() => ShowDetails(response)">
+                                            <div class="card-header">
+                                                <div class="company-info">
+                                                    @if (!string.IsNullOrEmpty(response.ProjectName))
+                                                    {
+                                                        <span class="project-name">@response.ProjectName</span>
+                                                    }
+                                                </div>
+                                                <span class="timestamp">@response.SubmittedAt.ToString("dd/MM")</span>
+                                            </div>
+
+                                            @if (!string.IsNullOrEmpty(response.ProjectDuration))
+                                            {
+                                                <div class="project-duration">
+                                                    <span class="duration-icon">⏱️</span>
+                                                    <span>@response.ProjectDuration</span>
+                                                </div>
+                                            }
+
+                                            <div class="scores-preview">
+                                                <div class="score-summary">
+                                                    <span class="overall-score">@((response.Question1 + response.Question2 + response.Question3 + response.Question4 + response.Question5 + response.Question6 + response.Question7 + response.Question8 + response.Question9) / 9.0).ToString("F1")</span>
+                                                    <span class="score-label">Samlet score</span>
+                                                </div>
+                                                <div class="key-scores">
+                                                    <div class="mini-score">
+                                                        <span class="mini-label">Tilfredshed</span>
+                                                        <span class="mini-value">@response.Question1</span>
+                                                    </div>
+                                                    <div class="mini-score">
+                                                        <span class="mini-label">Professionalisme</span>
+                                                        <span class="mini-value">@response.Question2</span>
+                                                    </div>
+                                                    <div class="mini-score">
+                                                        <span class="mini-label">Fremtidig brug</span>
+                                                        <span class="mini-value">@response.Question9</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-footer">
+                                                <button class="detail-btn" @onclick:stopPropagation @onclick="() => ShowDetails(response)">
+                                                    Se detaljer
+                                                </button>
+                                                <button class="delete-btn" @onclick:stopPropagation @onclick="() => DeleteResponse(response)">
+                                                    🗑️
+                                                </button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                @if (companyGroup.Count() > visibleCount)
+                                {
+                                    <div class="load-more-container">
+                                        <button class="detail-btn" @onclick="() => LoadMore(companyKey)">
+                                            Indlæs flere...
+                                        </button>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        }
+    }
+
+    @if (selected != null)
+    {
+        <div class="modal-backdrop" @onclick="() => selected = null">
+            <div class="modal-content" @onclick:stopPropagation>
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <h3>@selected.CustomerName</h3>
+                        <span class="modal-sector">@(selected.Sector ?? "Ikke angivet")</span>
+                    </div>
+                    <button class="close-btn" @onclick="() => selected = null">×</button>
+                </div>
+
+                <div class="modal-body">
+                    @if (!string.IsNullOrEmpty(selected.ProjectName) || !string.IsNullOrEmpty(selected.ProjectDuration))
+                    {
+                        <div class="project-info">
+                            @if (!string.IsNullOrEmpty(selected.ProjectName))
+                            {
+                                <div class="info-item">
+                                    <span class="info-label">Projekt:</span>
+                                    <span class="info-value">@selected.ProjectName</span>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(selected.ProjectDuration))
+                            {
+                                <div class="info-item">
+                                    <span class="info-label">Varighed:</span>
+                                    <span class="info-value">@selected.ProjectDuration</span>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <div class="modal-scores">
+                        <!-- dine score items som før -->
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="submitted-info">
+                            <span>📅 Indsendt: @selected.SubmittedAt.ToString("dddd d. MMMM yyyy 'kl.' HH:mm")</span>
+                        </div>
+                        <div class="overall-rating">
+                            <span class="overall-label">Gennemsnit:</span>
+                            <span class="overall-value">@((selected.Question1 + selected.Question2 + selected.Question3 + selected.Question4 + selected.Question5 + selected.Question6 + selected.Question7 + selected.Question8 + selected.Question9) / 9.0).ToString("F1")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    List<SurveyResponse>? responses;
+    List<SurveyResponse>? filteredResponses;
+    SurveyResponse? selected;
+    string? currentUserRole;
+
+    int defaultVisible = 5;
+
+    HashSet<string> expandedSectors = new();
+    HashSet<string> expandedCompanies = new();
+    Dictionary<string, int> companyVisibleCounts = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Get current user's role
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        currentUserRole = user.FindFirst("Role")?.Value;
+
+        try
+        {
+            responses = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5555/api/survey/responses");
+        }
+        catch
+        {
+            responses = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5555/api/survey");
+        }
+
+        // Filter responses based on user role
+        filteredResponses = FilterResponsesByRole(responses ?? new List<SurveyResponse>());
+    }
+
+    private List<SurveyResponse> FilterResponsesByRole(List<SurveyResponse> allResponses)
+    {
+        if (string.IsNullOrEmpty(currentUserRole) || allResponses == null)
+            return new List<SurveyResponse>();
+
+        // Admin can see all responses
+        if (currentUserRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            return allResponses;
+
+        // Tech, Health, Energy can only see their own sector
+        var sectorMapping = GetSectorMappingForRole(currentUserRole);
+        if (!string.IsNullOrEmpty(sectorMapping))
+        {
+            return allResponses.Where(r => 
+                !string.IsNullOrEmpty(r.Sector) && 
+                r.Sector.Equals(sectorMapping, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
+        // Default: no access
+        return new List<SurveyResponse>();
+    }
+
+    private string GetSectorMappingForRole(string role)
+    {
+        return role?.ToLower() switch
+        {
+            "tech" => "Tech & Digitalization",
+            "health" => "Health",
+            "energy" => "Energy",
+            _ => string.Empty
+        };
+    }
+
+    private string GetSectorDisplayName(string role)
+    {
+        return role?.ToLower() switch
+        {
+            "tech" => "Tech & Digitalization",
+            "health" => "Health sektor",
+            "energy" => "Energy sektor",
+            _ => role ?? "Ukendt"
+        };
+    }
+
+    void ShowDetails(SurveyResponse r) => selected = r;
+
+    void ToggleSector(string sectorKey)
+    {
+        if (!expandedSectors.Add(sectorKey))
+            expandedSectors.Remove(sectorKey);
+    }
+
+    void ToggleCompany(string companyKey)
+    {
+        if (!expandedCompanies.Add(companyKey))
+            expandedCompanies.Remove(companyKey);
+
+        if (!companyVisibleCounts.ContainsKey(companyKey))
+            companyVisibleCounts[companyKey] = defaultVisible;
+    }
+
+    void LoadMore(string companyKey)
+    {
+        if (companyVisibleCounts.ContainsKey(companyKey))
+            companyVisibleCounts[companyKey] += 5;
+        else
+            companyVisibleCounts[companyKey] = defaultVisible + 5;
+    }
+
+    async Task DeleteResponse(SurveyResponse r)
+    {
+        var response = await httpClient.DeleteAsync($"http://localhost:5555/api/survey/{r.SurveyResponseId}");
+        if (response.IsSuccessStatusCode)
+        {
+            responses?.Remove(r);
+            filteredResponses?.Remove(r);
+            if (selected == r) selected = null;
+            StateHasChanged();
+        }
+    }
+}
+
+<style>
+    .role-indicator {
+        background: #e3f2fd;
+        color: #1976d2;
+        padding: 8px 16px;
+        border-radius: 6px;
+        margin-top: 16px;
+        text-align: center;
+        font-weight: 500;
+        border-left: 4px solid #1976d2;
+    }
+
+    .role-indicator span {
+        font-size: 0.9rem;
+    }
+</style>

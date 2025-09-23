@@ -1,0 +1,7 @@
+@startuml
+class AuthService {
+    + ValidateUser(username:string, password:string) : Task<User>
+    + RegisterUser(user:User) : Task
+}
+IAuthService <|-- AuthService
+@enduml

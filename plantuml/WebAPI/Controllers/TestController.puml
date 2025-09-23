@@ -1,0 +1,9 @@
+@startuml
+class TestController {
+    + GetAsAuthorized() : ActionResult
+    + GetAsAnon() : ActionResult
+    + GetAsVia() : ActionResult
+    + GetWithManualCheck() : ActionResult
+}
+ControllerBase <|-- TestController
+@enduml

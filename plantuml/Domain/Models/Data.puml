@@ -1,0 +1,8 @@
+@startuml
+class Data {
+    + Id : int <<get>> <<set>>
+    + Name : string <<get>> <<set>> = ""
+    + IsCompleted : bool <<get>> <<set>>
+}
+Data --> "DueDate" DateTime
+@enduml

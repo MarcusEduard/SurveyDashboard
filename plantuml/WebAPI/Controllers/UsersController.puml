@@ -1,0 +1,7 @@
+@startuml
+class UsersController {
+    + GetUsers() : ActionResult<IEnumerable<User>>
+    + <<async>> SaveUserAsync(user:User) : Task<ActionResult>
+}
+ControllerBase <|-- UsersController
+@enduml

@@ -8,7 +8,7 @@ public class FileContext
     private const string filePath = "data.json";
     private DataContainer dataContainer = new();
     public List<User> Users { get { LoadData(); return dataContainer.Users; } }
-    public List<Todo> Todos { get { LoadData(); return dataContainer.Todos; } }
+    public List<Data> Datas { get { LoadData(); return dataContainer.Datas; } }
 
     public async Task SaveChangesAsync()
     {
@@ -28,7 +28,7 @@ public class FileContext
             dataContainer = new()
             {
                 Users = [],
-                Todos = []
+                Datas = []
             };
             return;
         }

@@ -1,7 +1,11 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">
-            <img src="images/Logo_Nilfisk.jpg" alt="Nilfisk Logo" class="navbar-logo" style="width: 200px; height: auto;" />
+            <img src="images/dk_nd.png" alt="DK Logo" class="navbar-logo" style="width: 200px; height: auto;" />
         </a>
     </div>
 </div>
@@ -10,82 +14,66 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
+        <!-- Home er tilgængelig for alle -->
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="about">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> About
-            </NavLink>
-        </div>
+        <!-- About er tilgængelig for alle undtagen Guest -->
+        <AuthorizeView Policy="NotGuest">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="about">
+                        <span class="bi bi-info-circle-fill" aria-hidden="true"></span> About
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="environmentalkpi">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Environmental KPIs
-            </NavLink>
-        </div>
+        <!-- Dashboard - kun for ikke-Guest brugere -->
+        <AuthorizeView Policy="NotGuest">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/survey-dashboard" Match="NavLinkMatch.All">
+                        <span class="oi oi-bar-chart"></span> Dashboard
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="climate&energy">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Climate and Energy
-            </NavLink>
-        </div>
+        <!-- Manage Data - kun for Admin, Tech, Health, Energy (ikke Guest) -->
+        <AuthorizeView Policy="SectorDataAccess">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="surveyadmin">
+                        <span class="bi bi-pencil-fill" aria-hidden="true"></span> Manage Data
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
 
-          <div class="nav-item px-3">
-            <NavLink class="nav-link" href="environmentalmanagement">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Environmental
-            </NavLink>
-        </div>
+        <!-- Survey Manager - kun for Admin -->
+        <AuthorizeView Policy="MustBeAdmin">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="survey-manager">
+                        <span class="bi bi-clipboard-plus" aria-hidden="true"></span> Survey Manager
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="MustBeLoggedInToView">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Must Be Logged In
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="MustBeTeacherToView">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Must Be Teacher
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="PolicyExampleWithComponent">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Policy Example Component
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="PolicyExampleManual">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Policy Example Manual
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="ShowCredentialsFromContext">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Credentials Context
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="ShowCredentialsFromAuthState">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Credentials Auth State
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="datafromapi">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Data From API
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="addData">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Add Data
-            </NavLink>
-        </div>
+        <!-- Survey Editor - kun for Admin -->
+        <AuthorizeView Policy="MustBeAdmin">
+            <Authorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="survey-editor">
+                        <span class="bi bi-pencil-square" aria-hidden="true"></span> Survey Editor
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
     </nav>
 </div>

@@ -1,0 +1,6 @@
+@startuml
+class AuthController {
+    + <<async>> Login(userLoginDto:UserLoginDto) : Task<ActionResult>
+}
+ControllerBase <|-- AuthController
+@enduml

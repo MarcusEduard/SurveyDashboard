@@ -1,0 +1,8 @@
+@startuml
+class DataContainer <<record>> {
+}
+class "List`1"<T> {
+}
+DataContainer o-> "Users<User>" "List`1"
+DataContainer o-> "Datas<Data>" "List`1"
+@enduml

@@ -5,7 +5,6 @@ using Domain.Auth;
 using FileStorage;
 using WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,8 +21,9 @@ builder.Services.AddDbContext<ESGContext>(options =>
 
 builder.Services.AddScoped<FileContext>();
 builder.Services.AddScoped<IUserService, FileUserService>();
-builder.Services.AddScoped<ITodoService, FileTodoService>();
+builder.Services.AddScoped<IDataService, FileDataService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<EdataService>();
 
 builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
@@ -44,6 +43,17 @@ builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.Authenticati
 
 AuthorizationPolicies.AddPolicies(builder.Services);
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5555", "https://localhost:7275") // Tillad både HTTP og HTTPS
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -56,7 +66,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true) // allow any origin
+    .SetIsOriginAllowed(origin => true)
     .AllowCredentials());
 
 app.UseHttpsRedirection();

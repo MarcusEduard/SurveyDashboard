@@ -13,12 +13,12 @@
 !include .\\Domain\Models\User.puml
 !include .\\WebAPI\Controllers\AuthController.puml
 !include .\\WebAPI\Controllers\DatasController.puml
-!include .\\WebAPI\Controllers\ESGContext.puml
+!include .\\WebAPI\Controllers\DNDContext.puml
 !include .\\WebAPI\Controllers\TestController.puml
 !include .\\WebAPI\Controllers\UsersController.puml
 !include .\\WebAPI\Migrations\20241216130301_InitialCreate.puml
 !include .\\WebAPI\Migrations\20241216130301_InitialCreate.Designer.puml
-!include .\\WebAPI\Migrations\ESGContextModelSnapshot.puml
+!include .\\WebAPI\Migrations\DNDContextModelSnapshot.puml
 !include .\\WebAPI\Models\Edata.puml
 !include .\\WebAPI\Models\EdataK.puml
 !include .\\WebAPI\Models\Greenhouse.puml

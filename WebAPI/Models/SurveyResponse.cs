@@ -8,6 +8,7 @@ namespace WebAPI.Models
         public string SurveyId { get; set; }            // Unique survey ID (GUID)
         public string CustomerName { get; set; }        // Previously CompanyName
         public string Sector { get; set; }
+        public string CompanySize { get; set; }         // Micro, SME, Large
         public string ProjectName { get; set; }
         public string ProjectDuration { get; set; }
         public DateTime? DateSent { get; set; }         // When survey was sent

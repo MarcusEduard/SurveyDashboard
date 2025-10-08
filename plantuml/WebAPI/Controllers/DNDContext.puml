@@ -1,0 +1,9 @@
+@startuml
+class DNDContext {
+    + DNDContext(options:DbContextOptions<DNDContext>)
+}
+class "DbSet`1"<T> {
+}
+DbContext <|-- DNDContext
+DNDContext --> "SurveyResponses<SurveyResponse>" "DbSet`1"
+@enduml

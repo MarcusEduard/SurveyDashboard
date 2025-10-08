@@ -4,80 +4,173 @@
 @inject NavigationManager navMgr
 
 <style>
+    body {
+        background: url('/images/BackgroundBachelor.avif') center/cover no-repeat fixed !important;
+    }
+    .login-outer {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+    }
     .login-card {
+        width: 100%;
         max-width: 400px;
-        margin: 100px auto;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        background-color: #ffffff;
+        padding: 32px 28px 28px 28px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        border-radius: 18px;
+        background: rgba(255,255,255,0.97);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: fadeIn 0.7s;
+        position: relative;
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px);}
+        to { opacity: 1; transform: translateY(0);}
+    }
+    .login-logo {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 1.2em;
+    }
+    .login-logo img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        border-radius: 50%;
     }
     .login-card h3 {
         text-align: center;
-        color: #2c3e50;
+        color: #c82333;
+        font-size: 2em;
+        font-weight: 800;
+        margin-bottom: 0.5em;
+        letter-spacing: 1px;
     }
     .login-field {
-        margin-bottom: 15px;
+        margin-bottom: 18px;
+        width: 100%;
     }
     .login-field label {
         display: block;
-        margin-bottom: 5px;
-        color: #34495e;
+        margin-bottom: 6px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.05em;
     }
     .login-field input {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         border: 1px solid #bdc3c7;
-        border-radius: 4px;
+        border-radius: 7px;
+        font-size: 1.08em;
+        background: #f8f9fa;
+        transition: border 0.2s;
+    }
+    .login-field input:focus {
+        border: 1.5px solid #c82333;
+        outline: none;
+        background: #fff;
     }
     .login-error {
-        color: red;
+        color: #c82333;
         text-align: center;
         margin-bottom: 15px;
+        font-weight: 600;
+        background: #ffeaea;
+        border-radius: 7px;
+        padding: 8px 0;
     }
     .login-btn {
         width: 100%;
-        padding: 10px;
-        background-color: rgba(65, 75, 86);
-        color: #ffffff;
+        padding: 12px;
+        background: linear-gradient(90deg, #c82333 70%, #007bff 100%);
+        color: #fff !important;
         border: none;
-        border-radius: 4px;
+        border-radius: 8px;
+        font-size: 1.15em;
+        font-weight: 700;
         cursor: pointer;
+        box-shadow: 0 2px 8px rgba(200,35,51,0.08);
+        transition: background 0.2s, transform 0.2s;
     }
     .login-btn:hover {
-        background-color: rgba(26, 32, 38, 1);
+        background: linear-gradient(90deg, #a71d2a 70%, #0056b3 100%);
+        transform: translateY(-2px) scale(1.04);
+        color: #fff !important;
+        opacity: 0.85;
+    }
+    .login-footer {
+        margin-top: 1.2em;
+        font-size: 0.98em;
+        color: #495057;
+        text-align: center;
+        opacity: 0.8;
+    }
+    @@media (max-width: 500px) {
+        .login-card {
+            padding: 18px 8px 18px 8px;
+        }
+        .login-card h3 {
+            font-size: 1.3em;
+        }
     }
 </style>
 
-<AuthorizeView>
-    <NotAuthorized>
-        <div class="login-card">
-            <h3>Please Login</h3>
-            <div class="login-field">
-                <label>User Name:</label>
-                <input type="text" @bind="userName" />
-            </div>
-            <div class="login-field">
-                <label>Password:</label>
-                <input type="password" @bind="password" />
-            </div>
-            @if (!string.IsNullOrEmpty(errorLabel))
-            {
-                <div class="login-error">
-                    @errorLabel
+<div class="login-outer">
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="login-card">
+                <div class="login-logo">
+                    <img src="/images/dk_logo.png" alt="DK Logo" />
                 </div>
-            }
-            <div class="login-field">
-                <button class="login-btn" @onclick="LoginAsync">Log In</button>
+                <h3>Sign in to TC The Hague Dashboard</h3>
+                <div class="login-field">
+                    <label for="username">User Name</label>
+                    <input id="username" type="text" @bind="userName" autocomplete="username" />
+                </div>
+                <div class="login-field">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" @bind="password" autocomplete="current-password" />
+                </div>
+                @if (!string.IsNullOrEmpty(errorLabel))
+                {
+                    <div class="login-error">
+                        @errorLabel
+                    </div>
+                }
+                <div class="login-field">
+                    <button class="login-btn" @onclick="LoginAsync">Log In</button>
+                </div>
+                <div class="login-footer">
+                    Need help? Contact <a href="mailto:support@um.dk">support@um.dk</a>
+                </div>
             </div>
-        </div>
-    </NotAuthorized>
-    <Authorized>
-        <div class="card">
-            <h3>Hello, @context.User.Claims.First(claim => claim.Type.Equals("Username")).Value</h3>
-        </div>
-    </Authorized>
-</AuthorizeView>
+        </NotAuthorized>
+        <Authorized Context="context">
+            <div class="login-card">
+                <div class="login-logo">
+                    <img src="/images/dk_logo.png" alt="DK Logo" />
+                </div>
+                <h3>Hello, @context.User.Claims.FirstOrDefault(claim => claim.Type.Equals("FullName"))?.Value ?? "User"</h3>
+                <div class="login-footer">
+                    You are already logged in.<br />
+                    <a href="/" style="color:#c82333;text-decoration:underline;">Go to Home</a>
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+</div>
 
 @code {
     private string userName = "";

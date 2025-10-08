@@ -24,10 +24,10 @@
     {
         <!-- Filter and Search Controls -->
         <div class="editor-controls">
-            <div class="search-controls">
-                <input type="text" @bind="searchFilter" @oninput="FilterSurveys" 
+            <div class="search-controls" style="flex: 1; min-width: 180px; max-width: 300px;">
+                <input type="text" @bind="searchFilter" @oninput="FilterSurveys" @onkeydown="HandleSearchKeyDown"
                        class="form-control search-input" 
-                       placeholder="🔍 Search customer, project, or sector..." />
+                       placeholder="🔍 Search customer, project, or sector..." style="font-size:0.95rem; padding:7px 12px;" />
             </div>
             <div class="filter-controls">
                 <select @bind="sectorFilter" @bind:after="FilterSurveys" class="form-select">
@@ -37,11 +37,25 @@
                         <option value="@sector">@sector</option>
                     }
                 </select>
+                <select @bind="companySizeFilter" @bind:after="FilterSurveys" class="form-select">
+                    <option value="">All Company Sizes</option>
+                    <option value="Micro">Micro (1-9 employees)</option>
+                    <option value="SME">SME (10-249 employees)</option>
+                    <option value="Large">Large (250+ employees)</option>
+                </select>
+                <select @bind="durationFilter" @bind:after="FilterSurveys" class="form-select">
+                    <option value="">All Durations</option>
+                    @foreach (var duration in GetUniqueDurations())
+                    {
+                        <option value="@duration">@duration</option>
+                    }
+                </select>
                 <select @bind="statusFilter" @bind:after="FilterSurveys" class="form-select">
                     <option value="">All Status</option>
                     <option value="completed">Completed</option>
                     <option value="pending">Pending</option>
                 </select>
+                <input type="date" value="@dateFilter" @oninput="OnDateFilterChanged" class="form-select" style="min-width:140px;" />
             </div>
         </div>
 
@@ -54,8 +68,10 @@
                         <th>Customer Name</th>
                         <th>Project Name</th>
                         <th>Sector</th>
+                        <th>Company Size</th>
                         <th>Duration</th>
                         <th>Date Sent</th>
+                        <th>Date Completed</th>
                         <th>Status</th>
                         <th>Score</th>
                         <th>Actions</th>
@@ -106,6 +122,27 @@
                                 </span>
                             </td>
                             
+                            <!-- Company Size -->
+                            <td>
+                                @if (editingId == response.SurveyResponseId && editingField == "companysize")
+                                {
+                                    <select @bind="editValue" @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
+                                            class="edit-select">
+                                        <option value="">Select Size</option>
+                                        <option value="Micro">Micro (1-9 employees)</option>
+                                        <option value="SME">SME (10-249 employees)</option>
+                                        <option value="Large">Large (250+ employees)</option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <span class="editable company-size-badge @GetCompanySizeClass(response.CompanySize)" 
+                                          @onclick="() => StartEdit(response.SurveyResponseId, COMPANY_SIZE_FIELD, response.CompanySize)">
+                                        @GetCompanySizeIcon(response.CompanySize) @(response.CompanySize ?? "Not set")
+                                    </span>
+                                }
+                            </td>
+                            
                             <!-- Duration -->
                             <td>
                                 @if (editingId == response.SurveyResponseId && editingField == "duration")
@@ -123,7 +160,40 @@
                             
                             <!-- Date Sent -->
                             <td>
-                                <span class="date-text">@(response.DateSent?.ToString("dd/MM/yyyy") ?? "N/A")</span>
+                                @if (editingId == response.SurveyResponseId && editingField == "datesent")
+                                {
+                                    <div class="date-edit-container">
+                                        <input type="datetime-local" value="@editValue" @onchange="@((e) => editValue = e.Value?.ToString() ?? "")" 
+                                               @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
+                                               class="edit-input date-input" />
+                                        <button type="button" @onclick="() => ClearDate(DATE_SENT_FIELD)" class="btn-clear-date" title="Clear date">✕</button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="editable date-text" @onclick="() => StartEditDate(response.SurveyResponseId, DATE_SENT_FIELD, response.DateSent)">
+                                        @(response.DateSent?.ToString("dd/MM/yyyy HH:mm") ?? "Click to set date")
+                                    </span>
+                                }
+                            </td>
+                            
+                            <!-- Date Completed -->
+                            <td>
+                                @if (editingId == response.SurveyResponseId && editingField == "datecompleted")
+                                {
+                                    <div class="date-edit-container">
+                                        <input type="datetime-local" value="@editValue" @onchange="@((e) => editValue = e.Value?.ToString() ?? "")" 
+                                               @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
+                                               class="edit-input date-input" />
+                                        <button type="button" @onclick="() => ClearDate(DATE_COMPLETED_FIELD)" class="btn-clear-date" title="Clear date">✕</button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="editable date-text" @onclick="() => StartEditDate(response.SurveyResponseId, DATE_COMPLETED_FIELD, response.DateCompleted)">
+                                        @(response.DateCompleted?.ToString("dd/MM/yyyy HH:mm") ?? "Click to set completion date")
+                                    </span>
+                                }
                             </td>
                             
                             <!-- Status -->
@@ -222,6 +292,10 @@
 }
 
 <style>
+    body {
+        background: #fff !important;
+    }
+
     .editor-container {
         max-width: 1600px;
         margin: 20px auto;
@@ -256,14 +330,16 @@
     }
 
     .search-controls {
-        flex: 2;
-        min-width: 300px;
+        flex: 1;
+        min-width: 180px;
+        max-width: 300px;
     }
 
     .filter-controls {
         display: flex;
-        gap: 12px;
-        flex: 1;
+        gap: 16px;
+        flex: 3;
+        min-width: 0;
     }
 
     .search-input {
@@ -320,6 +396,7 @@
         padding: 12px;
         border-bottom: 1px solid #e9ecef;
         vertical-align: middle;
+        color: #222;
     }
 
     .editor-table tr:hover {
@@ -353,11 +430,60 @@
         border-radius: 4px;
         font-size: 0.9rem;
         background: white;
+        color: #111 !important;
     }
 
     .edit-input:focus {
         outline: none;
         box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+    }
+
+    .edit-select {
+        width: 100%;
+        padding: 6px 8px;
+        border: 2px solid #007bff;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        background: white;
+        color: #111 !important;
+        cursor: pointer;
+    }
+
+    .edit-select:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+    }
+
+    .date-input {
+        min-width: 180px;
+        font-size: 0.85rem;
+        color: #111 !important;
+    }
+
+    .date-edit-container {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .btn-clear-date {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .btn-clear-date:hover {
+        background: #c82333;
+        transform: scale(1.1);
     }
 
     /* Survey ID */
@@ -384,6 +510,21 @@
     .sector-badge.health { background: #ffe6e6; color: #c03; }
     .sector-badge.tech { background: #e6f7f7; color: #167; }
     .sector-badge.energy { background: #e6f3ff; color: #059; }
+
+    .company-size-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .company-size-badge.micro { background: #fff3cd; color: #856404; }
+    .company-size-badge.sme { background: #cce5ff; color: #0066cc; }
+    .company-size-badge.large { background: #e6ccff; color: #6f42c1; }
+    .company-size-badge.not-set { background: #e2e3e5; color: #6c757d; }
 
     .badge {
         padding: 4px 8px;
@@ -423,6 +564,15 @@
     .date-text {
         color: #666;
         font-size: 0.85rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .date-text.editable:hover {
+        background-color: #e7f3ff;
+        border: 1px dashed #007bff;
+        color: #333;
     }
 
     /* Action Buttons */
@@ -622,7 +772,10 @@
     // Filtering
     string searchFilter = "";
     string sectorFilter = "";
+    string companySizeFilter = "";
+    string durationFilter = "";
     string statusFilter = "";
+    string dateFilter = "";
     
     // Pagination
     int currentPage = 1;
@@ -641,6 +794,9 @@
     const string CUSTOMER_FIELD = "customer";
     const string PROJECT_FIELD = "project";
     const string DURATION_FIELD = "duration";
+    const string COMPANY_SIZE_FIELD = "companysize";
+    const string DATE_SENT_FIELD = "datesent";
+    const string DATE_COMPLETED_FIELD = "datecompleted";
 
     protected override async Task OnInitializedAsync()
     {
@@ -675,13 +831,20 @@
              r.ProjectName.Contains(searchFilter, StringComparison.OrdinalIgnoreCase) ||
              r.Sector.Contains(searchFilter, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrEmpty(sectorFilter) || r.Sector == sectorFilter) &&
+            (string.IsNullOrEmpty(companySizeFilter) || (r.CompanySize ?? "") == companySizeFilter) &&
+            (string.IsNullOrEmpty(durationFilter) || (r.ProjectDuration ?? "") == durationFilter) &&
             (string.IsNullOrEmpty(statusFilter) || 
              (statusFilter == "completed" && r.DateCompleted.HasValue) ||
-             (statusFilter == "pending" && !r.DateCompleted.HasValue))
+             (statusFilter == "pending" && !r.DateCompleted.HasValue)) &&
+            (string.IsNullOrEmpty(dateFilter) || (r.DateSent.HasValue && r.DateSent.Value.ToString("yyyy-MM-dd") == dateFilter))
         ).ToList();
         
         currentPage = 1; // Reset to first page when filtering
         StateHasChanged();
+    }
+    List<string> GetUniqueDurations()
+    {
+        return surveyResponses.Select(r => r.ProjectDuration ?? "N/A").Where(d => !string.IsNullOrWhiteSpace(d)).Distinct().OrderBy(d => d).ToList();
     }
 
     void StartEdit(int id, string field, string? currentValue)
@@ -692,10 +855,24 @@
         StateHasChanged();
     }
 
+    void StartEditDate(int id, string field, DateTime? currentValue)
+    {
+        editingId = id;
+        editingField = field;
+        editValue = currentValue?.ToString("yyyy-MM-ddTHH:mm") ?? "";
+        StateHasChanged();
+    }
+
     void CancelEdit()
     {
         editingId = 0;
         editingField = "";
+        editValue = "";
+        StateHasChanged();
+    }
+
+    void ClearDate()
+    {
         editValue = "";
         StateHasChanged();
     }
@@ -715,6 +892,31 @@
                     break;
                 case "duration":
                     response.ProjectDuration = editValue;
+                    break;
+                case "companysize":
+                    response.CompanySize = editValue;
+                    break;
+                case "datesent":
+                    if (DateTime.TryParse(editValue, out DateTime dateSent))
+                    {
+                        response.DateSent = dateSent;
+                    }
+                    else
+                    {
+                        response.DateSent = null;
+                    }
+                    break;
+                case "datecompleted":
+                    if (DateTime.TryParse(editValue, out DateTime dateCompleted))
+                    {
+                        response.DateCompleted = dateCompleted;
+                        response.SubmittedAt = dateCompleted; // Keep legacy field in sync
+                    }
+                    else
+                    {
+                        response.DateCompleted = null;
+                        response.SubmittedAt = DateTime.MinValue;
+                    }
                     break;
             }
 
@@ -844,6 +1046,28 @@
         };
     }
 
+    string GetCompanySizeClass(string companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "micro",
+            "SME" => "sme",
+            "Large" => "large",
+            _ => "not-set"
+        };
+    }
+
+    string GetCompanySizeIcon(string companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "🏪",
+            "SME" => "🏢",
+            "Large" => "🏭",
+            _ => "👥"
+        };
+    }
+
     string GetScoreClass(int score)
     {
         return score switch
@@ -853,5 +1077,27 @@
             >= 4 => "average",
             _ => "poor"
         };
+    }
+
+
+    void ClearDate(string field)
+    {
+        editValue = "";
+        StateHasChanged();
+    }
+
+    // Handle Enter key in search bar
+    void HandleSearchKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            FilterSurveys();
+        }
+    }
+
+    void OnDateFilterChanged(ChangeEventArgs e)
+    {
+        dateFilter = e.Value?.ToString() ?? "";
+        FilterSurveys();
     }
 }

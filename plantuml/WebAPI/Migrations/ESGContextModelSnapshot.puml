@@ -1,5 +1,0 @@
-@startuml
-class ESGContextModelSnapshot <<partial>> {
-}
-ModelSnapshot <|-- ESGContextModelSnapshot
-@enduml

@@ -2,50 +2,218 @@
 
 <PageTitle>Home</PageTitle>
 
-<style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
-    }
-    .background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url("/images/Background1.jpg");
-        background-size: cover;
-        background-position: center;
-        z-index: -1;
-        opacity: 0.5;
-    }
-    .welcome-container {
-        text-align: left;
-        margin-top: 50px;
-        position: relative;
-        z-index: 1;
-        padding-left: 20px; 
-    }
-    .welcome-message {
-        font-size: 2em;
-    }
-</style>
+@inject IJSRuntime JS
+@inject NavigationManager navMgr
 
-<div class="background"></div>
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("eval", "document.body.style.setProperty('--main-bg', \"url('/images/BackgroundBachelor.avif') center/cover no-repeat fixed\")");
+        }
+    }
+
+    void GoToDashboard() => navMgr.NavigateTo("/survey-dashboard");
+    void GoToEditor() => navMgr.NavigateTo("/survey-editor");
+    void GoToManager() => navMgr.NavigateTo("/survey-manager");
+    void GoToLogin() => navMgr.NavigateTo("/login");
+    void GoToAbout() => navMgr.NavigateTo("/about");
+
+    string GetFullName(AuthenticationState context)
+    {
+        var claim = context?.User?.Claims?.FirstOrDefault(c => c.Type == "Fullname");
+        return claim?.Value ?? "User";
+    }
+
+    string GetRole(AuthenticationState context)
+    {
+        var claim = context?.User?.Claims?.FirstOrDefault(c => c.Type == "role");
+        return claim?.Value ?? "Unknown Role";
+    }
+
+    bool IsAdmin(AuthenticationState context)
+    {
+        return GetRole(context).Equals("Admin", StringComparison.OrdinalIgnoreCase);
+    }
+
+    string GetWelcomeText(AuthenticationState context)
+    {
+        var fullName = GetFullName(context);
+        var role = GetRole(context);
+        return IsAdmin(context)
+            ? $"Welcome {fullName}!"
+            : $"Welcome {fullName} from {role}!";
+    }
+}
 
 <AuthorizeView>
-    <Authorized>
-        <div class="welcome-container">
-            <h1 class="welcome-message">Welcome, @context.User.Claims.First(claim => claim.Type.Equals("Username")).Value!</h1>
-            <p class="sub-message">We're glad to have you back. Explore the dashboard to see the latest data.</p>
+    <Authorized Context="context">
+        <div class="home-hero">
+            <div class="hero-logo">
+                <img src="/images/dk_logo.png" alt="dk Logo" />
+            </div>
+            <h1>
+                @GetWelcomeText(context)
+            </h1>
+            <div class="sub-message">
+                Get customer insights<br />
+                See the latest analytics, manage surveys, and track your impact.
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" @onclick="GoToDashboard">
+                    📊 Dashboard
+                </button>
+                @if (IsAdmin(context))
+                {
+                    <button class="quick-action-btn" @onclick="GoToEditor">
+                        ✏️ Survey Editor
+                    </button>
+                    <button class="quick-action-btn" @onclick="GoToManager">
+                        📋 Survey Manager
+                    </button>
+                }
+            </div>
+            <div class="user-info">
+                <span>👤 @context.User.Identity?.Name</span>
+                <span>•</span>
+                <span>Role: @GetRole(context)</span>
+            </div>
         </div>
     </Authorized>
     <NotAuthorized>
-        <div class="welcome-container">
-            <h1 class="welcome-message">Welcome to Nilfisk ESG Dashboard</h1>
-            <p class="sub-message">Please login to add or see detailed data.</p>
+        <div class="home-hero">
+            <div class="hero-logo">
+                <img src="/images/dk_logo.png" alt="Danish Embassy Logo" />
+            </div>
+            <h1>Welcome to TC The Hague Dashboard</h1>
+            <div class="sub-message">
+                Log in to access your personalized dashboard, manage surveys, and view analytics.
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" @onclick="GoToLogin">
+                    🔑 Login
+                </button>
+            </div>
         </div>
     </NotAuthorized>
 </AuthorizeView>
+
+<style>
+    body {
+        background: url('/images/BackgroundBachelor.avif') center/cover no-repeat fixed !important;
+    }
+    .home-hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 65vh;
+        padding: 3rem 2rem 2rem 2rem;
+        background: rgba(255,255,255,0.90);
+        border-radius: 32px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+        max-width: 650px;
+        margin: 60px auto 0 auto;
+        position: relative;
+        z-index: 2;
+        animation: fadeIn 0.8s;
+    }
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px);}
+        to { opacity: 1; transform: translateY(0);}
+    }
+    .hero-logo {
+        margin-bottom: 1.2em;
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .hero-logo img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        border-radius: 50%;
+    }
+    .home-hero h1 {
+        font-size: 2.7em;
+        font-weight: 800;
+        color: #c82333;
+        margin-bottom: 0.5em;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+    .home-hero .sub-message {
+        font-size: 1.25em;
+        color: #212529;
+        margin-bottom: 1.5em;
+        font-weight: 500;
+        text-align: center;
+    }
+    .home-hero .quick-actions {
+        display: flex;
+        gap: 1.2em;
+        margin-top: 1em;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .quick-action-btn {
+        background: linear-gradient(90deg, #c82333 70%, #007bff 100%);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 0.9em 2em;
+        font-size: 1.15em;
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(200,35,51,0.08);
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    .quick-action-btn:hover {
+        background: linear-gradient(90deg, #a71d2a 70%, #0056b3 100%);
+        transform: translateY(-2px) scale(1.04);
+    }
+    .home-hero .user-info {
+        margin-top: 2em;
+        font-size: 1.05em;
+        color: #495057;
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 0.7em 1.2em;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+    }
+    @@media (max-width: 700px) {
+        .home-hero {
+            padding: 1.2rem;
+            max-width: 98vw;
+        }
+        .home-hero h1 {
+            font-size: 2em;
+        }
+        .hero-logo {
+            width: 70px;
+            height: 70px;
+        }
+        .hero-logo img {
+            width: 50px;
+            height: 50px;
+        }
+        .quick-action-btn {
+            font-size: 1em;
+            padding: 0.7em 1.2em;
+        }
+    }
+</style>

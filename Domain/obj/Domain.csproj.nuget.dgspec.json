@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj": {}
+    "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj": {
+    "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\marcu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

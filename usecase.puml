@@ -1,0 +1,46 @@
+@startuml SurveyDashboard_UseCase
+
+left to right direction
+skinparam packageStyle rectangle
+
+' Actors
+actor Admin as A
+actor "Employee" as E
+actor Customer as C
+
+' Use cases
+usecase "Create & Send\nSurvey" as UC_CreateSend
+usecase "Fill\nSurvey" as UC_Fill
+usecase "Analyze\nPerformance" as UC_Analyze
+usecase "Generate\nReports" as UC_Report
+usecase "Login &\nAuthentication" as UC_Auth
+
+' Associations
+A --> UC_CreateSend
+A --> UC_Analyze
+A --> UC_Report
+A --> UC_Auth
+
+E --> UC_Analyze
+E --> UC_Auth
+
+
+C --> UC_Fill
+
+' Notes / constraints
+note right of E
+  Employee: access limited
+  to their own sector's data
+end note
+
+note left of A
+  Admin: full system access,
+  survey management & user admin
+end note
+
+note right of UC_Fill
+  Guests/Customers access via
+  anonymous survey links
+end note
+
+@enduml

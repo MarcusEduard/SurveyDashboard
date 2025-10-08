@@ -1,74 +1,79 @@
-
 .page {
     position: relative;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
-main {
+/* Government header styling */
+.main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Main content area */
+.main-content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Standard content with top navigation */
+.main-content:not(.full-width) {
+    padding-top: 0;
 }
 
 .main-content.full-width {
+    padding: 0;
     margin-left: 0 !important;
 }
 
-.sidebar {
-    background-image: linear-gradient(180deg, rgba(26, 32, 38, 1) 0%, rgba(54, 65, 76, 1));
-    z-index: 5; 
-}
-
-
 .top-row {
-    background-color: #ffffff;
-    border-bottom: 1px solid #ffffff;
-    justify-content: flex-end;
-    height: 3.5rem; /* Tilbage til den oprindelige højde */
-    display: flex;
-    align-items: center;
     position: sticky;
     top: 0;
-    z-index: 10; 
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: white;
+    border-bottom: 1px solid #d6d5d5;
+    z-index: 999;
+    padding: 0 2rem;
 }
 
-.page-content {
-    position: relative;
-    background-image: url('images/NilfiskBaggrund.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    height: 100vh; 
-    padding: 20px; 
-    color: white; 
-    z-index: 1; 
+.top-row ::deep a {
+    color: #c82333 !important;
+    text-decoration: none;
 }
 
-@media (max-width: 640.98px) {
-    .top-row {
-        justify-content: space-between;
-    }
-
-    .top-row ::deep a, .top-row ::deep .btn-link {
-        margin-left: 0;
-    }
+.top-row ::deep .btn-link {
+    color: #c82333 !important;
+    border: 1px solid rgba(200, 35, 51, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
 }
 
-@media (min-width: 641px) {
-    .page {
-        flex-direction: row;
-    }
+.top-row ::deep .btn-link:hover {
+    background-color: rgba(200, 35, 51, 0.1);
+    border-color: rgba(200, 35, 51, 0.5);
+}
 
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: sticky;
-        top: 0;
-    }
+.content {
+    flex: 1;
+    padding-top: 1rem;
+}
 
-    .top-row {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
-    }
+.content.survey-content {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #f8f9fa;
 }
 
 #blazor-error-ui {
@@ -88,4 +93,21 @@ main {
     position: absolute;
     right: 0.75rem;
     top: 0.5rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .top-row {
+        height: auto;
+        padding: 0.5rem 1rem;
+        justify-content: space-between;
+    }
+    
+    .content:not(.survey-content) {
+        padding: 1rem;
+    }
+}
+
+body {
+    background: #fff !important;
 }

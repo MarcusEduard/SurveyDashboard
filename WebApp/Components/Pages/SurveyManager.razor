@@ -19,7 +19,7 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Customer Name *</label>
-                    <input type="text" class="form-control" @bind="newSurvey.CustomerName" placeholder="e.g. Grundfos" />
+                    <input type="text" class="form-control" @bind="newSurvey.CustomerName" placeholder="Company Name" />
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Sector *</label>
@@ -31,12 +31,21 @@
                     </select>
                 </div>
                 <div class="col-md-6">
+                    <label class="form-label">Company Size *</label>
+                    <select class="form-select" @bind="newSurvey.CompanySize">
+                        <option value="">Select Company Size</option>
+                        <option value="Micro">Micro (1-9 employees)</option>
+                        <option value="SME">SME (10-249 employees)</option>
+                        <option value="Large">Large (250+ employees)</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
                     <label class="form-label">Project Name *</label>
-                    <input type="text" class="form-control" @bind="newSurvey.ProjectName" placeholder="e.g. Energy Efficiency Audit" />
+                    <input type="text" class="form-control" @bind="newSurvey.ProjectName" placeholder="e.g. Market Research" />
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Project Duration *</label>
-                    <input type="text" class="form-control" @bind="newSurvey.ProjectDuration" placeholder="e.g. 3 months" />
+                    <input type="text" class="form-control" @bind="newSurvey.ProjectDuration" placeholder="Duration in hours: e.g. 50" />
                 </div>
             </div>
             
@@ -64,6 +73,7 @@
                                 <th>Customer</th>
                                 <th>Project</th>
                                 <th>Sector</th>
+                                <th>Company Size</th>
                                 <th>Date Sent</th>
                                 <th>Survey Link</th>
                                 <th>Actions</th>
@@ -77,6 +87,7 @@
                                     <td>@survey.CustomerName</td>
                                     <td>@survey.ProjectName</td>
                                     <td><span class="badge bg-info">@survey.Sector</span></td>
+                                    <td><span class="badge bg-secondary">@(survey.CompanySize ?? "N/A")</span></td>
                                     <td>@survey.DateSent?.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-primary" @onclick="() => CopyLink(survey.SurveyId)">
@@ -84,8 +95,8 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteSurvey(survey.SurveyResponseId)">
-                                            <i class="fas fa-trash"></i>
+                                        <button class="btn btn-sm btn-danger" title="Delete Survey" @onclick="() => ShowDeleteModal(survey)">
+                                            🗑️
                                         </button>
                                     </td>
                                 </tr>
@@ -107,7 +118,7 @@
     <!-- Recently Completed Surveys -->
     <div class="card">
         <div class="card-header">
-            <h4>✅ Recently Completed Surveys</h4>
+            <h4>✅ Completed Surveys</h4>
         </div>
         <div class="card-body">
             @if (completedSurveys.Any())
@@ -172,6 +183,8 @@
                     <p><strong>Survey created successfully!</strong></p>
                     <p>Customer: <strong>@newSurvey.CustomerName</strong></p>
                     <p>Project: <strong>@newSurvey.ProjectName</strong></p>
+                    <p>Sector: <strong>@newSurvey.Sector</strong></p>
+                    <p>Company Size: <strong>@newSurvey.CompanySize</strong></p>
                     
                     <div class="alert alert-info">
                         <strong>Survey Link:</strong>
@@ -192,6 +205,29 @@
         </div>
     </div>
     <div class="modal-backdrop fade show"></div>
+}
+
+@if (showDeleteModal && surveyToDelete != null)
+{
+    <div class="modal-overlay" @onclick="CancelDelete">
+        <div class="modal-content" @onclick:stopPropagation="true">
+            <h3>⚠️ Confirm Deletion</h3>
+            <p>Are you sure you want to delete this survey?</p>
+            <div class="modal-details">
+                <p><strong>Customer:</strong> @surveyToDelete.CustomerName</p>
+                <p><strong>Project:</strong> @surveyToDelete.ProjectName</p>
+                <p><strong>Survey ID:</strong> <code>@GetShortSurveyId(surveyToDelete.SurveyId)</code></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-confirm-delete" @onclick="DeleteSurveyConfirmed">
+                    🗑️ Delete Survey
+                </button>
+                <button class="btn-cancel-modal" @onclick="CancelDelete">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
 }
 
 <style>
@@ -256,6 +292,91 @@
     .form-control, .form-select {
         border-radius: 8px;
     }
+
+    .btn-danger {
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+        color: #fff !important;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+
+    .modal-content h3 {
+        margin: 0 0 16px 0;
+        color: #dc3545;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .modal-details {
+        background: #f8f9fa;
+        padding: 16px;
+        border-radius: 8px;
+        margin: 16px 0;
+    }
+
+    .modal-details p {
+        margin: 4px 0;
+        color: #555;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .btn-confirm-delete {
+        background: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.2s ease;
+    }
+
+    .btn-confirm-delete:hover {
+        background: #c82333;
+    }
+
+    .btn-cancel-modal {
+        background: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.2s ease;
+    }
+
+    .btn-cancel-modal:hover {
+        background: #5a6268;
+    }
 </style>
 
 @code {
@@ -266,6 +387,34 @@
     bool showLinkModal = false;
     string currentSurveyLink = "";
     string createdSurveyId = "";
+
+    bool showDeleteModal = false;
+    SurveyResponse? surveyToDelete = null;
+
+    void ShowDeleteModal(SurveyResponse survey)
+    {
+        surveyToDelete = survey;
+        showDeleteModal = true;
+        StateHasChanged();
+    }
+
+    void CancelDelete()
+    {
+        showDeleteModal = false;
+        surveyToDelete = null;
+        StateHasChanged();
+    }
+
+    async Task DeleteSurveyConfirmed()
+    {
+        if (surveyToDelete != null)
+        {
+            await DeleteSurvey(surveyToDelete.SurveyResponseId);
+            showDeleteModal = false;
+            surveyToDelete = null;
+            StateHasChanged();
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -297,6 +446,7 @@
     {
         return !string.IsNullOrWhiteSpace(newSurvey.CustomerName) &&
                !string.IsNullOrWhiteSpace(newSurvey.Sector) &&
+               !string.IsNullOrWhiteSpace(newSurvey.CompanySize) &&
                !string.IsNullOrWhiteSpace(newSurvey.ProjectName) &&
                !string.IsNullOrWhiteSpace(newSurvey.ProjectDuration);
     }
@@ -368,6 +518,15 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error deleting survey: {ex.Message}");
+        }
+    }
+
+    async Task ConfirmDeleteSurvey(int surveyResponseId)
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete?");
+        if (confirmed)
+        {
+            await DeleteSurvey(surveyResponseId);
         }
     }
 

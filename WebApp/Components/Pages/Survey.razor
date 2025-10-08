@@ -3,18 +3,21 @@
 @using WebAPI.Models
 @inject HttpClient httpClient
 
-<div class="survey-container">
-    <h2>Customer Satisfaction Survey</h2>
+<div class="survey-page">
+    <div class="survey-header">
+        <h1>Customer Satisfaction Survey</h1>
+    </div>
     
-    @if (isLoading)
-    {
-        <div class="text-center">
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+    <div class="survey-container">
+        @if (isLoading)
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>Loading survey...</p>
             </div>
-            <p>Loading survey...</p>
-        </div>
-    }
+        }
     else if (success || (isExistingSurvey && newResponse.DateCompleted.HasValue))
     {
         <div class="success-message">
@@ -29,16 +32,6 @@
     }
     else
     {
-        @if (isExistingSurvey)
-        {
-            <div class="alert alert-info">
-                <strong>Survey Information:</strong><br>
-                Customer: <strong>@newResponse.CustomerName</strong><br>
-                Project: <strong>@newResponse.ProjectName</strong><br>
-                Sent: @newResponse.DateSent?.ToString("dd/MM/yyyy HH:mm")
-            </div>
-        }
-        
         <div class="survey-form">
         <div class="form-group">
             <label for="company">Company Name</label>
@@ -285,15 +278,47 @@
         </div>
     }
 </div>
+</div>
 
 <style>
+    .survey-page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .survey-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .survey-header h1 {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        letter-spacing: -0.5px;
+    }
+
+    @@media (max-width: 768px) {
+        .survey-header h1 {
+            font-size: 2rem;
+        }
+    }
+
     .survey-container {
         max-width: 500px;
-        margin: 40px auto;
-        background: #f8f9fa;
+        width: 100%;
+        margin: 0;
+        background: #ffffff;
         border-radius: 16px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12);
         padding: 32px 24px;
+        position: relative;
     }
     .survey-container h2 {
         text-align: center;

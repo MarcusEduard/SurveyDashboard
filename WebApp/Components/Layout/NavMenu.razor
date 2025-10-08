@@ -1,79 +1,624 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using WebApp.Services.Http
+@using Microsoft.AspNetCore.Components
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">
-            <img src="images/dk_nd.png" alt="DK Logo" class="navbar-logo" style="width: 200px; height: auto;" />
-        </a>
-    </div>
-</div>
+@inject NavigationManager navMgr
+@inject IAuthService authService
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<nav class="modern-navbar">
+    <div class="navbar-container">
+        <!-- Logo and Brand Section -->
+        <div class="navbar-brand">
+            <img src="/images/dk_logo.png" alt="Danish Embassy Logo" class="navbar-logo" />
+            <div class="brand-text">
+                <span class="brand-title">The Danish Embassy in The Hague</span>
+                <span class="brand-subtitle">Customer Satisfaction Dashboard</span>
+            </div>
+        </div>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <!-- Home er tilgængelig for alle -->
-        <div class="nav-item px-3">
+        <!-- Navigation Menu -->
+        <div class="navbar-nav">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                <i class="nav-icon">🏠</i>
+                <span>Home</span>
+            </NavLink>
+
+            <!-- Dashboard til almindelige brugere -->
+            <AuthorizeView Policy="NotGuest">
+                <Authorized>
+                    <NavLink class="nav-link" href="/survey-dashboard" Match="NavLinkMatch.All">
+                        <i class="nav-icon">📊</i>
+                        <span>Dashboard</span>
+                    </NavLink>
+                </Authorized>
+            </AuthorizeView>
+
+            <AuthorizeView Policy="MustBeAdmin">
+                <Authorized>
+                    <NavLink class="nav-link" href="survey-manager">
+                        <i class="nav-icon">📋</i>
+                        <span>Survey Manager</span>
+                    </NavLink>
+                    
+                    <NavLink class="nav-link" href="survey-editor">
+                        <i class="nav-icon">✏️</i>
+                        <span>Survey Editor</span>
+                    </NavLink>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+
+        <!-- User Actions Section -->
+        <div class="navbar-actions">
+            <AuthorizeView>
+                <Authorized>
+                    <div class="user-info">
+                        <span class="user-greeting">Welcome back!</span>
+                        <button class="action-btn logout-btn" @onclick="Logout" title="Logout">
+                            <i class="action-icon">🚪</i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <button class="action-btn login-btn" @onclick="Login" title="Login">
+                        <i class="action-icon">🔑</i>
+                        <span>Login</span>
+                    </button>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-toggle" @onclick="ToggleMobileMenu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav @(mobileMenuOpen ? "open" : "")">
+        <div class="mobile-nav-item">
+            <NavLink class="mobile-nav-link" href="" Match="NavLinkMatch.All" @onclick="CloseMobileMenu">
+                <i class="nav-icon">🏠</i>
+                <span>Home</span>
             </NavLink>
         </div>
 
-        <!-- About er tilgængelig for alle undtagen Guest -->
         <AuthorizeView Policy="NotGuest">
             <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="about">
-                        <span class="bi bi-info-circle-fill" aria-hidden="true"></span> About
+                <div class="mobile-nav-item">
+                    <NavLink class="mobile-nav-link" href="/survey-dashboard" Match="NavLinkMatch.All" @onclick="CloseMobileMenu">
+                        <i class="nav-icon">📊</i>
+                        <span>Dashboard</span>
                     </NavLink>
                 </div>
             </Authorized>
         </AuthorizeView>
 
-        <!-- Dashboard - kun for ikke-Guest brugere -->
-        <AuthorizeView Policy="NotGuest">
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/survey-dashboard" Match="NavLinkMatch.All">
-                        <span class="oi oi-bar-chart"></span> Dashboard
-                    </NavLink>
-                </div>
-            </Authorized>
-        </AuthorizeView>
-
-        <!-- Manage Data - kun for Admin, Tech, Health, Energy (ikke Guest) -->
         <AuthorizeView Policy="SectorDataAccess">
             <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="surveyadmin">
-                        <span class="bi bi-pencil-fill" aria-hidden="true"></span> Manage Data
+                <div class="mobile-nav-item">
+                    <NavLink class="mobile-nav-link" href="surveyadmin" @onclick="CloseMobileMenu">
+                        <i class="nav-icon">⚙️</i>
+                        <span>Manage Data</span>
                     </NavLink>
                 </div>
             </Authorized>
         </AuthorizeView>
 
-        <!-- Survey Manager - kun for Admin -->
         <AuthorizeView Policy="MustBeAdmin">
             <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="survey-manager">
-                        <span class="bi bi-clipboard-plus" aria-hidden="true"></span> Survey Manager
+                <div class="mobile-nav-item">
+                    <NavLink class="mobile-nav-link" href="survey-manager" @onclick="CloseMobileMenu">
+                        <i class="nav-icon">📋</i>
+                        <span>Survey Manager</span>
+                    </NavLink>
+                </div>
+                <div class="mobile-nav-item">
+                    <NavLink class="mobile-nav-link" href="survey-editor" @onclick="CloseMobileMenu">
+                        <i class="nav-icon">✏️</i>
+                        <span>Survey Editor</span>
                     </NavLink>
                 </div>
             </Authorized>
         </AuthorizeView>
 
-        <!-- Survey Editor - kun for Admin -->
-        <AuthorizeView Policy="MustBeAdmin">
+        <div class="mobile-nav-divider"></div>
+        
+        <AuthorizeView>
             <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="survey-editor">
-                        <span class="bi bi-pencil-square" aria-hidden="true"></span> Survey Editor
-                    </NavLink>
+                <div class="mobile-nav-item">
+                    <button class="mobile-action-btn logout-btn" @onclick="Logout">
+                        <i class="action-icon">🚪</i>
+                        <span>Logout</span>
+                    </button>
                 </div>
             </Authorized>
+            <NotAuthorized>
+                <div class="mobile-nav-item">
+                    <button class="mobile-action-btn login-btn" @onclick="Login">
+                        <i class="action-icon">🔑</i>
+                        <span>Login</span>
+                    </button>
+                </div>
+            </NotAuthorized>
         </AuthorizeView>
-    </nav>
-</div>
+    </div>
+</nav>
+
+@code {
+    private bool mobileMenuOpen = false;
+
+    private void Login()
+    {
+        navMgr.NavigateTo("/Login");
+    }
+
+    private async Task Logout()
+    {
+        await authService.LogoutAsync();
+        navMgr.NavigateTo("/");
+    }
+
+    private void ToggleMobileMenu()
+    {
+        mobileMenuOpen = !mobileMenuOpen;
+    }
+
+    private void CloseMobileMenu()
+    {
+        mobileMenuOpen = false;
+    }
+}
+
+<style>
+    /* Modern Navbar Styles */
+    .modern-navbar {
+        background: linear-gradient(135deg, #dc35458) 0%, #c82333 100%);
+        box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+        height: 70px;
+        position: relative;
+    }
+
+    /* Brand Section */
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: white;
+        text-decoration: none;
+        margin-left: -2rem; /* Rykker brand-sektionen endnu tættere på venstre kant */
+    }
+
+    .navbar-logo {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        object-fit: contain;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        margin-left: -1.5rem; /* Rykker logoet helt ud til venstre */
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .brand-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 2px;
+        background: linear-gradient(45deg, #fff, #f8f9fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .brand-subtitle {
+        font-size: 0.75rem;
+        opacity: 0.8;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+    }
+
+    /* Navigation Items */
+    .navbar-nav {
+        display: flex;              /* Gør containeren til flex-række */
+        flex-direction: row;        /* Sørger for horisontal layout */
+        align-items: center;        /* Vertikal centrering af alle links */
+        justify-content: center;    /* Centrerer hele rækken vandret */
+        gap: 1.5rem;                /* Afstand mellem links */
+        flex-wrap: nowrap;          /* Ingen linjeskift – alt på én linje */
+        margin: 0 2rem;
+    }
+
+    .navbar-nav > * {
+        display: flex;              /* Gør hvert link til flex */
+        align-items: center;        /* Vertikal centrering af ikon + tekst */
+        flex-direction: row;        /* Ikon og tekst ved siden af hinanden */
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.5rem;
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        border: 2px solid transparent;
+        flex-shrink: 0;
+    }
+
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .nav-link:hover::before {
+        left: 100%;
+    }
+
+    .nav-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-link.active {
+        background: rgba(255, 255, 255, 0.2);
+        color: white !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-icon {
+        font-size: 1.1rem;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    }
+
+    /* Force all navbar children to display inline horizontally */
+    .navbar-nav > *,
+    .navbar-nav .authorize-view,
+    .navbar-nav > div,
+    .navbar-nav > [data-blazor-authorize-view] {
+        display: flex !important;
+        align-items: center !important;
+        flex-direction: row !important;
+    }
+
+    /* Ensure Blazor AuthorizeView components don't stack */
+    ::ng-deep .navbar-nav > * {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* User Actions */
+    .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-greeting {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        border: none;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .login-btn {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        color: white;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
+
+    .logout-btn {
+        background: linear-gradient(45deg, #fd7e14, #e83e8c);
+        color: white;
+        box-shadow: 0 4px 15px rgba(253, 126, 20, 0.3);
+    }
+
+    .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
+    }
+
+    .action-icon {
+        font-size: 1rem;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+
+    /* Mobile Toggle */
+    .mobile-toggle {
+        display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 2rem;
+        height: 2rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        gap: 3px;
+    }
+
+    .hamburger-line {
+        width: 2rem;
+        height: 3px;
+        background: white;
+        border-radius: 10px;
+        transition: all 0.3s linear;
+        position: relative;
+        transform-origin: 1px;
+    }
+
+    /* Mobile Navigation */
+    .mobile-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+    }
+
+    .mobile-nav.open {
+        display: block;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .mobile-nav-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .mobile-nav-item:last-child {
+        border-bottom: none;
+    }
+
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white !important;
+    }
+
+    .mobile-nav-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 0.5rem 1.5rem;
+    }
+
+    .mobile-action-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem 1.5rem;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-align: left;
+    }
+
+    .mobile-action-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 1200px) {
+        .navbar-nav {
+            gap: 1rem;
+            margin: 0 1rem;
+        }
+        
+        .nav-link {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .navbar-nav {
+            display: none;
+        }
+
+        .mobile-toggle {
+            display: flex;
+        }
+
+        .brand-text {
+            display: none;
+        }
+
+        .navbar-logo {
+            width: 35px;
+            height: 35px;
+        }
+
+        .user-greeting {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .navbar-container {
+            padding: 0 0.75rem;
+        }
+
+        .action-btn span {
+            display: none;
+        }
+
+        .action-btn {
+            padding: 0.75rem;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            justify-content: center;
+        }
+    }
+
+    /* Animation for mobile menu toggle */
+    .mobile-toggle.open .hamburger-line:first-child {
+        transform: rotate(45deg);
+    }
+
+    .mobile-toggle.open .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-toggle.open .hamburger-line:nth-child(3) {
+        transform: rotate(-45deg);
+    }
+
+    /* Smooth scrolling behavior */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Focus states for accessibility */
+    .nav-link:focus,
+    .action-btn:focus,
+    .mobile-toggle:focus {
+        outline: 2px solid rgba(255, 255, 255, 0.5);
+        outline-offset: 2px;
+    }
+
+    .nav-link,
+    .navbar-brand,
+    .user-greeting,
+    .action-btn,
+    .nav-icon {
+        color: #212529 !important; /* Mørk grå, passer til moderne design */
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+        color: #c82333 !important; /* Rød accent ved hover/aktiv */
+    }
+
+    .brand-title {
+        background: none;
+        -webkit-text-fill-color: unset;
+        color: #212529 !important; /* Mørk grå */
+    }
+
+    .brand-subtitle {
+        color: #495057 !important; /* Lidt lysere grå */
+        opacity: 0.8;
+    }
+
+    .action-btn,
+    .login-btn,
+    .logout-btn {
+        color: #fff !important;
+    }
+
+    .login-btn:hover,
+    .logout-btn:hover,
+    .action-btn:hover {
+        color: #fff !important;
+        opacity: 0.85;
+    }
+
+    .mobile-nav-link,
+    .mobile-action-btn {
+        color: #212529 !important;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active,
+    .mobile-action-btn:hover {
+        color: #c82333 !important;
+    }
+</style>

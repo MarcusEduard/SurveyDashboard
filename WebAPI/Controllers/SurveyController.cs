@@ -56,6 +56,7 @@ namespace WebAPI.Controllers
             existingSurvey.ProjectName = response.ProjectName;
             existingSurvey.ProjectDuration = response.ProjectDuration;
             existingSurvey.Sector = response.Sector;
+            existingSurvey.CompanySize = response.CompanySize;
             existingSurvey.Question1 = response.Question1;
             existingSurvey.Question2 = response.Question2;
             existingSurvey.Question3 = response.Question3;

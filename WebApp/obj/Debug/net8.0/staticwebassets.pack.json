@@ -29,12 +29,24 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Background.jpg",
+      "PackagePath": "staticwebassets\\images\\Background.jpg"
+    },
+    {
       "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Background1.jpg",
       "PackagePath": "staticwebassets\\images\\Background1.jpg"
     },
     {
       "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Background2.jpg",
       "PackagePath": "staticwebassets\\images\\Background2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\BackgroundBachelor.avif",
+      "PackagePath": "staticwebassets\\images\\BackgroundBachelor.avif"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\BackgroundBachelor.jpg",
+      "PackagePath": "staticwebassets\\images\\BackgroundBachelor.jpg"
     },
     {
       "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Baggrund.webp",
@@ -49,10 +61,6 @@
       "PackagePath": "staticwebassets\\images\\Logo_Nilfisk.jpg"
     },
     {
-      "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Nederlandene_dk.png",
-      "PackagePath": "staticwebassets\\images\\Nederlandene_dk.png"
-    },
-    {
       "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\NilfiskBaggrund.jpg",
       "PackagePath": "staticwebassets\\images\\NilfiskBaggrund.jpg"
     },
@@ -63,6 +71,10 @@
     {
       "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\TennantLogo.png",
       "PackagePath": "staticwebassets\\images\\TennantLogo.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\dk_logo.png",
+      "PackagePath": "staticwebassets\\images\\dk_logo.png"
     },
     {
       "Id": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\dk_nd.png",

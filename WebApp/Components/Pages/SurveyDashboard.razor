@@ -5,8 +5,21 @@
 @inject HttpClient httpClient
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
+<div class="dashboard-footer">
+    <span>
+        Last updated: @(GetLastUpdatedDate()?.ToString("dd-MM-yyyy HH:mm") ?? "No data")
+    </span>
+</div>
+
 <div class="dashboard-container">
-    <h2>Survey Analytics Dashboard</h2>
+    <!-- Header Section -->
+    <div class="dashboard-header">
+        <img src="/images/dk_logo.png" alt="Nilfisk Logo" class="dashboard-logo" />
+        <div class="dashboard-title-group">
+            <h2 class="dashboard-title">Survey Analytics Dashboard</h2>
+            <span class="dashboard-subtitle">Customer Satisfaction & Survey Insights</span>
+        </div>
+    </div>
     
     @if (isLoading)
     {
@@ -35,15 +48,10 @@
                 <div class="card-icon">⭐</div>
                 <h3 class="counter satisfaction-score" data-target="@Math.Round(avgSatisfaction, 1)">@Math.Round(avgSatisfaction, 1)</h3>
                 <p>Avg Overall Satisfaction</p>
-                <div class="satisfaction-bar">
+                <div class="satisfaction-bar" style="position: relative;">
                     <div class="satisfaction-fill" style="width: @(avgSatisfaction * 10)%"></div>
+                    <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: 0; bottom: 0; width: 2px; background: #28a745; opacity: 0.7;"></div>
                 </div>
-            </div>
-            <div class="card clickable" @onclick='() => ScrollToSection("sectors")'>
-                <div class="card-icon">🏢</div>
-                <h3 class="counter" data-target="@sectorCounts.Count">@sectorCounts.Count</h3>
-                <p>Active Sectors</p>
-                <div class="card-arrow">→</div>
             </div>
         </div>
 
@@ -51,13 +59,6 @@
         <div class="charts-section">
             <div class="section-header">
                 <h3>📈 Analytics</h3>
-                <div class="filter-buttons">
-                    <button class="filter-btn @(selectedFilter == "all" ? "active" : "")" @onclick='() => SetFilter("all")'>All Sectors</button>
-                    @foreach (var sector in sectorCounts.Keys)
-                    {
-                        <button class="filter-btn @(selectedFilter == sector ? "active" : "")" @onclick="() => SetFilter(sector)">@GetSectorShortName(sector)</button>
-                    }
-                </div>
             </div>
             
             <!-- Bar Chart: Responses per Sector -->
@@ -71,7 +72,7 @@
                     </div>
                 </div>
                 <div class="interactive-bar-chart">
-                    @foreach (var sector in GetFilteredSectors().OrderByDescending(x => x.Value))
+                    @foreach (var sector in sectorCounts.OrderByDescending(x => x.Value))
                     {
                         var totalCount = sector.Value;
                         var completedCount = GetCompletedCountForSector(sector.Key);
@@ -140,24 +141,78 @@
 
             <!-- Average Satisfaction by Sector -->
             <div class="chart-container" id="satisfaction">
-                <h4>⭐ Satisfaction Ratings</h4>
+                <div class="chart-header">
+                    <h4>⭐ Satisfaction Ratings</h4>
+                    <div class="filter-controls">
+                        <div class="filter-section">
+                            <label class="filter-label">Filter by Sector</label>
+                            <select @bind="selectedSectorFilter" class="filter-dropdown">
+                                <option value="all">All Sectors</option>
+                                @foreach (var sector in GetUniqueSectors())
+                                {
+                                    <option value="@sector">@sector</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <label class="filter-label">Filter by Company Size</label>
+                            <select @bind="selectedCompanySizeFilter" class="filter-dropdown">
+                                <option value="all">All Company Sizes</option>
+                                @foreach (var companySize in GetUniqueCompanySizes())
+                                {
+                                    <option value="@companySize">@companySize</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        @if (selectedSectorFilter != "all" || selectedCompanySizeFilter != "all")
+                        {
+                            <div class="filter-section">
+                                <button class="clear-filters-btn" @onclick="ClearAllFilters">
+                                    🗑️ Clear Filters
+                                </button>
+                            </div>
+                        }
+                        
+                        @if (selectedSectorFilter != "all" || selectedCompanySizeFilter != "all")
+                        {
+                            <div class="active-filters">
+                                <span class="filter-indicator">Active Filters:</span>
+                                @if (selectedSectorFilter != "all")
+                                {
+                                    <span class="filter-badge sector">@selectedSectorFilter</span>
+                                }
+                                @if (selectedCompanySizeFilter != "all")
+                                {
+                                    <span class="filter-badge company-size">@selectedCompanySizeFilter</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
                 <div class="satisfaction-grid">
-                    @foreach (var sector in sectorAverages.OrderByDescending(x => x.Value))
+                    @{
+                        var filteredSatisfactionData = GetCombinedFilteredSatisfactionData();
+                    }
+                    
+                    @foreach (var item in filteredSatisfactionData.OrderByDescending(x => x.Value))
                     {
-                        var percentage = sector.Value / 10 * 100;
-                        var satisfaction = sector.Value;
+                        var percentage = item.Value / 10 * 100;
+                        var satisfaction = item.Value;
                         var satisfactionClass = satisfaction >= 8 ? "excellent" : satisfaction >= 6 ? "good" : satisfaction >= 4 ? "average" : "poor";
                         
-                        <div class="satisfaction-card @satisfactionClass @(selectedSector == sector.Key ? "selected" : "")" 
-                             @onclick="() => SelectSector(sector.Key)">
+                        <div class="satisfaction-card @satisfactionClass" @onclick="() => SelectItem(item.Key)">
                             <div class="satisfaction-header">
-                                <span class="sector-icon">@GetSectorIcon(sector.Key)</span>
-                                <h5>@sector.Key</h5>
-                                <div class="satisfaction-score-big">@Math.Round(sector.Value, 1)</div>
+                                <span class="sector-icon">@GetItemIcon(item.Key)</span>
+                                <h5>@item.Key</h5>
+                                <div class="satisfaction-score-big">@Math.Round(item.Value, 1)</div>
                             </div>
                             <div class="satisfaction-meter">
-                                <div class="meter-track"></div>
-                                <div class="meter-fill" style="width: @(percentage)%"></div>
+                                <div class="meter-track" style="position: relative;">
+                                    <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: 0; bottom: 0; width: 2px; background: #28a745; opacity: 0.7;"></div>
+                                </div>
+                                <div class="meter-fill" style="width: @(percentage)%; background: @GetItemColor(item.Key);"></div>
                                 <div class="meter-labels">
                                     @for (int i = 0; i <= 10; i += 2)
                                     {
@@ -166,6 +221,18 @@
                                 </div>
                             </div>
                             <div class="satisfaction-emotion">@GetSatisfactionEmoji(satisfaction)</div>
+                            <div class="satisfaction-details">
+                                <small>@GetFilteredResponseCount(item.Key) responses</small>
+                            </div>
+                        </div>
+                    }
+                    
+                    @if (!filteredSatisfactionData.Any())
+                    {
+                        <div class="no-data-message">
+                            <div class="no-data-icon">📊</div>
+                            <h4>No Data Available</h4>
+                            <p>No survey responses found for the selected filters.</p>
                         </div>
                     }
                 </div>
@@ -177,8 +244,8 @@
                     <h4>📈 Satisfaction Trends Over Time</h4>
                     <div class="chart-controls">
                         <button class="view-btn @(trendsView == "monthly" ? "active" : "")" @onclick='() => SetTrendsView("monthly")'>Monthly</button>
-                        <button class="view-btn @(trendsView == "weekly" ? "active" : "")" @onclick='() => SetTrendsView("weekly")'>Weekly</button>
-                        <button class="view-btn @(trendsView == "daily" ? "active" : "")" @onclick='() => SetTrendsView("daily")'>Daily</button>
+                        <button class="view-btn @(trendsView == "quarterly" ? "active" : "")" @onclick='() => SetTrendsView("quarterly")'>Quarterly</button>
+                        <button class="view-btn @(trendsView == "yearly" ? "active" : "")" @onclick='() => SetTrendsView("yearly")'>Yearly</button>
                     </div>
                 </div>
                 
@@ -292,10 +359,6 @@
                                                                     <div class="tooltip-period">@point.Period</div>
                                                                     <div class="tooltip-details">
                                                                         <span>📊 @GetPeriodResponseCount(point.Period) responses</span>
-                                                                        @if (isRecent)
-                                                                        {
-                                                                            <span class="recent-indicator">🔥 Recent</span>
-                                                                        }
                                                                     </div>
                                                                 </div>
                                                             }
@@ -367,48 +430,6 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Sector Trends Comparison -->
-                        @if (selectedFilter == "all" && sectorCounts.Count > 1)
-                        {
-                            <div class="sector-trends-comparison">
-                                <h5>📊 Sector Trends Comparison</h5>
-                                <div class="sector-trend-bars">
-                                    @foreach (var sector in sectorCounts.Keys)
-                                    {
-                                        var sectorTrend = GetSectorTrendData(sector);
-                                        @if (sectorTrend.Any())
-                                        {
-                                            var recentAvg = sectorTrend.TakeLast(3).Average(t => t.Score);
-                                            var earlyAvg = sectorTrend.Take(Math.Min(3, sectorTrend.Count())).Average(t => t.Score);
-                                            var sectorTrendPerc = earlyAvg > 0 ? ((recentAvg - earlyAvg) / earlyAvg) * 100 : 0;
-                                            var trendClass = sectorTrendPerc > 2 ? "positive" : sectorTrendPerc < -2 ? "negative" : "neutral";
-                                            
-                                            <div class="sector-trend-item">
-                                                <div class="sector-trend-header">
-                                                    <span class="sector-icon">@GetSectorIcon(sector)</span>
-                                                    <span class="sector-name">@sector</span>
-                                                    <span class="sector-trend-value @trendClass">
-                                                        @(sectorTrendPerc >= 0 ? "+" : "")@sectorTrendPerc.ToString("F1")%
-                                                    </span>
-                                                </div>
-                                                <div class="mini-trend-line">
-                                                    <svg viewBox="0 0 100 20" class="mini-svg">
-                                                        @{
-                                                            var miniPoints = sectorTrend.Select((t, i) => $"{i * (100.0 / Math.Max(sectorTrend.Count() - 1, 1))},{20 - (t.Score * 2)}");
-                                                        }
-                                                        <polyline points="@string.Join(" ", miniPoints)" 
-                                                                 fill="none" 
-                                                                 stroke="@GetSectorColor(sector)" 
-                                                                 stroke-width="2"/>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        }
-                                    }
-                                </div>
-                            </div>
-                        }
                     </div>
                 }
                 else
@@ -429,15 +450,19 @@
                             var avg = GetQuestionAverage(q);
                             var height = avg / 10 * 100;
                             var questionClass = avg >= 8 ? "excellent" : avg >= 6 ? "good" : avg >= 4 ? "average" : "poor";
-                            
-                            <div class="question-bar-item @(selectedQuestion == q ? "selected" : "")" @onclick="() => ToggleQuestion(q)">
+
+                            <div class="question-bar-item @(selectedQuestion == q ? "selected" : "")"
+                                 @onclick="() => ToggleQuestion(q)">
                                 <div class="question-bar @questionClass" style="height: @(height)%">
                                     <div class="bar-value">@Math.Round(avg, 1)</div>
                                 </div>
                                 <div class="question-label">Q@(q)</div>
+                                <div class="question-tooltip">
+                                    @GetQuestionText(q)
+                                </div>
                                 @if (selectedQuestion == q)
                                 {
-                                    <div class="question-tooltip">
+                                    <div class="question-tooltip" style="top:-80px;">
                                         <strong>@GetQuestionText(q)</strong>
                                         <div class="tooltip-stats">
                                             <span>Average: @Math.Round(avg, 1)/10</span>
@@ -718,24 +743,76 @@
         background-clip: text;
     }
 
-    /* Enhanced Summary Cards */
-    .summary-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .dashboard-header {
+        display: flex;
+        align-items: center;
         gap: 24px;
-        margin-bottom: 40px;
+        margin-bottom: 32px;
+        padding: 0 0 16px 0;
+        border-bottom: 2px solid #e9ecef;
+        background: none;
+    }
+    .dashboard-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        object-fit: contain;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        background: #fff;
+    }
+    .dashboard-title-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .dashboard-title {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #212529;
+        margin: 0;
+        letter-spacing: 1px;
+    }
+    .dashboard-subtitle {
+        font-size: 1.1rem;
+        color: #007bff;
+        font-weight: 500;
+        opacity: 0.8;
+        margin-left: 2px;
     }
 
+    .dashboard-footer {
+        text-align: right;
+        font-size: 0.95rem;
+        color: #888;
+        margin-top: 24px;
+        opacity: 0.7;
+    }
+
+    /* Enhanced Summary Cards */
+    .summary-cards {
+        display: flex;
+        gap: 32px;
+        margin-bottom: 40px;
+        justify-content: center;
+    }
     .card {
-        background: white;
+        background: linear-gradient(135deg, #f8f9fa 80%, #e9ecef 100%);
         padding: 32px 24px;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
         text-align: center;
-        border-left: 4px solid #007bff;
-        transition: all 0.4s ease;
+        border-left: 6px solid #007bff;
+        min-width: 220px;
+        transition: box-shadow 0.3s, transform 0.3s;
         position: relative;
-        overflow: hidden;
+    }
+
+    .card, .chart-container, .navigation-card, .satisfaction-card {
+        transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .card.clickable:hover, .chart-container:hover, .navigation-card:hover, .satisfaction-card:hover {
+        box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+        transform: translateY(-6px) scale(1.03);
     }
 
     .card::before {
@@ -755,9 +832,9 @@
     }
 
     .card.clickable:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.18);
         border-left-color: #28a745;
+        transform: translateY(-6px) scale(1.03);
     }
 
     .card.clickable:hover::before {
@@ -765,9 +842,9 @@
     }
 
     .card-icon {
-        font-size: 2.5rem;
-        margin-bottom: 12px;
-        display: block;
+        font-size: 2.7rem;
+        margin-bottom: 14px;
+        color: #007bff;
     }
 
     .card h3 {
@@ -791,10 +868,9 @@
     }
 
     .card-arrow {
-        font-size: 1.5rem;
-        color: #007bff;
-        opacity: 0;
-        transition: all 0.3s ease;
+        font-size: 1.7rem;
+        color: #28a745;
+        opacity: 0.7;
     }
 
     .card.clickable:hover .card-arrow {
@@ -822,18 +898,17 @@
     /* Section Headers */
     .section-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
-        flex-wrap: wrap;
-        gap: 20px;
+        gap: 18px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #e9ecef;
+        padding-bottom: 8px;
     }
-
     .section-header h3 {
-        color: #333;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #212529;
         margin: 0;
-        font-size: 1.8rem;
-        font-weight: 600;
     }
 
     /* Filter and Control Buttons */
@@ -868,19 +943,126 @@
         box-shadow: 0 4px 12px rgba(0,123,255,0.3);
     }
 
-    /* Enhanced Chart Containers */
-    .chart-container {
-        background: white;
-        padding: 32px;
-        margin-bottom: 30px;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-        border-top: 4px solid #007bff;
-        transition: all 0.3s ease;
+    .filter-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: flex-end;
     }
 
+    .filter-section {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 180px;
+    }
+
+    .filter-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.85rem;
+        margin: 0;
+    }
+
+    .filter-dropdown {
+        padding: 8px 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        background: white;
+        color: #495057;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .filter-dropdown:hover {
+        border-color: #007bff;
+    }
+
+    .filter-dropdown:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    .clear-filters-btn {
+        padding: 8px 16px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .clear-filters-btn:hover {
+        background: #c82333;
+        transform: translateY(-1px);
+    }
+
+    .active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+    }
+
+    .filter-indicator {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.85rem;
+    }
+
+    .filter-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .filter-badge.sector {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+    }
+
+    .filter-badge.company-size {
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+    }
+
+    .satisfaction-details {
+        margin-top: 8px;
+        text-align: center;
+    }
+
+    .satisfaction-details small {
+        color: #6c757d;
+        font-size: 0.75rem;
+    }
+
+    /* Enhanced Chart Containers */
+    .chart-container {
+        background: #fff;
+        padding: 32px 24px;
+        margin-bottom: 32px;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+        border-top: 5px solid #007bff;
+        transition: box-shadow 0.3s, transform 0.3s;
+    }
     .chart-container:hover {
-        box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.18);
         transform: translateY(-4px);
     }
 
@@ -1221,19 +1403,35 @@
         font-size: 0.9rem;
     }
 
+    .point-tooltip, .question-tooltip {
+        background: #212529;
+        color: #fff;
+        border-radius: 10px;
+        font-size: 1rem;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+        border: none;
+        padding: 12px 18px;
+    }
+
     .question-tooltip {
         position: absolute;
-        top: -60px;
+        top: -48px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0,0,0,0.9);
-        color: white;
-        padding: 8px 12px;
+        background: rgba(0,0,0,0.92);
+        color: #fff;
+        padding: 8px 14px;
         border-radius: 8px;
-        font-size: 0.8rem;
+        font-size: 0.95rem;
+        font-weight: 500;
         white-space: nowrap;
         z-index: 10;
-        animation: tooltipIn 0.2s ease;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    .question-bar-item:hover .question-tooltip {
+        opacity: 1;
     }
 
     /* Tooltip animations removed - using transitions */
@@ -1286,16 +1484,82 @@
 
     .point-tooltip {
         position: absolute;
-        top: -40px;
+        bottom: 130%;
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        background: linear-gradient(135deg, #007bff 60%, #28a745 100%);
+        color: #fff;
+        padding: 16px 22px;
+        border-radius: 14px;
+        font-size: 1rem;
+        font-weight: 500;
+        white-space: nowrap;
+        z-index: 20;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        border: 2px solid #fff;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s, transform 0.25s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .data-point:hover .point-tooltip,
+    .data-point.selected .point-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.05);
+    }
+
+    .point-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0,0,0,0.9);
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        white-space: nowrap;
-        z-index: 10;
+        border: 10px solid transparent;
+        border-top-color: #007bff;
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    }
+
+    .point-tooltip .tooltip-header {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .point-tooltip .score-badge {
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-left: 6px;
+    }
+
+    .point-tooltip .tooltip-period {
+        color: #e0e0e0;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .point-tooltip .tooltip-details {
+        font-size: 0.9rem;
+        color: #f8f9fa;
+        margin-top: 2px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        align-items: center;
+    }
+
+    .point-tooltip .recent-indicator {
+        color: #ffc107 !important;
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-top: 2px;
     }
 
     /* Sector Cards Grid */
@@ -1594,6 +1858,11 @@
         font-size: 0.9rem;
     }
 
+    .responses-table th, .responses-table td {
+        font-size: 1rem;
+        padding: 16px 14px;
+    }
+
     .score-cell {
         font-weight: 600;
         color: #333;
@@ -1674,7 +1943,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, transparent 0%, rgba(0,123,255,0.02) 100%);
+        background: linear-gradient(135deg, transparent, rgba(0,123,255,0.02) 100%);
         opacity: 0;
         transition: opacity 0.3s ease;
     }
@@ -2152,8 +2421,8 @@
         top: 100%;
         left: 50%;
         transform: translateX(-50%);
-        border: 8px solid transparent;
-        border-top-color: rgba(0,0,0,0.95);
+        border: 5px solid transparent;
+        border-top-color: rgba(0,0,0,0.9);
     }
 
     .tooltip-header {
@@ -2446,80 +2715,6 @@
         color: #666;
     }
 
-    .sector-trends-comparison {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        border-top: 4px solid #ffc107;
-    }
-
-    .sector-trends-comparison h5 {
-        color: #333;
-        margin-bottom: 20px;
-        font-size: 1.3rem;
-    }
-
-    .sector-trend-bars {
-        display: grid;
-        gap: 16px;
-    }
-
-    .sector-trend-item {
-        padding: 16px;
-        background: #f8f9fa;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .sector-trend-item:hover {
-        background: #e9ecef;
-        transform: translateX(4px);
-    }
-
-    .sector-trend-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-    }
-
-    .sector-name {
-        font-weight: 600;
-        color: #333;
-        margin-left: 8px;
-    }
-
-    .sector-trend-value {
-        font-weight: 700;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-    }
-
-    .sector-trend-value.positive {
-        background: #d4edda;
-        color: #155724;
-    }
-
-    .sector-trend-value.negative {
-        background: #f8d7da;
-        color: #721c24;
-    }
-
-    .sector-trend-value.neutral {
-        background: #e2e3e5;
-        color: #383d41;
-    }
-
-    .mini-trend-line {
-        height: 20px;
-    }
-
-    .mini-svg {
-        width: 100%;
-        height: 100%;
-    }
-
     .no-trend-data {
         text-align: center;
         padding: 40px;
@@ -2531,15 +2726,29 @@
     }
 </style>
 
+<!--
+/* Goal line for satisfaction target */
+.goal-line {
+    z-index: 3;
+    border-radius: 3px;
+    width: 4px !important;
+    background: #00e676 !important;
+    box-shadow: 0 0 10px 2px #00e676, 0 0 2px 1px #fff;
+    opacity: 1 !important;
+} -->
+
 @code {
     List<SurveyResponse> surveyResponses = new List<SurveyResponse>();
     bool isLoading = true;
     Dictionary<string, int> sectorCounts = new Dictionary<string, int>();
+    Dictionary<string, int> companySizeCounts = new Dictionary<string, int>();
     Dictionary<string, double> sectorAverages = new Dictionary<string, double>();
+    Dictionary<string, double> companySizeAverages = new Dictionary<string, double>();
     double avgSatisfaction = 0;
 
     // Interactive states
-    string selectedFilter = "all";
+    string selectedSectorFilter = "all";
+    string selectedCompanySizeFilter = "all";
     string chartView = "count";
     string detailView = "cards";
     string? selectedSector = null;
@@ -2568,6 +2777,17 @@
     
     // User role for filtering
     string userRole = "";
+
+    DateTime? GetLastUpdatedDate()
+    {
+        var dates = surveyResponses
+            .SelectMany(r => new[] { r.DateCompleted, r.DateSent /*, r.LastEdited hvis du har den */ })
+            .Where(d => d.HasValue)
+            .Select(d => d.Value)
+            .ToList();
+
+        return dates.Any() ? dates.Max() : (DateTime?)null;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -2612,9 +2832,21 @@
             .GroupBy(r => r.Sector)
             .ToDictionary(g => g.Key, g => g.Count());
 
+        // Calculate company size counts
+        companySizeCounts = surveyResponses
+            .Where(r => !string.IsNullOrEmpty(r.CompanySize))
+            .GroupBy(r => r.CompanySize)
+            .ToDictionary(g => g.Key, g => g.Count());
+
         // Calculate sector averages for overall satisfaction
         sectorAverages = surveyResponses
             .GroupBy(r => r.Sector)
+            .ToDictionary(g => g.Key, g => g.Average(r => r.Question1));
+
+        // Calculate company size averages for overall satisfaction
+        companySizeAverages = surveyResponses
+            .Where(r => !string.IsNullOrEmpty(r.CompanySize))
+            .GroupBy(r => r.CompanySize)
             .ToDictionary(g => g.Key, g => g.Average(r => r.Question1));
 
         // Calculate overall average satisfaction
@@ -2622,9 +2854,30 @@
     }
 
     // Interactive Functions
+    List<string> GetUniqueSectors()
+    {
+        return surveyResponses
+            .Select(r => r.Sector)
+            .Where(s => !string.IsNullOrEmpty(s))
+            .Distinct()
+            .OrderBy(s => s)
+            .ToList();
+    }
+
+    List<string> GetUniqueCompanySizes()
+    {
+        return surveyResponses
+            .Select(r => r.CompanySize)
+            .Where(s => !string.IsNullOrEmpty(s))
+            .Distinct()
+            .OrderBy(s => s)
+            .ToList();
+    }
+
     void SetFilter(string filter)
     {
-        selectedFilter = filter;
+        // This method is kept for backward compatibility but may need updates
+        // for dual filtering system if used elsewhere
         StateHasChanged();
     }
 
@@ -2778,11 +3031,8 @@
     // Helper Functions
     Dictionary<string, int> GetFilteredSectors()
     {
-        // Show all sectors in main overview (no role filtering)
-        if (selectedFilter == "all")
-            return sectorCounts;
-        
-        return sectorCounts.Where(kvp => kvp.Key == selectedFilter).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        // Show all sectors in main overview (updated for dual filtering)
+        return sectorCounts;
     }
 
     Dictionary<string, int> GetRoleBasedSectors()
@@ -2806,6 +3056,86 @@
     int GetCompletedCountForSector(string sector)
     {
         return surveyResponses.Count(r => r.Sector == sector && r.DateCompleted.HasValue);
+    }
+
+    int GetCompletedCountForCompanySize(string companySize)
+    {
+        return surveyResponses.Count(r => r.CompanySize == companySize && r.DateCompleted.HasValue);
+    }
+
+    Dictionary<string, int> GetFilteredCompanySizes()
+    {
+        // Show all company sizes (updated for dual filtering)
+        return companySizeCounts;
+    }
+
+    double GetCompanySizeAverage(string companySize)
+    {
+        var responses = surveyResponses.Where(r => r.CompanySize == companySize).ToList();
+        if (!responses.Any()) return 0;
+        return responses.Average(r => r.Question1);
+    }
+
+    Dictionary<string, double> GetCombinedFilteredSatisfactionData()
+    {
+        var filteredResponses = GetCombinedFilteredResponses();
+        
+        // Group by a combination key that represents the current view
+        var groupedData = new Dictionary<string, List<SurveyResponse>>();
+        
+        if (selectedSectorFilter != "all" && selectedCompanySizeFilter != "all")
+        {
+            // Both filters applied - show individual survey responses or aggregated data
+            var key = $"{selectedSectorFilter} - {selectedCompanySizeFilter}";
+            groupedData[key] = filteredResponses.ToList();
+        }
+        else if (selectedSectorFilter != "all")
+        {
+            // Only sector filter applied - group by company size within that sector
+            groupedData = filteredResponses
+                .Where(r => !string.IsNullOrEmpty(r.CompanySize))
+                .GroupBy(r => $"{selectedSectorFilter} - {r.CompanySize}")
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+        else if (selectedCompanySizeFilter != "all")
+        {
+            // Only company size filter applied - group by sector within that company size
+            groupedData = filteredResponses
+                .Where(r => !string.IsNullOrEmpty(r.Sector))
+                .GroupBy(r => $"{r.Sector} - {selectedCompanySizeFilter}")
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+        else
+        {
+            // No filters applied - group by sector
+            groupedData = filteredResponses
+                .Where(r => !string.IsNullOrEmpty(r.Sector))
+                .GroupBy(r => r.Sector)
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+        
+        return groupedData
+            .Where(kvp => kvp.Value.Any())
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Average(r => r.Question1));
+    }
+
+    List<SurveyResponse> GetCombinedFilteredResponses()
+    {
+        var responses = GetRoleBasedResponses();
+
+        // Apply sector filter
+        if (selectedSectorFilter != "all")
+        {
+            responses = responses.Where(r => r.Sector == selectedSectorFilter).ToList();
+        }
+
+        // Apply company size filter
+        if (selectedCompanySizeFilter != "all")
+        {
+            responses = responses.Where(r => r.CompanySize == selectedCompanySizeFilter).ToList();
+        }
+
+        return responses;
     }
 
     List<SurveyResponse> GetRoleBasedResponses()
@@ -3032,6 +3362,39 @@
         };
     }
 
+    string GetCompanySizeIcon(string companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "🏪",
+            "SME" => "🏢",
+            "Large" => "🏭",
+            _ => "👥"
+        };
+    }
+
+    string GetCompanySizeColor(string companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "#f39c12",
+            "SME" => "#3498db", 
+            "Large" => "#9b59b6",
+            _ => "#95a5a6"
+        };
+    }
+
+    string GetCompanySizeColorDark(string companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "#e67e22",
+            "SME" => "#2980b9",
+            "Large" => "#8e44ad",
+            _ => "#7f8c8d"
+        };
+    }
+
     double GetQuestionAverage(int questionNumber)
     {
         if (!surveyResponses.Any()) return 0;
@@ -3101,8 +3464,8 @@
 
         var groupedData = trendsView switch
         {
-            "weekly" => GroupByWeeks(completedResponses),
-            "daily" => GroupByDays(completedResponses),
+            "quarterly" => GroupByQuarters(completedResponses),
+            "yearly" => GroupByYears(completedResponses),
             _ => GroupByMonths(completedResponses) // default to monthly
         };
 
@@ -3124,31 +3487,31 @@
             .OrderBy(t => t.Date);
     }
 
-    IEnumerable<TrendDataPoint> GroupByWeeks(List<SurveyResponse> responses)
+    IEnumerable<TrendDataPoint> GroupByQuarters(List<SurveyResponse> responses)
     {
         return responses
-            .GroupBy(r => GetWeekOfYear(r.DateCompleted!.Value))
+            .GroupBy(r => new { r.DateCompleted!.Value.Year, Quarter = (r.DateCompleted!.Value.Month - 1) / 3 + 1 })
             .Select(g => new TrendDataPoint
             {
                 Score = Math.Round(g.Average(r => r.Question1), 1),
-                Period = $"Week {g.Key.Week} of {g.Key.Year}",
-                ShortPeriod = $"W{g.Key.Week}",
-                Date = GetDateFromWeek(g.Key.Year, g.Key.Week),
+                Period = $"Q{g.Key.Quarter} {g.Key.Year}",
+                ShortPeriod = $"Q{g.Key.Quarter} '{g.Key.Year.ToString().Substring(2)}",
+                Date = new DateTime(g.Key.Year, (g.Key.Quarter - 1) * 3 + 1, 1),
                 ResponseCount = g.Count()
             })
             .OrderBy(t => t.Date);
     }
 
-    IEnumerable<TrendDataPoint> GroupByDays(List<SurveyResponse> responses)
+    IEnumerable<TrendDataPoint> GroupByYears(List<SurveyResponse> responses)
     {
         return responses
-            .GroupBy(r => r.DateCompleted!.Value.Date)
+            .GroupBy(r => r.DateCompleted!.Value.Year)
             .Select(g => new TrendDataPoint
             {
                 Score = Math.Round(g.Average(r => r.Question1), 1),
-                Period = g.Key.ToString("MMMM dd, yyyy"),
-                ShortPeriod = g.Key.ToString("dd/MM"),
-                Date = g.Key,
+                Period = g.Key.ToString(),
+                ShortPeriod = g.Key.ToString(),
+                Date = new DateTime(g.Key, 1, 1),
                 ResponseCount = g.Count()
             })
             .OrderBy(t => t.Date);
@@ -3162,8 +3525,8 @@
 
         var groupedData = trendsView switch
         {
-            "weekly" => GroupByWeeks(sectorResponses),
-            "daily" => GroupByDays(sectorResponses),
+            "quarterly" => GroupByQuarters(sectorResponses),
+            "yearly" => GroupByYears(sectorResponses),
             _ => GroupByMonths(sectorResponses)
         };
 
@@ -3175,10 +3538,11 @@
         var data = GetTrendData().ToList();
         if (data.Count < 2) return "stable";
 
-        var recentAvg = data.TakeLast(Math.Min(3, data.Count)).Average(t => t.Score);
-        var earlierAvg = data.Take(Math.Min(3, data.Count)).Average(t => t.Score);
+        // Compare latest with previous data point
+        var latestScore = data.Last().Score;
+        var previousScore = data[data.Count - 2].Score;
 
-        var diff = recentAvg - earlierAvg;
+        var diff = latestScore - previousScore;
         return diff > 0.2 ? "up" : diff < -0.2 ? "down" : "stable";
     }
 
@@ -3187,11 +3551,12 @@
         var data = GetTrendData().ToList();
         if (data.Count < 2) return 0;
 
-        var recentAvg = data.TakeLast(Math.Min(3, data.Count)).Average(t => t.Score);
-        var earlierAvg = data.Take(Math.Min(3, data.Count)).Average(t => t.Score);
+        // Get the latest and previous data points
+        var latestScore = data.Last().Score;
+        var previousScore = data[data.Count - 2].Score;
 
-        if (earlierAvg == 0) return 0;
-        return Math.Round(((recentAvg - earlierAvg) / earlierAvg) * 100, 1);
+        if (previousScore == 0) return 0;
+        return Math.Round(((latestScore - previousScore) / previousScore) * 100, 1);
     }
 
     TrendDataPoint GetHighestPeriod()
@@ -3281,22 +3646,6 @@
         return new DateTime(2000, month, 1).ToString("MMMM");
     }
 
-    (int Year, int Week) GetWeekOfYear(DateTime date)
-    {
-        var culture = System.Globalization.CultureInfo.CurrentCulture;
-        var weekOfYear = culture.Calendar.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-        return (date.Year, weekOfYear);
-    }
-
-    DateTime GetDateFromWeek(int year, int week)
-    {
-        var jan1 = new DateTime(year, 1, 1);
-        var daysOffset = DayOfWeek.Monday - jan1.DayOfWeek;
-        var firstMonday = jan1.AddDays(daysOffset);
-        var weekNum = week - 1;
-        return firstMonday.AddDays(weekNum * 7);
-    }
-
     // Visual chart helper methods
     string GetTrendLinePath(List<TrendDataPoint> data)
     {
@@ -3338,5 +3687,107 @@
             >= 4 => "Average",
             _ => "Poor"
         };
+    }
+
+    // New methods for dual filtering system
+    void ClearAllFilters()
+    {
+        selectedSectorFilter = "all";
+        selectedCompanySizeFilter = "all";
+        StateHasChanged();
+    }
+
+    void SelectItem(string itemKey)
+    {
+        // Handle selection of satisfaction cards if needed
+        selectedSector = itemKey;
+        StateHasChanged();
+    }
+
+    string GetItemIcon(string itemKey)
+    {
+        // Determine if this is a sector or company size based on the key format
+        if (itemKey.Contains(" - "))
+        {
+            var parts = itemKey.Split(" - ");
+            if (parts.Length == 2)
+            {
+                // Combined sector-company size format
+                return "🏢🏭"; // Combined icon
+            }
+        }
+        
+        // Check if it's a known sector
+        var sectors = GetUniqueSectors();
+        if (sectors.Contains(itemKey))
+        {
+            return GetSectorIcon(itemKey);
+        }
+        
+        // Check if it's a known company size
+        var companySizes = GetUniqueCompanySizes();
+        if (companySizes.Contains(itemKey))
+        {
+            return GetCompanySizeIcon(itemKey);
+        }
+        
+        return "📊"; // Default icon
+    }
+
+    string GetItemColor(string itemKey)
+    {
+        // Determine if this is a sector or company size based on the key format
+        if (itemKey.Contains(" - "))
+        {
+            var parts = itemKey.Split(" - ");
+            if (parts.Length == 2)
+            {
+                // Use sector color for combined items
+                return GetSectorColor(parts[0]);
+            }
+        }
+        
+        // Check if it's a known sector
+        var sectors = GetUniqueSectors();
+        if (sectors.Contains(itemKey))
+        {
+            return GetSectorColor(itemKey);
+        }
+        
+        // Check if it's a known company size
+        var companySizes = GetUniqueCompanySizes();
+        if (companySizes.Contains(itemKey))
+        {
+            return GetCompanySizeColor(itemKey);
+        }
+        
+        return "#95a5a6"; // Default color
+    }
+
+    int GetFilteredResponseCount(string itemKey)
+    {
+        var responses = GetCombinedFilteredResponses();
+        
+        if (itemKey.Contains(" - "))
+        {
+            // This is a combined filter result, return the total count
+            return responses.Count();
+        }
+        
+        // For individual items, filter by that specific item
+        var sectors = GetUniqueSectors();
+        var companySizes = GetUniqueCompanySizes();
+        
+        if (sectors.Contains(itemKey))
+        {
+            return responses.Where(r => r.Sector == itemKey).Count();
+        }
+        
+        if (companySizes.Contains(itemKey))
+        {
+            return responses.Where(r => r.CompanySize == itemKey).Count();
+        }
+        
+        return responses.Count();
     }
 }

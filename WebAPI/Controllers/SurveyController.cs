@@ -10,9 +10,9 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class SurveyController : ControllerBase
     {
-        private readonly ESGContext _context;
+        private readonly DNDContext _context;
 
-        public SurveyController(ESGContext context)
+        public SurveyController(DNDContext context)
         {
             _context = context;
         }

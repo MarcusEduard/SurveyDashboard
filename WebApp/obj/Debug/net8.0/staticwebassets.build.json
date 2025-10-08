@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "pfcaYFSapNvXyy56tbTzOF3HsEpgM0cfq8W7EVofDL4=",
+  "Hash": "O/rG7/mV666SdLfJm4K+0uFcSFbZJQjLctt1poGQrQ4=",
   "Source": "WebApp",
   "BasePath": "_content/WebApp",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebAPI\\WebAPI.csproj",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebAPI\\WebAPI.csproj",
       "Version": 2,
       "Source": "WebAPI",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
@@ -22,7 +22,7 @@
     {
       "Name": "WebApp\\wwwroot",
       "Source": "WebApp",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "Pattern": "**"
     }
@@ -3924,10 +3924,10 @@
       "OriginalItemSpec": "C:\\Users\\marcu\\.nuget\\packages\\syncfusion.blazor\\31.1.18\\staticwebassets\\styles\\tailwind3.css"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\WebApp.styles.css",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\WebApp.styles.css",
       "SourceId": "WebApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "WebApp.styles.css",
       "AssetKind": "All",
@@ -3940,13 +3940,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\WebApp.styles.css"
+      "OriginalItemSpec": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\bundle\\WebApp.styles.css"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\WebApp.bundle.scp.css",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\WebApp.bundle.scp.css",
       "SourceId": "WebApp",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "WebApp.bundle.scp.css",
       "AssetKind": "All",
@@ -3959,13 +3959,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\WebApp.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\WebApp.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\app.css",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -3981,10 +3981,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\bootstrap-icons.svg",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\bootstrap-icons.svg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "bootstrap-icons.svg",
       "AssetKind": "All",
@@ -4000,10 +4000,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap-icons.svg"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -4019,10 +4019,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -4038,10 +4038,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\css\\animations.css",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\css\\animations.css",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "css/animations.css",
       "AssetKind": "All",
@@ -4057,10 +4057,10 @@
       "OriginalItemSpec": "wwwroot\\css\\animations.css"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\favicon.png",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
@@ -4076,10 +4076,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.png"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Background.jpg",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\Background.jpg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/Background.jpg",
       "AssetKind": "All",
@@ -4095,10 +4095,10 @@
       "OriginalItemSpec": "wwwroot\\images\\Background.jpg"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Background1.jpg",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\Background1.jpg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/Background1.jpg",
       "AssetKind": "All",
@@ -4114,10 +4114,10 @@
       "OriginalItemSpec": "wwwroot\\images\\Background1.jpg"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Background2.jpg",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\Background2.jpg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/Background2.jpg",
       "AssetKind": "All",
@@ -4133,10 +4133,10 @@
       "OriginalItemSpec": "wwwroot\\images\\Background2.jpg"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\BackgroundBachelor.avif",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\BackgroundBachelor.avif",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/BackgroundBachelor.avif",
       "AssetKind": "All",
@@ -4152,10 +4152,10 @@
       "OriginalItemSpec": "wwwroot\\images\\BackgroundBachelor.avif"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\BackgroundBachelor.jpg",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\BackgroundBachelor.jpg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/BackgroundBachelor.jpg",
       "AssetKind": "All",
@@ -4171,10 +4171,10 @@
       "OriginalItemSpec": "wwwroot\\images\\BackgroundBachelor.jpg"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Baggrund.webp",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\Baggrund.webp",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/Baggrund.webp",
       "AssetKind": "All",
@@ -4190,10 +4190,10 @@
       "OriginalItemSpec": "wwwroot\\images\\Baggrund.webp"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\dk_logo.png",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\dk_logo.png",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/dk_logo.png",
       "AssetKind": "All",
@@ -4209,10 +4209,10 @@
       "OriginalItemSpec": "wwwroot\\images\\dk_logo.png"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\dk_nd.png",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\dk_nd.png",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/dk_nd.png",
       "AssetKind": "All",
@@ -4228,10 +4228,10 @@
       "OriginalItemSpec": "wwwroot\\images\\dk_nd.png"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Kaercher_Logo_2015_CO.png",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\Kaercher_Logo_2015_CO.png",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/Kaercher_Logo_2015_CO.png",
       "AssetKind": "All",
@@ -4247,10 +4247,10 @@
       "OriginalItemSpec": "wwwroot\\images\\Kaercher_Logo_2015_CO.png"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\Logo_Nilfisk.jpg",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\Logo_Nilfisk.jpg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/Logo_Nilfisk.jpg",
       "AssetKind": "All",
@@ -4266,10 +4266,10 @@
       "OriginalItemSpec": "wwwroot\\images\\Logo_Nilfisk.jpg"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\NilfiskBaggrund.jpg",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\NilfiskBaggrund.jpg",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/NilfiskBaggrund.jpg",
       "AssetKind": "All",
@@ -4285,10 +4285,10 @@
       "OriginalItemSpec": "wwwroot\\images\\NilfiskBaggrund.jpg"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\NilfiskFrontPage.webp",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\NilfiskFrontPage.webp",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/NilfiskFrontPage.webp",
       "AssetKind": "All",
@@ -4304,10 +4304,10 @@
       "OriginalItemSpec": "wwwroot\\images\\NilfiskFrontPage.webp"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\tennant.png",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\tennant.png",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/tennant.png",
       "AssetKind": "All",
@@ -4323,10 +4323,10 @@
       "OriginalItemSpec": "wwwroot\\images\\tennant.png"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\tennant.webp",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\tennant.webp",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/tennant.webp",
       "AssetKind": "All",
@@ -4342,10 +4342,10 @@
       "OriginalItemSpec": "wwwroot\\images\\tennant.webp"
     },
     {
-      "Identity": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\images\\TennantLogo.png",
+      "Identity": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\images\\TennantLogo.png",
       "SourceId": "WebApp",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\marcu\\Downloads\\Nilfisk\\BachelorProject\\ESG\\WebApp\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\BachelorDelete\\WebApp\\wwwroot\\",
       "BasePath": "_content/WebApp",
       "RelativePath": "images/TennantLogo.png",
       "AssetKind": "All",

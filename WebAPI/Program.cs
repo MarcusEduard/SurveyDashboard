@@ -16,14 +16,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add database context
-builder.Services.AddDbContext<ESGContext>(options =>
+builder.Services.AddDbContext<DNDContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<FileContext>();
 builder.Services.AddScoped<IUserService, FileUserService>();
 builder.Services.AddScoped<IDataService, FileDataService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<EdataService>();
 
 builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {

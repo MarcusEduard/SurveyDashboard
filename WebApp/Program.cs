@@ -23,7 +23,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5555") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5123") });
 
 builder.Services.AddAuthentication().AddCookie(options =>
 {

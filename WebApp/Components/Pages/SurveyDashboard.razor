@@ -2,6 +2,8 @@
 @attribute [Authorize(Policy = "NotGuest")]
 @using WebAPI.Models
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using System.Text.Json
 @inject HttpClient httpClient
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -426,7 +428,14 @@
                             <div class="trend-insights">
                                 <div class="insight-item">
                                     <strong>Trend Analysis:</strong>
-                                    <span>@GetTrendAnalysis()</span>
+                                    @if (isLoadingTrendInsights)
+                                    {
+                                        <span class="loading-text">🤖 AI is analyzing trends...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@(aiTrendAnalysis ?? "Loading AI analysis...")</span>
+                                    }
                                 </div>
                                 @if (GetRecurringChallenges().Any())
                                 {
@@ -437,7 +446,14 @@
                                 }
                                 <div class="insight-item">
                                     <strong>Service Quality:</strong>
-                                    <span>@GetServiceQualityInsight()</span>
+                                    @if (isLoadingTrendInsights)
+                                    {
+                                        <span class="loading-text">🤖 AI is analyzing service quality...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@(aiServiceQualityInsight ?? "Loading AI analysis...")</span>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -449,6 +465,126 @@
                         <p>📊 No trend data available yet. Complete more surveys to see satisfaction trends over time!</p>
                     </div>
                 }
+            </div>
+
+            <!-- AI Predictions Section -->
+            <div class="chart-container">
+                <div class="trend-chart-container">
+                    <div class="visual-trend-chart">
+                        <div class="trend-chart-header">
+                            <span class="chart-title">🔮 AI Satisfaction Predictions</span>
+                            <span class="chart-range">Next 6 Months Forecast</span>
+                        </div>
+                        
+                        @if (isLoadingForecast)
+                        {
+                            <div class="loading-forecast">
+                                <span class="loading-text">🤖 AI is generating forecasts...</span>
+                            </div>
+                        }
+                        else if (forecastData != null && forecastData.Any())
+                        {
+                            <!-- Forecast Line Chart -->
+                            <div class="line-chart-container">
+                                <div class="chart-grid">
+                                    <!-- Y-axis scale -->
+                                    <div class="y-axis">
+                                        @for (int i = 10; i >= 0; i -= 2)
+                                        {
+                                            <div class="y-label" style="bottom: @(i * 10)%;">@i</div>
+                                        }
+                                    </div>
+                                    
+                                    <!-- Chart area -->
+                                    <div class="chart-area">
+                                        <!-- Grid lines -->
+                                        <div class="grid-lines">
+                                            @for (int i = 0; i <= 10; i += 2)
+                                            {
+                                                <div class="grid-line-horizontal" style="bottom: @(i * 10)%;"></div>
+                                            }
+                                        </div>
+                                        
+                                        <!-- Forecast content -->
+                                        <div class="line-chart-content">
+                                            <!-- Confidence interval area -->
+                                            <div class="forecast-confidence-area" style="@GetForecastAreaPath(forecastData)"></div>
+                                            
+                                            <!-- Forecast line -->
+                                            <div class="forecast-line" style="@GetForecastLinePath(forecastData)"></div>
+                                            
+                                            <!-- Forecast points -->
+                                            @foreach (var (point, index) in forecastData.Select((p, i) => (p, i)))
+                                            {
+                                                var leftPosition = forecastData.Count > 1 ? (index * 100.0 / (forecastData.Count - 1)) : 50;
+                                                var bottomPosition = point.PredictedScore * 10;
+                                                
+                                                <div class="forecast-point" 
+                                                     style="left: @(leftPosition.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%; bottom: @(bottomPosition.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;"
+                                                     @onmouseover="() => hoveredForecastPoint = index"
+                                                     @onmouseout="() => hoveredForecastPoint = -1">
+                                                    <div class="point-dot forecast-dot"></div>
+                                                    @if (hoveredForecastPoint == index)
+                                                    {
+                                                        <div class="point-tooltip forecast-tooltip">
+                                                            <strong>@point.Period</strong>
+                                                            <div>Predicted: @point.PredictedScore.ToString("F1")/10</div>
+                                                            <div>Confidence: ±@point.ConfidenceInterval.ToString("F1")</div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                        
+                                        <!-- X-axis labels -->
+                                        <div class="x-axis">
+                                            @foreach (var (point, index) in forecastData.Select((p, i) => (p, i)))
+                                            {
+                                                var leftPosition = forecastData.Count > 1 ? (index * 100.0 / (forecastData.Count - 1)) : 50;
+                                                <div class="x-label" style="left: @(leftPosition.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;">
+                                                    @point.Date.ToString("MMM")
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- AI Insights -->
+                            <div class="forecast-insights">
+                                <div class="insight-item">
+                                    <strong>AI Database Analysis:</strong>
+                                    @if (isLoadingDatabaseAnalysis)
+                                    {
+                                        <span class="loading-text">🤖 AI is analyzing entire database...</span>
+                                    }
+                                    else
+                                    {
+                                        <div class="database-analysis-content">
+                                            @if (!string.IsNullOrEmpty(databaseAnalysis))
+                                            {
+                                                @foreach (var paragraph in databaseAnalysis.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                                                {
+                                                    <p>@paragraph</p>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>Loading comprehensive AI analysis...</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="no-forecast-data">
+                                <p>🔮 AI forecast will be generated once sufficient historical data is available!</p>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
 
             <!-- Question Performance Chart -->
@@ -594,6 +730,245 @@
                 {
                     <div class="no-client-data">
                         <p>📊 No client data available yet. Complete more surveys to see client analytics!</p>
+                    </div>
+                }
+            </div>
+
+            <!-- AI Analytics Section -->
+            <div class="chart-container" id="ai-insights">
+                <div class="chart-header">
+                    <h4>🤖 AI-Powered Insights</h4>
+                    <div class="chart-controls">
+                        <button class="view-btn @(aiView == "insights" ? "active" : "")" @onclick='() => SetAIView("insights")'>Insights</button>
+                        <button class="view-btn @(aiView == "recommendations" ? "active" : "")" @onclick='() => SetAIView("recommendations")'>Recommendations</button>
+                        <button class="view-btn @(aiView == "predictions" ? "active" : "")" @onclick='() => SetAIView("predictions")'>Predictions</button>
+                        <button class="view-btn @(aiView == "chat" ? "active" : "")" @onclick='() => SetAIView("chat")'>AI Chat</button>
+                    </div>
+                </div>
+                
+                @if (isLoadingAI)
+                {
+                    <div class="ai-loading">
+                        <div class="ai-spinner"></div>
+                        <p>🤖 AI is analyzing your survey data...</p>
+                    </div>
+                }
+                else
+                {
+                    @if (aiView == "insights")
+                    {
+                        <!-- AI Insights Display -->
+                        <div class="ai-insights-container">
+                            @if (currentAIInsights != null)
+                            {
+                                <div class="ai-summary-card">
+                                    <div class="ai-card-header">
+                                        <span class="ai-icon">🧠</span>
+                                        <h5>Key Insights</h5>
+                                        <span class="confidence-score">Confidence: @((currentAIInsights.ConfidenceScore * 100).ToString("F0"))%</span>
+                                    </div>
+                                    <p class="ai-summary">@currentAIInsights.Summary</p>
+                                </div>
+                                
+                                <div class="ai-details-grid">
+                                    <div class="ai-detail-card trends">
+                                        <h6>📈 Key Trends</h6>
+                                        <ul>
+                                            @foreach (var trend in currentAIInsights.KeyTrends)
+                                            {
+                                                <li>@trend</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="ai-detail-card issues">
+                                        <h6>⚠️ Critical Issues</h6>
+                                        <ul>
+                                            @foreach (var issue in currentAIInsights.CriticalIssues)
+                                            {
+                                                <li>@issue</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="ai-detail-card strengths">
+                                        <h6>💪 Strong Points</h6>
+                                        <ul>
+                                            @foreach (var strength in currentAIInsights.StrongPoints)
+                                            {
+                                                <li>@strength</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="ai-detail-card sentiment">
+                                        <h6>😊 Overall Sentiment</h6>
+                                        <div class="sentiment-indicator @currentAIInsights.OverallSentiment">
+                                            @GetSentimentIcon(currentAIInsights.OverallSentiment) @currentAIInsights.OverallSentiment.ToUpper()
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else if (aiView == "recommendations")
+                    {
+                        <!-- AI Recommendations Display -->
+                        <div class="ai-recommendations-container">
+                            @if (currentAIRecommendations != null)
+                            {
+                                <div class="recommendations-grid">
+                                    <div class="recommendation-card immediate">
+                                        <h6>🚨 Immediate Actions</h6>
+                                        <div class="priority-badge @currentAIRecommendations.PriorityLevel">@currentAIRecommendations.PriorityLevel.ToUpper()</div>
+                                        <ul>
+                                            @foreach (var action in currentAIRecommendations.ImmediateActions)
+                                            {
+                                                <li>@action</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="recommendation-card longterm">
+                                        <h6>🎯 Long-term Strategies</h6>
+                                        <ul>
+                                            @foreach (var strategy in currentAIRecommendations.LongTermStrategies)
+                                            {
+                                                <li>@strategy</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="recommendation-card sectors">
+                                        <h6>🏢 Focus Sectors</h6>
+                                        <div class="sector-tags">
+                                            @foreach (var sector in currentAIRecommendations.SectorsToFocus)
+                                            {
+                                                <span class="sector-tag">@sector</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="recommendation-card impact">
+                                        <h6>📊 Expected Impact</h6>
+                                        <p>@currentAIRecommendations.ExpectedImpact</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else if (aiView == "predictions")
+                    {
+                        <!-- AI Predictions Display -->
+                        <div class="ai-predictions-container">
+                            @if (currentAIPredictions != null)
+                            {
+                                <div class="predictions-header">
+                                    <div class="prediction-main-card">
+                                        <h6>🔮 Next Quarter Forecast</h6>
+                                        <div class="forecast-display">
+                                            <div class="forecast-score @GetTrendClass(currentAIPredictions.NextQuarterPrediction.TrendDirection)">
+                                                @currentAIPredictions.NextQuarterPrediction.ExpectedSatisfaction.ToString("F1")
+                                            </div>
+                                            <div class="forecast-trend">
+                                                @GetTrendIcon(currentAIPredictions.NextQuarterPrediction.TrendDirection) @currentAIPredictions.NextQuarterPrediction.TrendDirection
+                                            </div>
+                                            <div class="forecast-confidence">
+                                                Confidence: @((currentAIPredictions.NextQuarterPrediction.Confidence * 100).ToString("F0"))%
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="retention-forecast">
+                                        <h6>👥 Client Retention Forecast</h6>
+                                        <div class="retention-percentage">
+                                            @currentAIPredictions.ClientRetentionForecast.ToString("F1")%
+                                        </div>
+                                        <div class="retention-bar">
+                                            <div class="retention-fill" style="width: @(currentAIPredictions.ClientRetentionForecast)%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="predictions-details">
+                                    <div class="prediction-card risks">
+                                        <h6>⚡ Risk Factors</h6>
+                                        <ul>
+                                            @foreach (var risk in currentAIPredictions.RiskFactors)
+                                            {
+                                                <li>@risk</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="prediction-card opportunities">
+                                        <h6>🌟 Opportunities</h6>
+                                        <ul>
+                                            @foreach (var opportunity in currentAIPredictions.Opportunities)
+                                            {
+                                                <li>@opportunity</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else if (aiView == "chat")
+                    {
+                        <!-- AI Chat Interface -->
+                        <div class="ai-chat-container">
+                            <div class="chat-header">
+                                <h6>💬 Ask AI about your survey data</h6>
+                                <p>Ask questions like "Which sector has the lowest satisfaction?" or "What are the main issues?"</p>
+                            </div>
+                            
+                            <div class="chat-messages" style="max-height: 400px; overflow-y: auto;">
+                                @foreach (var message in chatHistory)
+                                {
+                                    <div class="chat-message @(message.IsUser ? "user" : "ai")">
+                                        <div class="message-icon">@(message.IsUser ? "👤" : "🤖")</div>
+                                        <div class="message-content">
+                                            <div class="message-text">@message.Text</div>
+                                            <div class="message-time">@message.Timestamp.ToString("HH:mm")</div>
+                                        </div>
+                                    </div>
+                                }
+                                @if (isProcessingChat)
+                                {
+                                    <div class="chat-message ai typing">
+                                        <div class="message-icon">🤖</div>
+                                        <div class="message-content">
+                                            <div class="typing-indicator">
+                                                <span></span><span></span><span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            
+                            <div class="chat-input-container">
+                                <input @bind="chatInput" @onkeypress="HandleChatKeyPress" 
+                                       placeholder="Ask a question about your survey data..." 
+                                       class="chat-input" disabled="@isProcessingChat" />
+                                <button @onclick="SendChatMessage" class="chat-send-btn" disabled="@isProcessingChat">
+                                    @if (isProcessingChat)
+                                    {
+                                        <span>⏳</span>
+                                    }
+                                    else
+                                    {
+                                        <span>📤</span>
+                                    }
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    
+                    <div class="ai-actions">
+                        <button class="refresh-ai-btn" @onclick="RefreshAIAnalysis" disabled="@isLoadingAI">
+                            🔄 @(isLoadingAI ? "Analyzing..." : "Refresh AI Analysis")
+                        </button>
                     </div>
                 }
             </div>
@@ -2606,6 +2981,114 @@
         font-weight: 600;
     }
 
+    /* Forecast Chart Styles */
+    .forecast-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, #6f42c1, #e83e8c, #6f42c1);
+        height: 3px;
+        border-radius: 2px;
+        box-shadow: 0 2px 8px rgba(111,66,193,0.4);
+        z-index: 1;
+        border: 1px dashed rgba(111,66,193,0.3);
+    }
+
+    .forecast-confidence-area {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.15;
+        background: linear-gradient(to bottom, #6f42c1, transparent);
+        border-radius: 4px 4px 0 0;
+        z-index: 0;
+    }
+
+    .forecast-point {
+        position: absolute;
+        transform: translate(-50%, 50%);
+        z-index: 2;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .forecast-point:hover {
+        transform: translate(-50%, 50%) scale(1.2);
+        z-index: 10;
+    }
+
+    .forecast-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #6f42c1;
+        border: 3px solid white;
+        box-shadow: 0 3px 12px rgba(111,66,193,0.3);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .forecast-tooltip {
+        position: absolute;
+        bottom: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(111,66,193,0.95);
+        color: white;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        z-index: 20;
+        box-shadow: 0 6px 24px rgba(111,66,193,0.4);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .forecast-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 4px solid transparent;
+        border-top-color: rgba(111,66,193,0.95);
+    }
+
+    .loading-forecast {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6c757d;
+    }
+
+    .no-forecast-data {
+        text-align: center;
+        padding: 40px 20px;
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    .forecast-insights {
+        margin-top: 20px;
+        padding: 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        border-left: 4px solid #6f42c1;
+    }
+
+    .database-analysis-content {
+        line-height: 1.6;
+        color: #495057;
+    }
+
+    .database-analysis-content p {
+        margin: 0 0 12px 0;
+        text-align: justify;
+    }
+
     .x-axis {
         position: absolute;
         bottom: -25px;
@@ -3240,6 +3723,46 @@
     Dictionary<string, double> sectorAverages = new Dictionary<string, double>();
     Dictionary<string, double> companySizeAverages = new Dictionary<string, double>();
     double avgSatisfaction = 0;
+    
+    // AI variables
+    private string aiView = "insights"; // insights, recommendations, predictions, chat
+    private bool isLoadingAI = false;
+    private AIInsights? currentAIInsights;
+    private AIRecommendations? currentAIRecommendations;
+    private AIPredictions? currentAIPredictions;
+    
+    // Chat variables
+    private List<ChatMessage> chatHistory = new();
+    private string chatInput = "";
+    private bool isProcessingChat = false;
+    
+    // Trend insights variables
+    private string? aiTrendAnalysis;
+    private string? aiServiceQualityInsight;
+    private bool isLoadingTrendInsights = false;
+    
+    // AI Predictions variables
+    private List<ForecastDataPoint>? forecastData;
+    private string? databaseAnalysis;
+    private bool isLoadingForecast = false;
+    private bool isLoadingDatabaseAnalysis = false;
+    private int hoveredForecastPoint = -1;
+    
+    // Model classes
+    public class ChatMessage
+    {
+        public string Text { get; set; } = "";
+        public bool IsUser { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
+
+    public class ForecastDataPoint
+    {
+        public DateTime Date { get; set; }
+        public double PredictedScore { get; set; }
+        public double ConfidenceInterval { get; set; }
+        public string Period { get; set; } = string.Empty;
+    }
 
     // Interactive states
     string selectedSectorFilter = "all";
@@ -3300,6 +3823,7 @@
         }
         
         await LoadSurveyData();
+        InitializeAIState();
     }
 
     async Task LoadSurveyData()
@@ -3311,6 +3835,11 @@
             surveyResponses = response ?? new List<SurveyResponse>();
             
             CalculateStatistics();
+            
+            // Load AI-generated insights after data is loaded
+            await LoadTrendInsights();
+            await LoadForecastData();
+            await LoadDatabaseAnalysis();
         }
         catch (Exception ex)
         {
@@ -3321,6 +3850,249 @@
             isLoading = false;
             StateHasChanged();
         }
+    }
+    
+    // AI Methods
+    private void SetAIView(string view)
+    {
+        aiView = view;
+        StateHasChanged();
+    }
+    
+    private async Task LoadAIAnalysis()
+    {
+        isLoadingAI = true;
+        StateHasChanged();
+        
+        try
+        {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5123/");
+            
+            var insightsResponse = await client.GetFromJsonAsync<AIInsights>("api/ai/insights");
+            currentAIInsights = insightsResponse;
+            
+            var recommendationsResponse = await client.GetFromJsonAsync<AIRecommendations>("api/ai/recommendations");
+            currentAIRecommendations = recommendationsResponse;
+            
+            var predictionsResponse = await client.GetFromJsonAsync<AIPredictions>("api/ai/predictions");
+            currentAIPredictions = predictionsResponse;
+        }
+        catch (Exception ex)
+        {
+            // Handle error - could add notification
+            Console.WriteLine($"AI Analysis error: {ex.Message}");
+        }
+        finally
+        {
+            isLoadingAI = false;
+            StateHasChanged();
+        }
+    }
+    
+    private async Task RefreshAIAnalysis()
+    {
+        await LoadAIAnalysis();
+    }
+    
+    private void InitializeAIState()
+    {
+        // Initialize with placeholder data to show the UI structure
+        currentAIInsights = null;
+        currentAIRecommendations = null;
+        currentAIPredictions = null;
+        chatHistory = new List<ChatMessage>
+        {
+            new ChatMessage
+            {
+                Text = "👋 Hi! I'm your AI assistant. I can help analyze your survey data, provide insights, and answer questions. Try asking me something like 'What sectors have the lowest satisfaction?' or click 'Refresh AI Analysis' to get started!",
+                IsUser = false,
+                Timestamp = DateTime.Now
+            }
+        };
+    }
+    
+    private async Task LoadTrendInsights()
+    {
+        if (isLoadingTrendInsights) return;
+        
+        isLoadingTrendInsights = true;
+        StateHasChanged();
+        
+        try
+        {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5123/");
+            
+            // Load trend analysis
+            var trendTask = client.GetStringAsync("api/ai/trend-analysis");
+            
+            // Load service quality insight
+            var qualityTask = client.GetStringAsync("api/ai/service-quality");
+            
+            await Task.WhenAll(trendTask, qualityTask);
+            
+            aiTrendAnalysis = await trendTask;
+            aiServiceQualityInsight = await qualityTask;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading trend insights: {ex.Message}");
+            aiTrendAnalysis = "Unable to load AI trend analysis at this time.";
+            aiServiceQualityInsight = "Unable to load AI service quality insight at this time.";
+        }
+        finally
+        {
+            isLoadingTrendInsights = false;
+            StateHasChanged();
+        }
+    }
+    
+    private async Task LoadForecastData()
+    {
+        if (isLoadingForecast) return;
+        
+        isLoadingForecast = true;
+        StateHasChanged();
+        
+        try
+        {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5123/");
+            
+            var response = await client.GetFromJsonAsync<List<ForecastDataPoint>>("api/ai/forecast?monthsAhead=6");
+            forecastData = response ?? new List<ForecastDataPoint>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading forecast data: {ex.Message}");
+            forecastData = new List<ForecastDataPoint>();
+        }
+        finally
+        {
+            isLoadingForecast = false;
+            StateHasChanged();
+        }
+    }
+    
+    private async Task LoadDatabaseAnalysis()
+    {
+        if (isLoadingDatabaseAnalysis) return;
+        
+        isLoadingDatabaseAnalysis = true;
+        StateHasChanged();
+        
+        try
+        {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5123/");
+            
+            databaseAnalysis = await client.GetStringAsync("api/ai/database-analysis");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading database analysis: {ex.Message}");
+            databaseAnalysis = "Unable to load comprehensive database analysis at this time.";
+        }
+        finally
+        {
+            isLoadingDatabaseAnalysis = false;
+            StateHasChanged();
+        }
+    }
+    
+    private async Task SendChatMessage()
+    {
+        if (string.IsNullOrWhiteSpace(chatInput)) return;
+        
+        var userMessage = new ChatMessage
+        {
+            Text = chatInput,
+            IsUser = true,
+            Timestamp = DateTime.Now
+        };
+        
+        chatHistory.Add(userMessage);
+        var queryText = chatInput;
+        chatInput = "";
+        isProcessingChat = true;
+        StateHasChanged();
+        
+        try
+        {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5123/");
+            
+            var query = new ChatQuery { Query = queryText };
+            var response = await client.PostAsJsonAsync("api/ai/chat", query);
+            var chatResponse = await response.Content.ReadFromJsonAsync<ChatResponse>();
+            
+            var aiMessage = new ChatMessage
+            {
+                Text = chatResponse?.Response ?? "Sorry, I couldn't process your request.",
+                IsUser = false,
+                Timestamp = DateTime.Now
+            };
+            
+            chatHistory.Add(aiMessage);
+        }
+        catch (Exception ex)
+        {
+            var errorMessage = new ChatMessage
+            {
+                Text = "Sorry, I'm having trouble processing your request right now.",
+                IsUser = false,
+                Timestamp = DateTime.Now
+            };
+            chatHistory.Add(errorMessage);
+        }
+        finally
+        {
+            isProcessingChat = false;
+            StateHasChanged();
+        }
+    }
+    
+    private async Task HandleChatKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !e.ShiftKey)
+        {
+            await SendChatMessage();
+        }
+    }
+    
+    // AI Helper Methods
+    private string GetSentimentIcon(string sentiment)
+    {
+        return sentiment.ToLower() switch
+        {
+            "positive" => "😊",
+            "negative" => "😟",
+            "neutral" => "😐",
+            _ => "🤔"
+        };
+    }
+    
+    private string GetTrendClass(string trend)
+    {
+        return trend.ToLower() switch
+        {
+            "upward" => "trend-up",
+            "downward" => "trend-down",
+            "stable" => "trend-stable",
+            _ => "trend-neutral"
+        };
+    }
+    
+    private string GetTrendIcon(string trend)
+    {
+        return trend.ToLower() switch
+        {
+            "upward" => "📈",
+            "downward" => "📉", 
+            "stable" => "➡️",
+            _ => "❓"
+        };
     }
 
     void CalculateStatistics()
@@ -4187,6 +4959,39 @@
             >= 4 => "Average",
             _ => "Poor"
         };
+    }
+
+    // Forecast chart helper methods
+    string GetForecastLinePath(List<ForecastDataPoint> data)
+    {
+        if (data.Count < 2) return "";
+        
+        var points = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - (point.PredictedScore / 10.0) * 100; // Invert Y for CSS positioning
+            return $"{x}% {y}%";
+        });
+        
+        return $"clip-path: polygon({string.Join(", ", points)});";
+    }
+
+    string GetForecastAreaPath(List<ForecastDataPoint> data)
+    {
+        if (data.Count < 2) return "";
+        
+        var topPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - ((point.PredictedScore + point.ConfidenceInterval) / 10.0) * 100;
+            return $"{x}% {y}%";
+        });
+        
+        var bottomPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - ((point.PredictedScore - point.ConfidenceInterval) / 10.0) * 100;
+            return $"{x}% {y}%";
+        }).Reverse();
+        
+        return $"clip-path: polygon({string.Join(", ", topPoints)}, {string.Join(", ", bottomPoints)});";
     }
 
     // New methods for dual filtering system

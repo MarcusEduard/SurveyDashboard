@@ -1,12 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Application.Interfaces;
-using Domain.Auth;
-using FileStorage;
-using WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using WebAPI.Services;
+using WebAPI.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,35 +16,35 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DNDContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<FileContext>();
-builder.Services.AddScoped<IUserService, FileUserService>();
-builder.Services.AddScoped<IDataService, FileDataService>();
+// Add AI services
+builder.Services.AddScoped<IAIAnalysisService, AIAnalysisService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-{
-    options.MapInboundClaims = false;
-    options.TokenValidationParameters = new TokenValidationParameters()
+// Add authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "")),
-        ClockSkew = TimeSpan.Zero,
-    };
-});
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? ""))
+        };
+    });
 
-AuthorizationPolicies.AddPolicies(builder.Services);
+// Add authorization
+builder.Services.AddAuthorization();
 
 // Add CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5555", "https://localhost:7275") // Tillad både HTTP og HTTPS
+        policy.WithOrigins("http://localhost:5123", "https://localhost:7275") // Tillad både HTTP og HTTPS
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

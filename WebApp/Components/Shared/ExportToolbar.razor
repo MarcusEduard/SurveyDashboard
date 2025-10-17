@@ -1,0 +1,147 @@
+﻿@using Microsoft.JSInterop
+@using System.Text
+@inject IJSRuntime JSRuntime
+
+<div class="export-toolbar">
+    <div class="btn-group" role="group" aria-label="Export options">
+        <button type="button" class="btn btn-primary btn-sm" @onclick="() => ExportToExcel()" disabled="@isExporting">
+            <i class="fa fa-file-excel-o"></i> Excel
+        </button>
+        <button type="button" class="btn btn-success btn-sm" @onclick="() => ExportToPdf()" disabled="@isExporting">
+            <i class="fa fa-file-pdf-o"></i> PDF
+        </button>
+        <button type="button" class="btn btn-info btn-sm" @onclick="() => ExportToCsv()" disabled="@isExporting">
+            <i class="fa fa-file-text-o"></i> CSV
+        </button>
+    </div>
+    
+    @if (isExporting)
+    {
+        <div class="export-loading">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Exporting...
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public IEnumerable<object>? Data { get; set; }
+    [Parameter] public string FileName { get; set; } = "export";
+    [Parameter] public string? Title { get; set; }
+
+    private bool isExporting = false;
+
+    private async Task ExportToExcel()
+    {
+        if (Data == null) return;
+        
+        await StartExport();
+        try 
+        {
+            var jsonData = ConvertToJSON(Data);
+            await JSRuntime.InvokeVoidAsync("downloadExcel", jsonData, $"{FileName}.xlsx");
+        }
+        finally 
+        {
+            isExporting = false;
+        }
+    }
+
+    private async Task ExportToPdf()
+    {
+        if (Data == null) return;
+        
+        await StartExport();
+        try 
+        {
+            var jsonData = ConvertToJSON(Data);
+            await JSRuntime.InvokeVoidAsync("downloadPDF", jsonData, $"{FileName}.pdf");
+        }
+        finally 
+        {
+            isExporting = false;
+        }
+    }
+
+    private async Task ExportToCsv()
+    {
+        if (Data == null) return;
+        
+        await StartExport();
+        try 
+        {
+            var csvData = ConvertToCSV(Data);
+            await JSRuntime.InvokeVoidAsync("downloadCSV", csvData, $"{FileName}.csv");
+        }
+        finally 
+        {
+            isExporting = false;
+        }
+    }
+
+    private async Task StartExport()
+    {
+        isExporting = true;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(100);
+    }
+
+    private string ConvertToCSV(IEnumerable<object> data)
+    {
+        if (data == null || !data.Any())
+            return string.Empty;
+
+        var firstItem = data.First();
+        var properties = firstItem.GetType().GetProperties();
+        
+        var csv = new StringBuilder();
+        csv.AppendLine(string.Join(",", properties.Select(p => QuoteCSVField(p.Name))));
+        
+        foreach (var item in data)
+        {
+            var values = properties.Select(p => 
+            {
+                var value = p.GetValue(item)?.ToString() ?? "";
+                return QuoteCSVField(value);
+            });
+            csv.AppendLine(string.Join(",", values));
+        }
+        
+        return csv.ToString();
+    }
+
+    private string ConvertToJSON(IEnumerable<object> data)
+    {
+        if (data == null || !data.Any())
+            return "[]";
+
+        var firstItem = data.First();
+        var properties = firstItem.GetType().GetProperties();
+        
+        var jsonObjects = data.Select(item =>
+        {
+            var obj = new Dictionary<string, object?>();
+            foreach (var prop in properties)
+            {
+                var value = prop.GetValue(item);
+                obj[prop.Name] = value?.ToString() ?? "";
+            }
+            return obj;
+        }).ToArray();
+
+        return System.Text.Json.JsonSerializer.Serialize(jsonObjects);
+    }
+
+    private string QuoteCSVField(string field)
+    {
+        if (string.IsNullOrEmpty(field))
+            return "\"\"";
+            
+        if (field.Contains(",") || field.Contains("\"") || field.Contains("\n"))
+        {
+            return "\"" + field.Replace("\"", "\"\"") + "\"";
+        }
+        
+        return field;
+    }
+}

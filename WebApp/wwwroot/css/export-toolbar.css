@@ -1,0 +1,105 @@
+/* ExportToolbar Styles */
+.export-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.export-options {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.export-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+
+.export-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.export-btn.excel {
+    background: #1f7d1f;
+    color: white;
+}
+
+.export-btn.excel:hover:not(:disabled) {
+    background: #1a6b1a;
+}
+
+.export-btn.pdf {
+    background: #dc3545;
+    color: white;
+}
+
+.export-btn.pdf:hover:not(:disabled) {
+    background: #c82333;
+}
+
+.export-btn.csv {
+    background: #6f42c1;
+    color: white;
+}
+
+.export-btn.csv:hover:not(:disabled) {
+    background: #5a359a;
+}
+
+.export-icon {
+    font-size: 1.1em;
+}
+
+.export-text {
+    font-size: 0.9em;
+}
+
+.export-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: #e3f2fd;
+    border-radius: 4px;
+    color: #1976d2;
+    font-weight: 500;
+}
+
+.progress-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e3f2fd;
+    border-top: 2px solid #1976d2;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .export-options {
+        flex-direction: column;
+    }
+    
+    .export-btn {
+        justify-content: center;
+        width: 100%;
+    }
+}

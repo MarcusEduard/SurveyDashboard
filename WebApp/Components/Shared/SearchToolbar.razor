@@ -1,0 +1,264 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="search-toolbar">
+    <div class="search-container">
+        <div class="search-input-group">
+            <span class="search-icon">🔍</span>
+            <input type="text" 
+                   class="search-input" 
+                   placeholder="Search surveys, customers, projects..." 
+                   @bind="searchQuery" 
+                   @oninput="OnSearchInput" 
+                   @onkeypress="OnKeyPress" />
+            @if (!string.IsNullOrEmpty(searchQuery))
+            {
+                <button class="clear-search" @onclick="ClearSearch" title="Clear search">
+                    ×
+                </button>
+            }
+        </div>
+        
+        <div class="search-filters">
+            <select class="filter-select" @bind="selectedFilter">
+                <option value="">All Categories</option>
+                <option value="customer">Customers</option>
+                <option value="project">Projects</option>
+                <option value="sector">Sectors</option>
+                <option value="score">High Scores (8+)</option>
+                <option value="recent">Recent Surveys</option>
+            </select>
+            
+            <select class="filter-select" @bind="sortOption">
+                <option value="date">Sort by Date</option>
+                <option value="score">Sort by Score</option>
+                <option value="customer">Sort by Customer</option>
+                <option value="project">Sort by Project</option>
+            </select>
+        </div>
+    </div>
+    
+    @if (ShowResults && searchResults.Any())
+    {
+        <div class="search-results">
+            <div class="results-header">
+                <span class="results-count">@searchResults.Count result(s) found</span>
+                <button class="close-results" @onclick="CloseResults">×</button>
+            </div>
+            
+            <div class="results-list">
+                @foreach (var result in searchResults.Take(10))
+                {
+                    <div class="result-item @GetResultTypeClass(result.Type)" @onclick="() => OnResultClick(result)">
+                        <div class="result-icon">@GetResultIcon(result.Type)</div>
+                        <div class="result-content">
+                            <div class="result-title">@result.Title</div>
+                            <div class="result-subtitle">@result.Subtitle</div>
+                        </div>
+                        <div class="result-meta">
+                            @if (result.Score.HasValue)
+                            {
+                                <span class="result-score @GetScoreClass(result.Score.Value)">
+                                    @result.Score.Value/10
+                                </span>
+                            }
+                            <span class="result-date">@result.Date?.ToString("dd/MM/yyyy")</span>
+                        </div>
+                    </div>
+                }
+                
+                @if (searchResults.Count > 10)
+                {
+                    <div class="more-results">
+                        And @(searchResults.Count - 10) more results...
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    
+    @if (ShowResults && !searchResults.Any() && !string.IsNullOrEmpty(searchQuery))
+    {
+        <div class="no-results">
+            <div class="no-results-icon">🔍</div>
+            <div class="no-results-text">No results found for "@searchQuery"</div>
+            <div class="no-results-suggestions">
+                Try searching for:
+                <span class="suggestion" @onclick='() => SetSearch("customer")'>customers</span>,
+                <span class="suggestion" @onclick='() => SetSearch("project")'>projects</span>,
+                <span class="suggestion" @onclick='() => SetSearch("energy")'>energy</span>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public List<object> Data { get; set; } = new();
+    [Parameter] public EventCallback<string> OnSearch { get; set; }
+    [Parameter] public EventCallback<SearchResult> OnResultSelected { get; set; }
+
+    private string searchQuery = "";
+    private string selectedFilter = "";
+    private string sortOption = "date";
+    private List<SearchResult> searchResults = new();
+    private bool ShowResults => !string.IsNullOrEmpty(searchQuery) || searchResults.Any();
+
+    private Timer? debounceTimer;
+
+    private async Task OnSearchInput(ChangeEventArgs e)
+    {
+        searchQuery = e.Value?.ToString() ?? "";
+        
+        // Debounce search
+        debounceTimer?.Dispose();
+        debounceTimer = new Timer(async _ =>
+        {
+            await InvokeAsync(() =>
+            {
+                PerformSearch();
+                StateHasChanged();
+            });
+        }, null, 300, Timeout.Infinite);
+    }
+
+    private async Task OnKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            PerformSearch();
+        }
+    }
+
+    private void PerformSearch()
+    {
+        if (string.IsNullOrEmpty(searchQuery))
+        {
+            searchResults.Clear();
+            return;
+        }
+
+        // Simulate search logic - replace with actual implementation
+        searchResults = GenerateSearchResults(searchQuery, selectedFilter, sortOption);
+        OnSearch.InvokeAsync(searchQuery);
+    }
+
+    private List<SearchResult> GenerateSearchResults(string query, string filter, string sort)
+    {
+        // This is a mock implementation - replace with actual search logic
+        var results = new List<SearchResult>();
+
+        // Add different types of results based on query
+        if (query.ToLower().Contains("energy"))
+        {
+            results.Add(new SearchResult 
+            { 
+                Type = "sector", 
+                Title = "Energy Sector", 
+                Subtitle = "12 surveys completed",
+                Score = 8.5,
+                Date = DateTime.Now.AddDays(-5)
+            });
+        }
+
+        if (query.ToLower().Contains("customer") || query.Length >= 3)
+        {
+            results.Add(new SearchResult 
+            { 
+                Type = "customer", 
+                Title = "ACME Corporation", 
+                Subtitle = "Tech Sector • 3 projects",
+                Score = 9.2,
+                Date = DateTime.Now.AddDays(-2)
+            });
+        }
+
+        // Apply filters
+        if (!string.IsNullOrEmpty(filter))
+        {
+            results = results.Where(r => r.Type == filter).ToList();
+        }
+
+        // Apply sorting
+        results = sort switch
+        {
+            "score" => results.OrderByDescending(r => r.Score ?? 0).ToList(),
+            "customer" => results.OrderBy(r => r.Title).ToList(),
+            "project" => results.OrderBy(r => r.Subtitle).ToList(),
+            _ => results.OrderByDescending(r => r.Date).ToList()
+        };
+
+        return results;
+    }
+
+    private void ClearSearch()
+    {
+        searchQuery = "";
+        searchResults.Clear();
+        StateHasChanged();
+    }
+
+    private void CloseResults()
+    {
+        searchResults.Clear();
+        StateHasChanged();
+    }
+
+    private async Task OnFilterChange(ChangeEventArgs e)
+    {
+        selectedFilter = e.Value?.ToString() ?? "";
+        if (!string.IsNullOrEmpty(searchQuery))
+        {
+            PerformSearch();
+        }
+    }
+
+    private async Task OnSortChange(ChangeEventArgs e)
+    {
+        sortOption = e.Value?.ToString() ?? "date";
+        if (!string.IsNullOrEmpty(searchQuery))
+        {
+            PerformSearch();
+        }
+    }
+
+    private async Task OnResultClick(SearchResult result)
+    {
+        await OnResultSelected.InvokeAsync(result);
+        CloseResults();
+    }
+
+    private void SetSearch(string query)
+    {
+        searchQuery = query;
+        PerformSearch();
+        StateHasChanged();
+    }
+
+    private string GetResultTypeClass(string type) => $"result-{type}";
+
+    private string GetResultIcon(string type) => type switch
+    {
+        "customer" => "🏢",
+        "project" => "📋",
+        "sector" => "🏭",
+        "survey" => "📊",
+        _ => "📄"
+    };
+
+    private string GetScoreClass(double score) => score >= 8 ? "excellent" : score >= 6 ? "good" : score >= 4 ? "average" : "poor";
+
+    public class SearchResult
+    {
+        public string Type { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Subtitle { get; set; } = "";
+        public double? Score { get; set; }
+        public DateTime? Date { get; set; }
+        public object? Data { get; set; }
+    }
+
+    public void Dispose()
+    {
+        debounceTimer?.Dispose();
+    }
+}
+

@@ -1,0 +1,50 @@
+@code {
+    [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public LoadingType Type { get; set; } = LoadingType.Spinner;
+
+    public enum LoadingType
+    {
+        Spinner,
+        Dots,
+        Pulse,
+        Skeleton
+    }
+}
+
+@if (IsLoading)
+{
+    <div class="loading-overlay">
+        <div class="loading-content">
+            @switch (Type)
+            {
+                case LoadingType.Spinner:
+                    <div class="spinner"></div>
+                    break;
+                case LoadingType.Dots:
+                    <div class="dots-loader">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    break;
+                case LoadingType.Pulse:
+                    <div class="pulse-loader"></div>
+                    break;
+                case LoadingType.Skeleton:
+                    <div class="skeleton-loader">
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line short"></div>
+                    </div>
+                    break;
+            }
+            
+            @if (!string.IsNullOrEmpty(Message))
+            {
+                <p class="loading-message">@Message</p>
+            }
+        </div>
+    </div>
+}
+

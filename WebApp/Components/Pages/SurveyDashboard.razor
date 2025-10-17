@@ -6,6 +6,7 @@
 @using System.Text.Json
 @inject HttpClient httpClient
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime
 
 <div class="dashboard-footer">
     <span>
@@ -734,243 +735,722 @@
                 }
             </div>
 
-            <!-- AI Analytics Section -->
-            <div class="chart-container" id="ai-insights">
-                <div class="chart-header">
-                    <h4>🤖 AI-Powered Insights</h4>
-                    <div class="chart-controls">
-                        <button class="view-btn @(aiView == "insights" ? "active" : "")" @onclick='() => SetAIView("insights")'>Insights</button>
-                        <button class="view-btn @(aiView == "recommendations" ? "active" : "")" @onclick='() => SetAIView("recommendations")'>Recommendations</button>
-                        <button class="view-btn @(aiView == "predictions" ? "active" : "")" @onclick='() => SetAIView("predictions")'>Predictions</button>
-                        <button class="view-btn @(aiView == "chat" ? "active" : "")" @onclick='() => SetAIView("chat")'>AI Chat</button>
+            <!-- AI Chat Section -->
+            <div class="chart-container ai-chat-section" id="ai-chat">
+                
+                <style>
+                    /* Enhanced AI Chat Styles */
+                    .ai-chat-section {
+                        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+                        border: 1px solid #e2e8f0;
+                        position: relative;
+                        overflow: hidden;
+                    }
+
+                    .ai-chat-section::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        height: 4px;
+                        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+                    }
+
+                    /* Modern Chat Header */
+                    .chat-header-modern {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 20px 24px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        margin: -24px -24px 24px -24px;
+                        border-radius: 16px 16px 0 0;
+                    }
+
+                    .chat-title-area {
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+                    }
+
+                    .ai-avatar {
+                        position: relative;
+                    }
+
+                    .avatar-circle {
+                        width: 50px;
+                        height: 50px;
+                        background: rgba(255, 255, 255, 0.2);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        backdrop-filter: blur(10px);
+                        border: 2px solid rgba(255, 255, 255, 0.3);
+                    }
+
+                    .ai-icon {
+                        font-size: 24px;
+                    }
+
+                    .status-indicator {
+                        position: absolute;
+                        bottom: 2px;
+                        right: 2px;
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 50%;
+                        border: 2px solid white;
+                    }
+
+                    .status-indicator.online {
+                        background: #22c55e;
+                        animation: pulse 2s infinite;
+                    }
+
+                    @@keyframes pulse {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.5; }
+                    }
+
+                    .chat-title-text h4 {
+                        margin: 0;
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                    }
+
+                    .status-text {
+                        margin: 0;
+                        font-size: 0.9rem;
+                        opacity: 0.9;
+                    }
+
+                    .chat-actions {
+                        display: flex;
+                        gap: 12px;
+                    }
+
+                    .clear-chat-btn {
+                        background: rgba(255, 255, 255, 0.2);
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 8px 12px;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        backdrop-filter: blur(10px);
+                    }
+
+                    .clear-chat-btn:hover {
+                        background: rgba(255, 255, 255, 0.3);
+                        transform: translateY(-1px);
+                    }
+
+                    /* Enhanced Chat Container */
+                    .enhanced-chat-container {
+                        min-height: 500px;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    /* Welcome Section */
+                    .welcome-section {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        padding: 40px 20px;
+                        text-align: center;
+                        flex: 1;
+                        justify-content: center;
+                    }
+
+                    .welcome-avatar {
+                        margin-bottom: 24px;
+                    }
+
+                    .welcome-circle {
+                        width: 80px;
+                        height: 80px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto;
+                        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+                    }
+
+                    .welcome-ai-icon {
+                        font-size: 40px;
+                        color: white;
+                    }
+
+                    .welcome-content h5 {
+                        margin: 0 0 16px 0;
+                        color: #1e293b;
+                        font-size: 1.4rem;
+                        font-weight: 600;
+                    }
+
+                    .welcome-content p {
+                        margin: 0 0 32px 0;
+                        color: #64748b;
+                        font-size: 1rem;
+                        line-height: 1.6;
+                        max-width: 500px;
+                    }
+
+                    /* Suggestion Chips */
+                    .suggestion-chips {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                        gap: 12px;
+                        width: 100%;
+                        max-width: 800px;
+                    }
+
+                    .suggestion-chip {
+                        background: white;
+                        border: 2px solid #e2e8f0;
+                        border-radius: 12px;
+                        padding: 16px 20px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        text-align: left;
+                        font-size: 0.95rem;
+                        font-weight: 500;
+                        color: #475569;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                    }
+
+                    .suggestion-chip:hover {
+                        border-color: #667eea;
+                        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+                    }
+
+                    .chip-icon {
+                        font-size: 18px;
+                        flex-shrink: 0;
+                    }
+
+                    /* Enhanced Chat Messages */
+                    .chat-messages-enhanced {
+                        flex: 1;
+                        padding: 20px 0;
+                        overflow-y: auto;
+                        scroll-behavior: smooth;
+                        max-height: 400px;
+                    }
+
+                    .message-wrapper {
+                        display: flex;
+                        margin-bottom: 20px;
+                        animation: slideInMessage 0.3s ease-out;
+                    }
+
+                    @@keyframes slideInMessage {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    .message-wrapper.user-message {
+                        justify-content: flex-end;
+                    }
+
+                    .message-wrapper.ai-message {
+                        justify-content: flex-start;
+                    }
+
+                    .message-avatar {
+                        margin: 0 12px;
+                        flex-shrink: 0;
+                    }
+
+                    .avatar-small {
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 16px;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+                    }
+
+                    .avatar-small.user {
+                        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                    }
+
+                    .avatar-small.thinking {
+                        animation: thinking 2s ease-in-out infinite;
+                    }
+
+                    @@keyframes thinking {
+                        0%, 100% { transform: scale(1); }
+                        50% { transform: scale(1.1); }
+                    }
+
+                    /* Message Bubbles */
+                    .message-bubble {
+                        max-width: 70%;
+                        border-radius: 18px;
+                        padding: 0;
+                        position: relative;
+                        word-wrap: break-word;
+                    }
+
+                    .user-bubble {
+                        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                        color: white;
+                        border-bottom-right-radius: 4px;
+                    }
+
+                    .ai-bubble {
+                        background: white;
+                        color: #1e293b;
+                        border: 1px solid #e2e8f0;
+                        border-bottom-left-radius: 4px;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                    }
+
+                    .typing-bubble {
+                        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                    }
+
+                    /* Message Content */
+                    .message-content-enhanced {
+                        padding: 16px 20px;
+                    }
+
+                    .message-text-enhanced {
+                        line-height: 1.5;
+                        margin-bottom: 8px;
+                        font-size: 0.95rem;
+                    }
+
+                    .message-metadata {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-top: 8px;
+                    }
+
+                    .message-time-enhanced {
+                        font-size: 0.75rem;
+                        opacity: 0.7;
+                    }
+
+                    .message-actions {
+                        display: flex;
+                        gap: 8px;
+                        opacity: 0;
+                        transition: opacity 0.2s ease;
+                    }
+
+                    .message-wrapper:hover .message-actions {
+                        opacity: 1;
+                    }
+
+                    .action-btn {
+                        background: none;
+                        border: none;
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        transition: all 0.2s ease;
+                        color: #64748b;
+                    }
+
+                    .action-btn:hover {
+                        background: rgba(100, 116, 139, 0.1);
+                        transform: scale(1.1);
+                    }
+
+                    /* Enhanced Typing Indicator */
+                    .typing-indicator-enhanced {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        padding: 16px 20px;
+                    }
+
+                    .typing-dots {
+                        display: flex;
+                        gap: 4px;
+                    }
+
+                    .typing-dots span {
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #667eea;
+                        animation: typingDot 1.4s infinite ease-in-out;
+                    }
+
+                    .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+                    .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+                    @@keyframes typingDot {
+                        0%, 80%, 100% {
+                            transform: scale(0.8);
+                            opacity: 0.5;
+                        }
+                        40% {
+                            transform: scale(1);
+                            opacity: 1;
+                        }
+                    }
+
+                    .typing-text {
+                        color: #64748b;
+                        font-size: 0.85rem;
+                        font-style: italic;
+                    }
+
+                    /* Enhanced Input Area */
+                    .chat-input-area {
+                        border-top: 1px solid #e2e8f0;
+                        background: #f8fafc;
+                        padding: 20px;
+                        margin: 0 -24px -24px -24px;
+                        border-radius: 0 0 16px 16px;
+                    }
+
+                    .input-container-enhanced {
+                        max-width: 100%;
+                    }
+
+                    .input-wrapper {
+                        display: flex;
+                        align-items: flex-end;
+                        gap: 12px;
+                        background: white;
+                        border: 2px solid #e2e8f0;
+                        border-radius: 24px;
+                        padding: 8px 8px 8px 20px;
+                        transition: all 0.2s ease;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                    }
+
+                    .input-wrapper:focus-within {
+                        border-color: #667eea;
+                        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+                    }
+
+                    .chat-input-enhanced {
+                        flex: 1;
+                        border: none;
+                        outline: none;
+                        padding: 12px 0;
+                        font-size: 0.95rem;
+                        line-height: 1.4;
+                        background: transparent;
+                        resize: none;
+                        min-height: 20px;
+                        max-height: 120px;
+                        overflow-y: auto;
+                        font-family: inherit;
+                    }
+
+                    .chat-input-enhanced::placeholder {
+                        color: #94a3b8;
+                    }
+
+                    .input-actions {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+
+                    .action-button {
+                        background: none;
+                        border: none;
+                        padding: 8px;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        font-size: 16px;
+                        transition: all 0.2s ease;
+                        color: #64748b;
+                    }
+
+                    .action-button:hover:not(:disabled) {
+                        background: #f1f5f9;
+                        transform: scale(1.1);
+                    }
+
+                    .action-button:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                    }
+
+                    .send-button {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 44px;
+                        height: 44px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+                    }
+
+                    .send-button:hover:not(:disabled) {
+                        transform: scale(1.05);
+                        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+                    }
+
+                    .send-button:disabled,
+                    .send-button.disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                        transform: none;
+                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+                    }
+
+                    .send-icon {
+                        font-size: 18px;
+                    }
+
+                    .spinner-small {
+                        width: 16px;
+                        height: 16px;
+                        border: 2px solid rgba(255, 255, 255, 0.3);
+                        border-top: 2px solid white;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                    }
+
+                    @@keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+
+                    .input-footer {
+                        display: flex;
+                        justify-content: flex-end;
+                        margin-top: 8px;
+                    }
+
+                    .char-count {
+                        font-size: 0.75rem;
+                        color: #94a3b8;
+                    }
+
+                    /* Responsive Design */
+                    @@media (max-width: 768px) {
+                        .chat-header-modern {
+                            padding: 16px 20px;
+                        }
+                        
+                        .chat-title-text h4 {
+                            font-size: 1.1rem;
+                        }
+                        
+                        .avatar-circle {
+                            width: 40px;
+                            height: 40px;
+                        }
+                        
+                        .ai-icon {
+                            font-size: 20px;
+                        }
+                        
+                        .suggestion-chips {
+                            grid-template-columns: 1fr;
+                        }
+                        
+                        .message-bubble {
+                            max-width: 85%;
+                        }
+                        
+                        .chat-input-area {
+                            padding: 16px;
+                        }
+                        
+                        .welcome-content p {
+                            font-size: 0.9rem;
+                        }
+                    }
+                </style>
+                <div class="chat-header-modern">
+                    <div class="chat-title-area">
+                        <div class="ai-avatar">
+                            <div class="avatar-circle">
+                                <span class="ai-icon">🤖</span>
+                                <div class="status-indicator online"></div>
+                            </div>
+                        </div>
+                        <div class="chat-title-text">
+                            <h4>AI Assistant</h4>
+                            <p class="status-text">Ready to analyze your survey data</p>
+                        </div>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="clear-chat-btn" @onclick="ClearChatHistory" title="Clear chat history">
+                            <span class="icon">🗑️</span>
+                        </button>
                     </div>
                 </div>
                 
-                @if (isLoadingAI)
-                {
-                    <div class="ai-loading">
-                        <div class="ai-spinner"></div>
-                        <p>🤖 AI is analyzing your survey data...</p>
-                    </div>
-                }
-                else
-                {
-                    @if (aiView == "insights")
+                <div class="enhanced-chat-container">
+                    <!-- Welcome Message when no chat history -->
+                    @if (!chatHistory.Any() && !isProcessingChat)
                     {
-                        <!-- AI Insights Display -->
-                        <div class="ai-insights-container">
-                            @if (currentAIInsights != null)
-                            {
-                                <div class="ai-summary-card">
-                                    <div class="ai-card-header">
-                                        <span class="ai-icon">🧠</span>
-                                        <h5>Key Insights</h5>
-                                        <span class="confidence-score">Confidence: @((currentAIInsights.ConfidenceScore * 100).ToString("F0"))%</span>
-                                    </div>
-                                    <p class="ai-summary">@currentAIInsights.Summary</p>
+                        <div class="welcome-section">
+                            <div class="welcome-avatar">
+                                <div class="welcome-circle">
+                                    <span class="welcome-ai-icon">🤖</span>
                                 </div>
-                                
-                                <div class="ai-details-grid">
-                                    <div class="ai-detail-card trends">
-                                        <h6>📈 Key Trends</h6>
-                                        <ul>
-                                            @foreach (var trend in currentAIInsights.KeyTrends)
-                                            {
-                                                <li>@trend</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    
-                                    <div class="ai-detail-card issues">
-                                        <h6>⚠️ Critical Issues</h6>
-                                        <ul>
-                                            @foreach (var issue in currentAIInsights.CriticalIssues)
-                                            {
-                                                <li>@issue</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    
-                                    <div class="ai-detail-card strengths">
-                                        <h6>💪 Strong Points</h6>
-                                        <ul>
-                                            @foreach (var strength in currentAIInsights.StrongPoints)
-                                            {
-                                                <li>@strength</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    
-                                    <div class="ai-detail-card sentiment">
-                                        <h6>😊 Overall Sentiment</h6>
-                                        <div class="sentiment-indicator @currentAIInsights.OverallSentiment">
-                                            @GetSentimentIcon(currentAIInsights.OverallSentiment) @currentAIInsights.OverallSentiment.ToUpper()
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                    else if (aiView == "recommendations")
-                    {
-                        <!-- AI Recommendations Display -->
-                        <div class="ai-recommendations-container">
-                            @if (currentAIRecommendations != null)
-                            {
-                                <div class="recommendations-grid">
-                                    <div class="recommendation-card immediate">
-                                        <h6>🚨 Immediate Actions</h6>
-                                        <div class="priority-badge @currentAIRecommendations.PriorityLevel">@currentAIRecommendations.PriorityLevel.ToUpper()</div>
-                                        <ul>
-                                            @foreach (var action in currentAIRecommendations.ImmediateActions)
-                                            {
-                                                <li>@action</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    
-                                    <div class="recommendation-card longterm">
-                                        <h6>🎯 Long-term Strategies</h6>
-                                        <ul>
-                                            @foreach (var strategy in currentAIRecommendations.LongTermStrategies)
-                                            {
-                                                <li>@strategy</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    
-                                    <div class="recommendation-card sectors">
-                                        <h6>🏢 Focus Sectors</h6>
-                                        <div class="sector-tags">
-                                            @foreach (var sector in currentAIRecommendations.SectorsToFocus)
-                                            {
-                                                <span class="sector-tag">@sector</span>
-                                            }
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="recommendation-card impact">
-                                        <h6>📊 Expected Impact</h6>
-                                        <p>@currentAIRecommendations.ExpectedImpact</p>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                    else if (aiView == "predictions")
-                    {
-                        <!-- AI Predictions Display -->
-                        <div class="ai-predictions-container">
-                            @if (currentAIPredictions != null)
-                            {
-                                <div class="predictions-header">
-                                    <div class="prediction-main-card">
-                                        <h6>🔮 Next Quarter Forecast</h6>
-                                        <div class="forecast-display">
-                                            <div class="forecast-score @GetTrendClass(currentAIPredictions.NextQuarterPrediction.TrendDirection)">
-                                                @currentAIPredictions.NextQuarterPrediction.ExpectedSatisfaction.ToString("F1")
-                                            </div>
-                                            <div class="forecast-trend">
-                                                @GetTrendIcon(currentAIPredictions.NextQuarterPrediction.TrendDirection) @currentAIPredictions.NextQuarterPrediction.TrendDirection
-                                            </div>
-                                            <div class="forecast-confidence">
-                                                Confidence: @((currentAIPredictions.NextQuarterPrediction.Confidence * 100).ToString("F0"))%
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="retention-forecast">
-                                        <h6>👥 Client Retention Forecast</h6>
-                                        <div class="retention-percentage">
-                                            @currentAIPredictions.ClientRetentionForecast.ToString("F1")%
-                                        </div>
-                                        <div class="retention-bar">
-                                            <div class="retention-fill" style="width: @(currentAIPredictions.ClientRetentionForecast)%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="predictions-details">
-                                    <div class="prediction-card risks">
-                                        <h6>⚡ Risk Factors</h6>
-                                        <ul>
-                                            @foreach (var risk in currentAIPredictions.RiskFactors)
-                                            {
-                                                <li>@risk</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                    
-                                    <div class="prediction-card opportunities">
-                                        <h6>🌟 Opportunities</h6>
-                                        <ul>
-                                            @foreach (var opportunity in currentAIPredictions.Opportunities)
-                                            {
-                                                <li>@opportunity</li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                    else if (aiView == "chat")
-                    {
-                        <!-- AI Chat Interface -->
-                        <div class="ai-chat-container">
-                            <div class="chat-header">
-                                <h6>💬 Ask AI about your survey data</h6>
-                                <p>Ask questions like "Which sector has the lowest satisfaction?" or "What are the main issues?"</p>
                             </div>
-                            
-                            <div class="chat-messages" style="max-height: 400px; overflow-y: auto;">
-                                @foreach (var message in chatHistory)
-                                {
-                                    <div class="chat-message @(message.IsUser ? "user" : "ai")">
-                                        <div class="message-icon">@(message.IsUser ? "👤" : "🤖")</div>
-                                        <div class="message-content">
-                                            <div class="message-text">@message.Text</div>
-                                            <div class="message-time">@message.Timestamp.ToString("HH:mm")</div>
-                                        </div>
-                                    </div>
-                                }
-                                @if (isProcessingChat)
-                                {
-                                    <div class="chat-message ai typing">
-                                        <div class="message-icon">🤖</div>
-                                        <div class="message-content">
-                                            <div class="typing-indicator">
-                                                <span></span><span></span><span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                            
-                            <div class="chat-input-container">
-                                <input @bind="chatInput" @onkeypress="HandleChatKeyPress" 
-                                       placeholder="Ask a question about your survey data..." 
-                                       class="chat-input" disabled="@isProcessingChat" />
-                                <button @onclick="SendChatMessage" class="chat-send-btn" disabled="@isProcessingChat">
-                                    @if (isProcessingChat)
-                                    {
-                                        <span>⏳</span>
-                                    }
-                                    else
-                                    {
-                                        <span>📤</span>
-                                    }
-                                </button>
+                            <div class="welcome-content">
+                                <h5>Hello! I'm your AI Survey Assistant</h5>
+                                <p>I can help you analyze your survey data and provide insights. Here are some things you can ask me:</p>
+                                <div class="suggestion-chips">
+                                    <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("Which sector has the lowest satisfaction?")'>
+                                        <span class="chip-icon">📊</span>
+                                        Sector performance
+                                    </button>
+                                    <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("What are the main issues in my survey data?")'>
+                                        <span class="chip-icon">⚠️</span>
+                                        Main issues
+                                    </button>
+                                    <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("Give me recommendations to improve satisfaction")'>
+                                        <span class="chip-icon">💡</span>
+                                        Recommendations
+                                    </button>
+                                    <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("What trends do you see in my data?")'>
+                                        <span class="chip-icon">📈</span>
+                                        Trends analysis
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     }
                     
-                    <div class="ai-actions">
-                        <button class="refresh-ai-btn" @onclick="RefreshAIAnalysis" disabled="@isLoadingAI">
-                            🔄 @(isLoadingAI ? "Analyzing..." : "Refresh AI Analysis")
-                        </button>
+                    <!-- Chat Messages -->
+                    <div class="chat-messages-enhanced" id="chatMessages">
+                        @foreach (var message in chatHistory)
+                        {
+                            <div class="message-wrapper @(message.IsUser ? "user-message" : "ai-message")">
+                                @if (!message.IsUser)
+                                {
+                                    <div class="message-avatar">
+                                        <div class="avatar-small">
+                                            <span>🤖</span>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="message-bubble @(message.IsUser ? "user-bubble" : "ai-bubble")">
+                                    <div class="message-content-enhanced">
+                                        <div class="message-text-enhanced">@message.Text</div>
+                                        <div class="message-metadata">
+                                            <span class="message-time-enhanced">@message.Timestamp.ToString("HH:mm")</span>
+                                            @if (!message.IsUser)
+                                            {
+                                                <div class="message-actions">
+                                                    <button class="action-btn copy-btn" @onclick="() => CopyMessageToClipboard(message.Text)" title="Copy response">
+                                                        <span>📋</span>
+                                                    </button>
+                                                    <button class="action-btn thumbs-btn" title="Helpful response">
+                                                        <span>👍</span>
+                                                    </button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (message.IsUser)
+                                {
+                                    <div class="message-avatar user-avatar">
+                                        <div class="avatar-small user">
+                                            <span>👤</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        
+                        @if (isProcessingChat)
+                        {
+                            <div class="message-wrapper ai-message">
+                                <div class="message-avatar">
+                                    <div class="avatar-small thinking">
+                                        <span>🤖</span>
+                                    </div>
+                                </div>
+                                <div class="message-bubble ai-bubble typing-bubble">
+                                    <div class="typing-indicator-enhanced">
+                                        <div class="typing-dots">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                        <span class="typing-text">AI is thinking...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
-                }
+                    
+                    <!-- Enhanced Input Area -->
+                    <div class="chat-input-area">
+                        <div class="input-container-enhanced">
+                            <div class="input-wrapper">
+                                <textarea @bind="chatInput" 
+                                         @onkeydown="HandleChatKeyDown"
+                                         @oninput="HandleInputChange"
+                                         placeholder="Ask me anything about your survey data..." 
+                                         class="chat-input-enhanced" 
+                                         disabled="@isProcessingChat"
+                                         rows="1"></textarea>
+                                <div class="input-actions">
+                                    <button class="action-button emoji-btn" title="Add emoji" disabled="@isProcessingChat">
+                                        <span>😊</span>
+                                    </button>
+                                    <button class="send-button @(string.IsNullOrWhiteSpace(chatInput) ? "disabled" : "")" 
+                                            @onclick="SendChatMessage" 
+                                            disabled="@(isProcessingChat || string.IsNullOrWhiteSpace(chatInput))"
+                                            title="Send message">
+                                        @if (isProcessingChat)
+                                        {
+                                            <div class="spinner-small"></div>
+                                        }
+                                        else
+                                        {
+                                            <span class="send-icon">📤</span>
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(chatInput))
+                            {
+                                <div class="input-footer">
+                                    <span class="char-count">@chatInput.Length characters</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Hierarchical Navigation Section -->
@@ -5363,5 +5843,64 @@
             >= 4 => "average",
             _ => "poor"
         };
+    }
+
+    // Enhanced Chat Methods
+    async Task SendSuggestionMessage(string message)
+    {
+        chatInput = message;
+        await SendChatMessage();
+    }
+
+    async Task ClearChatHistory()
+    {
+        chatHistory.Clear();
+        StateHasChanged();
+    }
+
+    async Task CopyMessageToClipboard(string text)
+    {
+        try 
+        {
+            await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        }
+        catch
+        {
+            // Fallback - clipboard not available
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        
+        if (chatHistory.Any() || isProcessingChat)
+        {
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("scrollChatToBottom");
+            }
+            catch
+            {
+                // JS function not available yet
+            }
+        }
+    }
+
+    async Task HandleChatKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !e.ShiftKey)
+        {
+            if (!string.IsNullOrWhiteSpace(chatInput))
+            {
+                await SendChatMessage();
+            }
+        }
+    }
+
+    void HandleInputChange(ChangeEventArgs e)
+    {
+        chatInput = e.Value?.ToString() ?? "";
+        StateHasChanged();
     }
 }

@@ -1,0 +1,71 @@
+/* Dashboard Header Styling */
+.dashboard-header[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dashboard-logo[b-l6f1jfn67l] {
+    height: 50px;
+    margin-right: 16px;
+}
+
+.dashboard-title-group[b-l6f1jfn67l] {
+    flex: 1;
+}
+
+.dashboard-title[b-l6f1jfn67l] {
+    margin: 0;
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.dashboard-subtitle[b-l6f1jfn67l] {
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+.dashboard-actions[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+}
+
+/* Make export toolbar more compact in header */
+.dashboard-actions .export-toolbar[b-l6f1jfn67l] {
+    margin: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.dashboard-actions .export-toolbar .btn-group[b-l6f1jfn67l] {
+    gap: 8px;
+}
+
+.dashboard-actions .export-toolbar .btn[b-l6f1jfn67l] {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+}
+
+/* Responsive design for header */
+@media (max-width: 768px) {
+    .dashboard-header[b-l6f1jfn67l] {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    
+    .dashboard-title[b-l6f1jfn67l] {
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-actions[b-l6f1jfn67l] {
+        width: 100%;
+        justify-content: center;
+    }
+}

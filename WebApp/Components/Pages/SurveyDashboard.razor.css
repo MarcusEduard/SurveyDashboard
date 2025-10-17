@@ -1,0 +1,71 @@
+/* Dashboard Header Styling */
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dashboard-logo {
+    height: 50px;
+    margin-right: 16px;
+}
+
+.dashboard-title-group {
+    flex: 1;
+}
+
+.dashboard-title {
+    margin: 0;
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.dashboard-subtitle {
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+.dashboard-actions {
+    display: flex;
+    align-items: center;
+}
+
+/* Make export toolbar more compact in header */
+.dashboard-actions .export-toolbar {
+    margin: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.dashboard-actions .export-toolbar .btn-group {
+    gap: 8px;
+}
+
+.dashboard-actions .export-toolbar .btn {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+}
+
+/* Responsive design for header */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    
+    .dashboard-title {
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-actions {
+        width: 100%;
+        justify-content: center;
+    }
+}

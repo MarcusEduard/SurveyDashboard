@@ -1,0 +1,116 @@
+.toast-container[b-e69eqzluzn] {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    pointer-events: none;
+}
+
+.toast[b-e69eqzluzn] {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    border-left: 4px solid #007bff;
+    overflow: hidden;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: auto;
+    min-width: 320px;
+}
+
+.toast.show[b-e69eqzluzn] {
+    transform: translateX(0);
+    opacity: 1;
+    animation: slideInRight-b-e69eqzluzn 0.4s ease-out forwards;
+}
+
+@keyframes slideInRight-b-e69eqzluzn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-header[b-e69eqzluzn] {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px 8px 16px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.toast-icon[b-e69eqzluzn] {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.toast-title[b-e69eqzluzn] {
+    flex: 1;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.toast-close[b-e69eqzluzn] {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.toast-close:hover[b-e69eqzluzn] {
+    background: rgba(0,0,0,0.05);
+    color: #666;
+}
+
+.toast-body[b-e69eqzluzn] {
+    padding: 8px 16px 12px 16px;
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.toast-success[b-e69eqzluzn] {
+    border-left-color: #28a745;
+}
+
+.toast-error[b-e69eqzluzn] {
+    border-left-color: #dc3545;
+}
+
+.toast-warning[b-e69eqzluzn] {
+    border-left-color: #ffc107;
+}
+
+.toast-info[b-e69eqzluzn] {
+    border-left-color: #17a2b8;
+}
+
+@media (max-width: 768px) {
+    .toast-container[b-e69eqzluzn] {
+        left: 20px;
+        right: 20px;
+        top: 80px;
+    }
+    
+    .toast[b-e69eqzluzn] {
+        min-width: auto;
+    }
+}

@@ -19,6 +19,11 @@
             <h2 class="dashboard-title">Survey Analytics Dashboard</h2>
             <span class="dashboard-subtitle">Customer Satisfaction & Survey Insights</span>
         </div>
+        <div class="dashboard-actions">
+            <ExportToolbar Data="@surveyResponses" 
+                          FileName="survey-dashboard-data" 
+                          Title="Survey Analytics Dashboard Export" />
+        </div>
     </div>
     
     @if (isLoading)

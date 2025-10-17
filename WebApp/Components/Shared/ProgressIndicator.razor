@@ -1,0 +1,65 @@
+@code {
+    [Parameter] public int CurrentStep { get; set; } = 1;
+    [Parameter] public int TotalSteps { get; set; } = 10;
+    [Parameter] public List<string> StepLabels { get; set; } = new();
+    [Parameter] public bool ShowPercentage { get; set; } = true;
+    [Parameter] public string Color { get; set; } = "#28a745";
+}
+
+<div class="progress-indicator">
+    @if (ShowPercentage)
+    {
+        <div class="progress-header">
+            <span class="progress-text">Progress</span>
+            <span class="progress-percentage">@(Math.Round((double)CurrentStep / TotalSteps * 100))%</span>
+        </div>
+    }
+    
+    <div class="progress-bar-container">
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" 
+                 style="width: @(Math.Min(100, (double)CurrentStep / TotalSteps * 100))%; background: @Color;">
+            </div>
+        </div>
+        
+        <div class="progress-steps">
+            @for (int i = 1; i <= TotalSteps; i++)
+            {
+                var isCompleted = i <= CurrentStep;
+                var isCurrent = i == CurrentStep;
+                var stepClass = isCompleted ? "completed" : isCurrent ? "current" : "pending";
+                
+                <div class="progress-step @stepClass">
+                    <div class="step-circle" style="@(isCompleted || isCurrent ? $"background: {Color};" : "")">
+                        @if (isCompleted && i < CurrentStep)
+                        {
+                            <span class="step-check">✓</span>
+                        }
+                        else
+                        {
+                            <span class="step-number">@i</span>
+                        }
+                    </div>
+                    
+                    @if (StepLabels.Count >= i)
+                    {
+                        <div class="step-label">@StepLabels[i-1]</div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    
+    <div class="progress-footer">
+        <span class="step-counter">Step @CurrentStep of @TotalSteps</span>
+        @if (CurrentStep < TotalSteps)
+        {
+            <span class="remaining-text">@(TotalSteps - CurrentStep) questions remaining</span>
+        }
+        else
+        {
+            <span class="complete-text">✨ Ready to submit!</span>
+        }
+    </div>
+</div>
+

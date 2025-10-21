@@ -222,11 +222,11 @@
 
         try
         {
-            responses = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5555/api/survey/responses");
+            responses = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5123/api/survey/responses");
         }
         catch
         {
-            responses = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5555/api/survey");
+            responses = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5123/api/survey");
         }
 
         // Filter responses based on user role
@@ -304,7 +304,7 @@
 
     async Task DeleteResponse(SurveyResponse r)
     {
-        var response = await httpClient.DeleteAsync($"http://localhost:5555/api/survey/{r.SurveyResponseId}");
+        var response = await httpClient.DeleteAsync($"http://localhost:5123/api/survey/{r.SurveyResponseId}");
         if (response.IsSuccessStatusCode)
         {
             responses?.Remove(r);

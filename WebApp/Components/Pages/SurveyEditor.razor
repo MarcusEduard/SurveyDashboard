@@ -808,7 +808,7 @@
         isLoading = true;
         try
         {
-            var response = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5555/api/survey/responses");
+            var response = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5123/api/survey/responses");
             surveyResponses = response ?? new List<SurveyResponse>();
             FilterSurveys();
         }
@@ -921,7 +921,7 @@
             }
 
             // Save to API
-            var apiResponse = await httpClient.PutAsJsonAsync($"http://localhost:5555/api/survey/{response.SurveyResponseId}", response);
+            var apiResponse = await httpClient.PutAsJsonAsync($"http://localhost:5123/api/survey/{response.SurveyResponseId}", response);
             
             if (apiResponse.IsSuccessStatusCode)
             {
@@ -971,7 +971,7 @@
 
         try
         {
-            var response = await httpClient.DeleteAsync($"http://localhost:5555/api/survey/{responseToDelete.SurveyResponseId}");
+            var response = await httpClient.DeleteAsync($"http://localhost:5123/api/survey/{responseToDelete.SurveyResponseId}");
             
             if (response.IsSuccessStatusCode)
             {

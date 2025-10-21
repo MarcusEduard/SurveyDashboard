@@ -431,7 +431,7 @@
     {
         try
         {
-            var response = await httpClient.GetAsync("http://localhost:5555/api/survey");
+            var response = await httpClient.GetAsync("http://localhost:5123/api/survey");
             if (response.IsSuccessStatusCode)
             {
                 var allSurveys = await response.Content.ReadFromJsonAsync<List<SurveyResponse>>();
@@ -478,7 +478,7 @@
 
         try
         {
-            var response = await httpClient.PostAsJsonAsync("http://localhost:5555/api/survey", newSurvey);
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5123/api/survey", newSurvey);
             
             if (response.IsSuccessStatusCode)
             {
@@ -514,7 +514,7 @@
     {
         try
         {
-            var response = await httpClient.DeleteAsync($"http://localhost:5555/api/survey/{surveyResponseId}");
+            var response = await httpClient.DeleteAsync($"http://localhost:5123/api/survey/{surveyResponseId}");
             if (response.IsSuccessStatusCode)
             {
                 await LoadSurveys();

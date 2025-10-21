@@ -475,7 +475,7 @@
         isLoading = true;
         try
         {
-            var response = await httpClient.GetAsync($"http://localhost:5555/api/survey/by-id/{SurveyId}");
+            var response = await httpClient.GetAsync($"http://localhost:5123/api/survey/by-id/{SurveyId}");
             if (response.IsSuccessStatusCode)
             {
                 var existingSurvey = await response.Content.ReadFromJsonAsync<SurveyResponse>();
@@ -555,12 +555,12 @@
         if (isExistingSurvey)
         {
             // Update existing survey
-            response = await httpClient.PutAsJsonAsync($"http://localhost:5555/api/survey/{newResponse.SurveyResponseId}", newResponse);
+            response = await httpClient.PutAsJsonAsync($"http://localhost:5123/api/survey/{newResponse.SurveyResponseId}", newResponse);
         }
         else
         {
             // Create new survey
-            response = await httpClient.PostAsJsonAsync("http://localhost:5555/api/survey", newResponse);
+            response = await httpClient.PostAsJsonAsync("http://localhost:5123/api/survey", newResponse);
         }
         
         if (response.IsSuccessStatusCode)

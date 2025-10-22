@@ -1,0 +1,180 @@
+@startuml SurveyDashboard_Sequence
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam maxmessagesize 60
+
+' Actors and Systems
+actor Admin as A
+actor Employee as E
+actor Client as C
+participant "WebApp\n(Blazor)" as WA
+participant "Auth\nProvider" as AUTH
+participant "WebAPI\n(Controllers)" as API
+participant "AI Analysis\nService" as AI
+participant "Data Services\n(FileStorage)" as DS
+participant "Database\n(SQLite)" as DB
+participant "File System\n(JSON)" as FS
+
+title Survey Dashboard - Complete Application Flow
+
+== Authentication Flow ==
+A -> WA: Access Admin Pages
+WA -> AUTH: Check Authorization
+AUTH -> API: Validate JWT Token
+API -> AUTH: Token Valid/Invalid
+AUTH -> WA: Authorization Result
+alt Authorized
+    WA -> A: Grant Access to Admin Features
+else Unauthorized
+    WA -> A: Redirect to Login
+    A -> WA: Provide Credentials
+    WA -> API: POST /auth/login
+    API -> DS: Validate User
+    DS -> FS: Check users.json
+    FS -> DS: User Data
+    DS -> API: Validation Result
+    API -> WA: JWT Token
+    WA -> AUTH: Store Token
+end
+
+== Survey Creation & Management ==
+A -> WA: Navigate to Survey Manager
+WA -> API: GET /api/survey
+API -> DS: GetAllSurveys()
+DS -> FS: Read data.json
+FS -> DS: Survey Data
+DS -> API: Survey List
+API -> WA: JSON Response
+WA -> A: Display Survey List
+
+A -> WA: Create New Survey
+WA -> API: POST /api/survey
+API -> DS: CreateSurvey()
+DS -> FS: Write to data.json
+FS -> DS: Confirmation
+DS -> API: Survey Created
+API -> WA: Success Response
+WA -> A: Show Success Message
+
+== Survey Response Flow ==
+C -> WA: Access Survey Link
+WA -> API: GET /api/survey/by-id/{id}
+API -> DS: GetSurveyById()
+DS -> FS: Read data.json
+FS -> DS: Survey Data
+DS -> API: Survey Details
+API -> WA: Survey Form
+WA -> C: Display Survey
+
+C -> WA: Submit Survey Response
+WA -> API: POST /api/survey (response)
+API -> DS: SaveSurveyResponse()
+DS -> FS: Append to data.json
+FS -> DS: Confirmation
+DS -> API: Response Saved
+API -> WA: Success Response
+WA -> C: Thank You Message
+
+== Survey Editing & Administration ==
+A -> WA: Navigate to Survey Editor
+WA -> API: GET /api/survey/responses
+API -> DS: GetAllResponses()
+DS -> FS: Read data.json
+FS -> DS: Response Data
+DS -> API: Response List
+API -> WA: JSON Response
+WA -> A: Display Editable Grid
+
+A -> WA: Edit Response Data
+WA -> API: PUT /api/survey/{id}
+API -> DS: UpdateSurveyResponse()
+DS -> FS: Update data.json
+FS -> DS: Confirmation
+DS -> API: Update Successful
+API -> WA: Success Response
+WA -> A: Show Updated Data
+
+A -> WA: Delete Response
+WA -> API: DELETE /api/survey/{id}
+API -> DS: DeleteSurveyResponse()
+DS -> FS: Remove from data.json
+FS -> DS: Confirmation
+DS -> API: Deletion Successful
+API -> WA: Success Response
+WA -> A: Refresh List
+
+== Dashboard & Analytics ==
+E -> WA: Access Dashboard
+WA -> AUTH: Check Employee Authorization
+AUTH -> WA: Access Granted (Sector Limited)
+
+WA -> API: GET /api/survey/responses
+API -> DS: GetResponsesBySector()
+DS -> FS: Read data.json
+FS -> DS: Filtered Data
+DS -> API: Sector-Specific Data
+API -> WA: JSON Response
+WA -> E: Display Charts & Metrics
+
+== AI-Powered Insights ==
+A -> WA: Request AI Analysis
+WA -> API: POST /api/ai/analyze
+API -> AI: AnalyzeSurveyData()
+AI -> DS: GetSurveyData()
+DS -> FS: Read survey data
+FS -> DS: Raw Data
+DS -> AI: Processed Data
+AI -> AI: Perform Analysis\n(Trends, Patterns, Insights)
+AI -> API: Analysis Results
+API -> WA: AI Insights JSON
+WA -> A: Display Interactive Charts\nand Insights
+
+A -> WA: Chat with AI Assistant
+WA -> API: POST /api/ai/chat
+API -> AI: ProcessChatMessage()
+AI -> DS: Get Relevant Context
+DS -> FS: Query survey data
+FS -> DS: Context Data
+DS -> AI: Contextual Information
+AI -> AI: Generate Response\nusing Survey Context
+AI -> API: Chat Response
+API -> WA: AI Message
+WA -> A: Display Chat Response
+
+== Data Export & Reporting ==
+A -> WA: Export Survey Data
+WA -> WA: Generate Export\n(CSV/Excel)
+WA -> A: Download File
+
+A -> WA: Generate Reports
+WA -> API: GET /api/survey/analytics
+API -> DS: GetAnalyticsData()
+DS -> FS: Aggregate data.json
+FS -> DS: Aggregated Data
+DS -> API: Analytics Results
+API -> WA: Report Data
+WA -> A: Display Interactive Reports
+
+== Error Handling ==
+alt API Error
+    API -> WA: HTTP Error Response
+    WA -> A: Display Error Message
+    WA -> WA: Log Error Details
+end
+
+alt Database Error
+    DS -> FS: File Operation
+    FS -> DS: File Error
+    DS -> API: Error Response
+    API -> WA: HTTP 500
+    WA -> A: "Server Error" Message
+end
+
+== Background Processes ==
+note over AI, DS: AI Service continuously\nanalyzes survey patterns
+note over DS, FS: Data backup and\nvalidation processes
+note over WA: Real-time updates\nvia SignalR (future)
+
+@enduml

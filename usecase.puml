@@ -6,19 +6,19 @@ skinparam packageStyle rectangle
 ' Actors
 actor Admin as A
 actor "Employee" as E
-actor Customer as C
+actor Client as C
 
 ' Use cases
 usecase "Create & Send\nSurvey" as UC_CreateSend
 usecase "Fill\nSurvey" as UC_Fill
 usecase "Analyze\nPerformance" as UC_Analyze
-usecase "Generate\nReports" as UC_Report
+usecase "Manage\nSurveys" as UC_Manage
 usecase "Login &\nAuthentication" as UC_Auth
 
 ' Associations
 A --> UC_CreateSend
 A --> UC_Analyze
-A --> UC_Report
+A --> UC_Manage
 A --> UC_Auth
 
 E --> UC_Analyze
@@ -35,12 +35,11 @@ end note
 
 note left of A
   Admin: full system access,
-  survey management & user admin
+  survey management
 end note
 
 note right of UC_Fill
-  Guests/Customers access via
-  anonymous survey links
+  Client access via unique survey links
 end note
 
 @enduml

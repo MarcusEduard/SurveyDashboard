@@ -22,7 +22,7 @@
     }
     else
     {
-        <!-- Filter and Search Controls -->
+        <!-- Filter and Search -->
         <div class="editor-controls">
             <div class="search-controls" style="flex: 1; min-width: 180px; max-width: 300px;">
                 <input type="text" @bind="searchFilter" @oninput="FilterSurveys" @onkeydown="HandleSearchKeyDown"
@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        <!-- Survey Responses Table -->
+        <!-- Survey Responses -->
         <div class="editor-table-container">
             <table class="editor-table">
                 <thead>
@@ -267,7 +267,7 @@
     }
 </div>
 
-<!-- Delete Confirmation Modal -->
+<!-- Delete -->
 @if (showDeleteModal && responseToDelete != null)
 {
     <div class="modal-overlay" @onclick="CancelDelete">
@@ -777,7 +777,6 @@
     string statusFilter = "";
     string dateFilter = "";
     
-    // Pagination
     int currentPage = 1;
     int pageSize = 20;
     
@@ -790,7 +789,7 @@
     bool showDeleteModal = false;
     SurveyResponse? responseToDelete = null;
 
-    // Field constants for editing
+    // Fields for editing
     const string CUSTOMER_FIELD = "customer";
     const string PROJECT_FIELD = "project";
     const string DURATION_FIELD = "duration";
@@ -839,7 +838,7 @@
             (string.IsNullOrEmpty(dateFilter) || (r.DateSent.HasValue && r.DateSent.Value.ToString("yyyy-MM-dd") == dateFilter))
         ).ToList();
         
-        currentPage = 1; // Reset to first page when filtering
+        currentPage = 1;
         StateHasChanged();
     }
     List<string> GetUniqueDurations()
@@ -910,7 +909,7 @@
                     if (DateTime.TryParse(editValue, out DateTime dateCompleted))
                     {
                         response.DateCompleted = dateCompleted;
-                        response.SubmittedAt = dateCompleted; // Keep legacy field in sync
+                        response.SubmittedAt = dateCompleted;
                     }
                     else
                     {
@@ -1007,7 +1006,6 @@
         }
     }
 
-    // Helper Methods
     List<string> GetUniqueSectors()
     {
         return surveyResponses.Select(r => r.Sector).Distinct().OrderBy(s => s).ToList();
@@ -1086,7 +1084,6 @@
         StateHasChanged();
     }
 
-    // Handle Enter key in search bar
     void HandleSearchKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
     {
         if (e.Key == "Enter")

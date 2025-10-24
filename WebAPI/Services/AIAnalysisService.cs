@@ -375,7 +375,7 @@ Provide a professional, actionable insight about the satisfaction trend. Be spec
                 if (!responses.Any())
                     return "No data available for service quality analysis.";
 
-                // Calculate service quality metrics
+                // Calculate service quality
                 var avgSatisfaction = responses.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0);
                 var totalResponses = responses.Count;
                 var highSatisfactionCount = responses.Count(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0 >= 8);
@@ -572,7 +572,6 @@ Return ONLY a JSON array in this exact format:
 
                 var jsonResponse = completion.Value.Content.FirstOrDefault()?.Text ?? "[]";
                 
-                // Clean the JSON response
                 var startIndex = jsonResponse.IndexOf('[');
                 var endIndex = jsonResponse.LastIndexOf(']') + 1;
                 if (startIndex >= 0 && endIndex > startIndex)
@@ -587,7 +586,7 @@ Return ONLY a JSON array in this exact format:
             {
                 _logger.LogError(ex, "Error generating satisfaction forecast");
                 
-                // Generate fallback forecast based on current trend
+                // Generate forecast based on current trend
                 var fallbackForecast = new List<ForecastDataPoint>();
                 var currentAvg = responses.Any() ? responses.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0) : 7.0;
                 

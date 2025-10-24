@@ -1,0 +1,226 @@
+@startuml SurveyDashboard_System_Sequence
+
+!theme plain
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam maxmessagesize 80
+skinparam participantPadding 20
+skinparam boxPadding 10
+
+title Survey Dashboard - System Sequence Diagram
+
+' System Boundaries
+box "Client Layer" #LightBlue
+    participant "Browser" as Browser
+end box
+
+box "Presentation Layer" #LightGreen
+    participant "Blazor WebApp\n(Survey.razor)" as WebApp
+    participant "CustomAuthProvider" as Auth
+    participant "NavMenu" as Nav
+end box
+
+box "API Layer" #LightYellow
+    participant "SurveyController" as SurveyAPI
+    participant "AuthController" as AuthAPI
+    participant "AIController" as AIAPI
+end box
+
+box "Service Layer" #LightCoral
+    participant "FileDataService" as DataService
+    participant "AIAnalysisService" as AIService
+    participant "JwtAuthService" as JwtService
+end box
+
+box "Data Layer" #LightGray
+    participant "data.json\n(FileStorage)" as JsonFile
+    participant "SQLite Database\n(dnd.db)" as SQLiteDB
+end box
+
+== System Initialization ==
+Browser -> WebApp: GET /
+WebApp -> Auth: Initialize()
+Auth -> JwtService: ValidateToken()
+alt Token Valid
+    JwtService -> Auth: User Authenticated
+    Auth -> WebApp: Authentication State
+    WebApp -> Nav: Update Navigation
+else No Token
+    Auth -> WebApp: Anonymous State
+end
+WebApp -> Browser: Render Home Page
+
+== Authentication Flow ==
+Browser -> WebApp: Navigate to /login
+WebApp -> Browser: Render Login Form
+
+Browser -> WebApp: Submit Credentials
+WebApp -> AuthAPI: POST /auth/login
+AuthAPI -> JwtService: ValidateCredentials()
+JwtService -> JsonFile: Read users data
+JsonFile -> JwtService: User credentials
+JwtService -> JwtService: Generate JWT Token
+JwtService -> AuthAPI: JWT Response
+AuthAPI -> WebApp: Token + User Info
+WebApp -> Auth: StoreToken()
+Auth -> WebApp: Update Auth State
+WebApp -> Nav: Update Navigation Menu
+WebApp -> Browser: Redirect to Dashboard
+
+== Survey Access (Public) ==
+Browser -> WebApp: GET /survey?id=ABC123
+WebApp -> SurveyAPI: GET /api/survey/by-id/ABC123
+SurveyAPI -> DataService: GetSurveyByIdAsync()
+DataService -> JsonFile: Read survey data
+JsonFile -> DataService: Survey details
+DataService -> SurveyAPI: Survey object
+SurveyAPI -> WebApp: JSON Response
+WebApp -> Browser: Render Survey Form
+
+== Survey Submission ==
+Browser -> WebApp: Submit Survey Form
+WebApp -> WebApp: Client-side validation
+WebApp -> SurveyAPI: POST /api/survey
+SurveyAPI -> SurveyAPI: Server-side validation
+SurveyAPI -> DataService: SaveSurveyResponseAsync()
+DataService -> JsonFile: Append response data
+JsonFile -> DataService: Write confirmation
+DataService -> SurveyAPI: Success response
+SurveyAPI -> WebApp: HTTP 201 Created
+WebApp -> Browser: Thank You Message
+
+== Admin Dashboard Access ==
+Browser -> WebApp: GET /survey-dashboard
+WebApp -> Auth: CheckAuthorization("MustBeAdmin")
+Auth -> WebApp: Authorization granted
+WebApp -> SurveyAPI: GET /api/survey/responses
+SurveyAPI -> DataService: GetAllResponsesAsync()
+DataService -> JsonFile: Read all responses
+JsonFile -> DataService: Response collection
+DataService -> SurveyAPI: Filtered data
+SurveyAPI -> WebApp: JSON array
+WebApp -> WebApp: Generate charts & metrics
+WebApp -> Browser: Render Dashboard
+
+== AI Analysis Request ==
+Browser -> WebApp: Click "Analyze Data"
+WebApp -> AIAPI: POST /api/ai/analyze
+AIAPI -> AIService: AnalyzeSurveyData()
+AIService -> DataService: GetSurveyData()
+DataService -> JsonFile: Read survey responses
+JsonFile -> DataService: Raw data
+DataService -> AIService: Processed data
+AIService -> AIService: Perform ML Analysis\n(Trends, Sentiment, Patterns)
+AIService -> AIAPI: Analysis results
+AIAPI -> WebApp: AI insights JSON
+WebApp -> Browser: Display AI Charts & Insights
+
+== Survey Management (Admin) ==
+Browser -> WebApp: GET /survey-manager
+WebApp -> Auth: CheckAuthorization("MustBeAdmin")
+Auth -> WebApp: Access granted
+WebApp -> SurveyAPI: GET /api/survey
+SurveyAPI -> DataService: GetAllSurveysAsync()
+DataService -> JsonFile: Read survey list
+JsonFile -> DataService: Survey collection
+DataService -> SurveyAPI: Survey data
+SurveyAPI -> WebApp: JSON response
+WebApp -> Browser: Render Management Interface
+
+Browser -> WebApp: Create New Survey
+WebApp -> SurveyAPI: POST /api/survey
+SurveyAPI -> DataService: CreateSurveyAsync()
+DataService -> JsonFile: Write new survey
+JsonFile -> DataService: Confirmation
+DataService -> SurveyAPI: Survey created
+SurveyAPI -> WebApp: Success response
+WebApp -> Browser: Update survey list
+
+== Survey Editor Operations ==
+Browser -> WebApp: GET /survey-editor
+WebApp -> Auth: CheckAuthorization("MustBeAdmin")
+WebApp -> SurveyAPI: GET /api/survey/responses
+SurveyAPI -> DataService: GetResponsesForEditingAsync()
+DataService -> JsonFile: Read editable responses
+JsonFile -> DataService: Response data
+DataService -> SurveyAPI: Response collection
+SurveyAPI -> WebApp: JSON array
+WebApp -> Browser: Render Editable Grid
+
+Browser -> WebApp: Edit Response Field
+WebApp -> SurveyAPI: PUT /api/survey/{id}
+SurveyAPI -> DataService: UpdateSurveyResponseAsync()
+DataService -> JsonFile: Update specific record
+JsonFile -> DataService: Update confirmation
+DataService -> SurveyAPI: Success
+SurveyAPI -> WebApp: Updated response
+WebApp -> Browser: Refresh grid row
+
+Browser -> WebApp: Delete Response
+WebApp -> SurveyAPI: DELETE /api/survey/{id}
+SurveyAPI -> DataService: DeleteSurveyResponseAsync()
+DataService -> JsonFile: Remove record
+JsonFile -> DataService: Deletion confirmed
+DataService -> SurveyAPI: Success
+SurveyAPI -> WebApp: 204 No Content
+WebApp -> Browser: Remove from grid
+
+== AI Chat Interaction ==
+Browser -> WebApp: Type chat message
+WebApp -> AIAPI: POST /api/ai/chat
+AIAPI -> AIService: ProcessChatMessage()
+AIService -> DataService: GetRelevantSurveyContext()
+DataService -> JsonFile: Query survey data
+JsonFile -> DataService: Context data
+DataService -> AIService: Relevant information
+AIService -> AIService: Generate AI Response\n(using survey context)
+AIService -> AIAPI: Chat response
+AIAPI -> WebApp: AI message JSON
+WebApp -> Browser: Display chat response
+
+== Data Export ==
+Browser -> WebApp: Click Export Button
+WebApp -> SurveyAPI: GET /api/survey/export
+SurveyAPI -> DataService: GetExportDataAsync()
+DataService -> JsonFile: Read all data
+JsonFile -> DataService: Complete dataset
+DataService -> SurveyAPI: Formatted data
+SurveyAPI -> WebApp: CSV/Excel data
+WebApp -> Browser: Download file
+
+== Error Handling Scenarios ==
+alt Network Error
+    WebApp -> SurveyAPI: API Request
+    SurveyAPI --> WebApp: Connection timeout
+    WebApp -> Browser: Display error message
+end
+
+alt Authentication Error
+    Auth -> JwtService: Validate expired token
+    JwtService -> Auth: Token invalid
+    Auth -> WebApp: Redirect to login
+    WebApp -> Browser: Login page
+end
+
+alt Data Access Error
+    DataService -> JsonFile: File operation
+    JsonFile --> DataService: File locked/corrupted
+    DataService -> SurveyAPI: Error response
+    SurveyAPI -> WebApp: HTTP 500
+    WebApp -> Browser: System error message
+end
+
+== Background Processes ==
+note over AIService
+    Continuous data analysis
+    Pattern recognition
+    Performance monitoring
+end note
+
+note over DataService
+    Data validation
+    Backup operations
+    Cache management
+end note
+
+@enduml

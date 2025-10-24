@@ -101,7 +101,6 @@ namespace WebAPI.Controllers
             {
                 var responses = await GetSurveyResponses();
                 
-                // Get all AI analysis in parallel for better performance
                 var insightsTask = _aiService.GetSurveyInsightsAsync(responses);
                 var recommendationsTask = _aiService.GetRecommendationsAsync(responses);
                 var predictionsTask = _aiService.GetPredictiveInsightsAsync(responses);
@@ -191,7 +190,7 @@ namespace WebAPI.Controllers
 
         private async Task<List<SurveyResponse>> GetSurveyResponses()
         {
-            // Get survey responses directly from the database
+            // Get survey responses from the database
             return await _context.SurveyResponses.ToListAsync();
         }
     }

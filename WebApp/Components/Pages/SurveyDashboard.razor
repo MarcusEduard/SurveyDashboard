@@ -15,7 +15,6 @@
 </div>
 
 <div class="dashboard-container">
-    <!-- Header Section -->
     <div class="dashboard-header">
         <img src="/images/dk_logo.png" alt="Nilfisk Logo" class="dashboard-logo" />
         <div class="dashboard-title-group">
@@ -44,7 +43,7 @@
     }
     else
     {
-        <!-- Summary Cards -->
+        <!-- Main Dashboard Overview -->
         <div class="summary-cards">
             <div class="card clickable" @onclick='() => ScrollToSection("responses")'>
                 <div class="card-icon">📊</div>
@@ -72,10 +71,9 @@
         <!-- Sector Overview Charts -->
         <div class="charts-section">
             <div class="section-header">
-                <h3>📈 Analytics</h3>
+                <h3>📈 Completion By Sector</h3>
             </div>
             
-            <!-- Bar Chart: Responses per Sector -->
             <div class="chart-container" id="responses">
                 <div class="chart-header">
                     <h4>🔍 Survey Responses by Sector</h4>
@@ -735,11 +733,10 @@
                 }
             </div>
 
-            <!-- AI Chat Section -->
+            <!-- AI Chat -->
             <div class="chart-container ai-chat-section" id="ai-chat">
                 
                 <style>
-                    /* Enhanced AI Chat Styles */
                     .ai-chat-section {
                         background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
                         border: 1px solid #e2e8f0;
@@ -757,7 +754,6 @@
                         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
                     }
 
-                    /* Modern Chat Header */
                     .chat-header-modern {
                         display: flex;
                         justify-content: space-between;
@@ -848,14 +844,12 @@
                         transform: translateY(-1px);
                     }
 
-                    /* Enhanced Chat Container */
                     .enhanced-chat-container {
                         min-height: 500px;
                         display: flex;
                         flex-direction: column;
                     }
 
-                    /* Welcome Section */
                     .welcome-section {
                         display: flex;
                         flex-direction: column;
@@ -902,7 +896,6 @@
                         max-width: 500px;
                     }
 
-                    /* Suggestion Chips */
                     .suggestion-chips {
                         display: grid;
                         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -940,7 +933,6 @@
                         flex-shrink: 0;
                     }
 
-                    /* Enhanced Chat Messages */
                     .chat-messages-enhanced {
                         flex: 1;
                         padding: 20px 0;
@@ -1005,7 +997,6 @@
                         50% { transform: scale(1.1); }
                     }
 
-                    /* Message Bubbles */
                     .message-bubble {
                         max-width: 70%;
                         border-radius: 18px;
@@ -1032,7 +1023,6 @@
                         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
                     }
 
-                    /* Message Content */
                     .message-content-enhanced {
                         padding: 16px 20px;
                     }
@@ -1082,7 +1072,6 @@
                         transform: scale(1.1);
                     }
 
-                    /* Enhanced Typing Indicator */
                     .typing-indicator-enhanced {
                         display: flex;
                         align-items: center;
@@ -1123,7 +1112,6 @@
                         font-style: italic;
                     }
 
-                    /* Enhanced Input Area */
                     .chat-input-area {
                         border-top: 1px solid #e2e8f0;
                         background: #f8fafc;
@@ -1256,7 +1244,6 @@
                         color: #94a3b8;
                     }
 
-                    /* Responsive Design */
                     @@media (max-width: 768px) {
                         .chat-header-modern {
                             padding: 16px 20px;
@@ -1765,7 +1752,6 @@
         opacity: 0.7;
     }
 
-    /* Enhanced Summary Cards */
     .summary-cards {
         display: flex;
         gap: 32px;
@@ -1872,7 +1858,6 @@
         transition: width 1s ease;
     }
 
-    /* Section Headers */
     .section-header {
         display: flex;
         align-items: center;
@@ -1888,7 +1873,6 @@
         margin: 0;
     }
 
-    /* Filter and Control Buttons */
     .filter-buttons, .chart-controls, .view-toggles, .performance-controls {
         display: flex;
         gap: 8px;
@@ -2028,7 +2012,6 @@
         font-size: 0.75rem;
     }
 
-    /* Enhanced Chart Containers */
     .chart-container {
         background: #fff;
         padding: 32px 24px;
@@ -2059,7 +2042,6 @@
         font-weight: 600;
     }
 
-    /* Interactive Bar Chart */
     .interactive-bar-chart {
         margin-top: 20px;
     }
@@ -2182,7 +2164,6 @@
         animation: shine 2s ease-in-out infinite;
     }
 
-    /* Animations */
     .slideIn {
         animation: slideIn 0.8s ease;
     }
@@ -2198,8 +2179,6 @@
         border-radius: 8px;
         animation: slideDown 0.3s ease;
     }
-
-    /* Remove keyframes - using transitions instead */
 
     .dropdown-stats {
         display: flex;
@@ -2223,7 +2202,6 @@
         color: #666;
     }
 
-    /* Satisfaction Grid */
     .satisfaction-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -2411,7 +2389,6 @@
         opacity: 1;
     }
 
-    /* Tooltip animations removed - using transitions */
 
     .tooltip-stats {
         margin-top: 4px;
@@ -2419,7 +2396,6 @@
         opacity: 0.8;
     }
 
-    /* Interactive Line Chart */
     .interactive-line-chart {
         position: relative;
         height: 350px;
@@ -2539,7 +2515,6 @@
         margin-top: 2px;
     }
 
-    /* Sector Cards Grid */
     .sector-cards-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -2768,7 +2743,6 @@
         z-index: 10;
     }
 
-    /* Interactive Table */
     .sector-table {
         margin-top: 20px;
         overflow-x: auto;
@@ -2848,7 +2822,6 @@
         background: rgba(0,123,255,0.1);
     }
 
-    /* Loading and No Data */
     .loading-spinner {
         text-align: center;
         padding: 80px;
@@ -2871,9 +2844,7 @@
         font-size: 1.2rem;
     }
 
-    /* Responsive Design - Simplified to avoid Razor compilation issues */
     .dashboard-responsive {
-        /* Use CSS Grid auto-fit instead of media queries */
     }
 
     .summary-cards {
@@ -2888,12 +2859,10 @@
         gap: 20px;
     }
 
-    /* Smooth scroll behavior */
     html {
         scroll-behavior: smooth;
     }
 
-    /* Navigation Grid and Cards */
     .navigation-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -3093,7 +3062,6 @@
         color: #666;
     }
 
-    /* Individual Responses Table */
     .responses-table {
         margin-top: 16px;
     }
@@ -3140,7 +3108,6 @@
     .bg-warning { background-color: #ffc107 !important; color: #333; }
     .bg-danger { background-color: #dc3545 !important; color: white; }
 
-    /* Satisfaction Trends Styles */
     .trends-container {
         margin-top: 20px;
     }
@@ -3461,7 +3428,6 @@
         font-weight: 600;
     }
 
-    /* Forecast Chart Styles */
     .forecast-line {
         position: absolute;
         top: 0;
@@ -3810,7 +3776,6 @@
         border: 2px dashed #dee2e6;
     }
 
-    /* Client Analytics Styles */
     .clients-overview {
         margin-top: 20px;
     }
@@ -4185,7 +4150,6 @@
 </style>
 
 <!--
-/* Goal line for satisfaction target */
 .goal-line {
     z-index: 3;
     border-radius: 3px;
@@ -4204,31 +4168,29 @@
     Dictionary<string, double> companySizeAverages = new Dictionary<string, double>();
     double avgSatisfaction = 0;
     
-    // AI variables
-    private string aiView = "insights"; // insights, recommendations, predictions, chat
+    private string aiView = "insights";
     private bool isLoadingAI = false;
     private AIInsights? currentAIInsights;
     private AIRecommendations? currentAIRecommendations;
     private AIPredictions? currentAIPredictions;
     
-    // Chat variables
+    // Chat
     private List<ChatMessage> chatHistory = new();
     private string chatInput = "";
     private bool isProcessingChat = false;
     
-    // Trend insights variables
+    // Trend insights
     private string? aiTrendAnalysis;
     private string? aiServiceQualityInsight;
     private bool isLoadingTrendInsights = false;
     
-    // AI Predictions variables
+    // AI Predictions
     private List<ForecastDataPoint>? forecastData;
     private string? databaseAnalysis;
     private bool isLoadingForecast = false;
     private bool isLoadingDatabaseAnalysis = false;
     private int hoveredForecastPoint = -1;
     
-    // Model classes
     public class ChatMessage
     {
         public string Text { get; set; } = "";
@@ -4244,7 +4206,6 @@
         public string Period { get; set; } = string.Empty;
     }
 
-    // Interactive states
     string selectedSectorFilter = "all";
     string selectedCompanySizeFilter = "all";
     string chartView = "count";
@@ -4256,35 +4217,31 @@
     int? selectedQuestion = null;
     int? hoveredPoint = null;
     
-    // Trends states
+    // Trends
     string trendsView = "monthly";
     int? selectedTrendPoint = null;
     
-    // Client analytics states
+    // Client analytics
     string clientView = "yearly";
     string? selectedClientPeriod = null;
     string selectedClientFilter = "all";
     
-    // Hierarchical navigation states
     string? selectedCustomer = null;
     string? selectedProject = null;
-    string currentNavigationLevel = "sectors"; // sectors, customers, projects, analysis
+    string currentNavigationLevel = "sectors";
     
-    // Expansion states
     HashSet<string> expandedSectors = new HashSet<string>();
     HashSet<string> expandedSectorCards = new HashSet<string>();
     
-    // Table sorting
     string sortColumn = "sector";
     bool sortAscending = true;
     
-    // User role for filtering
     string userRole = "";
 
     DateTime? GetLastUpdatedDate()
     {
         var dates = surveyResponses
-            .SelectMany(r => new[] { r.DateCompleted, r.DateSent /*, r.LastEdited hvis du har den */ })
+            .SelectMany(r => new[] { r.DateCompleted, r.DateSent })
             .Where(d => d.HasValue)
             .Select(d => d.Value)
             .ToList();
@@ -4294,7 +4251,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Get user role for filtering
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         if (authState.User.Identity.IsAuthenticated)
         {
@@ -4316,7 +4272,6 @@
             
             CalculateStatistics();
             
-            // Load AI-generated insights after data is loaded
             await LoadTrendInsights();
             await LoadForecastData();
             await LoadDatabaseAnalysis();
@@ -4360,7 +4315,6 @@
         }
         catch (Exception ex)
         {
-            // Handle error - could add notification
             Console.WriteLine($"AI Analysis error: {ex.Message}");
         }
         finally
@@ -4377,7 +4331,6 @@
     
     private void InitializeAIState()
     {
-        // Initialize with placeholder data to show the UI structure
         currentAIInsights = null;
         currentAIRecommendations = null;
         currentAIPredictions = null;
@@ -4404,10 +4357,10 @@
             using var client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5123/");
             
-            // Load trend analysis
+            // Load trend analysis from AI
             var trendTask = client.GetStringAsync("api/ai/trend-analysis");
             
-            // Load service quality insight
+            // Load service quality insight from AI
             var qualityTask = client.GetStringAsync("api/ai/service-quality");
             
             await Task.WhenAll(trendTask, qualityTask);
@@ -4605,7 +4558,6 @@
         avgSatisfaction = surveyResponses.Average(r => r.Question1);
     }
 
-    // Interactive Functions
     List<string> GetUniqueSectors()
     {
         return surveyResponses
@@ -4628,8 +4580,6 @@
 
     void SetFilter(string filter)
     {
-        // This method is kept for backward compatibility but may need updates
-        // for dual filtering system if used elsewhere
         StateHasChanged();
     }
 
@@ -4648,7 +4598,7 @@
     void SetTrendsView(string view)
     {
         trendsView = view;
-        selectedTrendPoint = null; // Reset selection when changing view
+        selectedTrendPoint = null;
         StateHasChanged();
     }
 
@@ -4682,17 +4632,16 @@
         StateHasChanged();
     }
 
-    // Hierarchical navigation methods
     void NavigateToCustomers(string sector)
     {
-        // Check if user has access to this sector in detailed analysis
+        // Check roles for detailed analysis access
         if (userRole != "Admin")
         {
             var allowedSectors = GetRoleBasedSectors().Keys;
             if (!allowedSectors.Contains(sector))
             {
                 // User doesn't have access to this sector in detailed analysis
-                return; // Do nothing, don't navigate
+                return; 
             }
         }
         
@@ -4758,13 +4707,11 @@
 
     void HandleLineChartClick()
     {
-        // Handle line chart clicks if needed
     }
 
     void ScrollToSection(string sectionId)
     {
-        // This would need JavaScript interop to work properly
-        // For now, we'll just do a simple state change
+        // Maybe I should add some javascript later???
         StateHasChanged();
     }
 
@@ -4780,20 +4727,16 @@
         StateHasChanged();
     }
 
-    // Helper Functions
     Dictionary<string, int> GetFilteredSectors()
     {
-        // Show all sectors in main overview (updated for dual filtering)
         return sectorCounts;
     }
 
     Dictionary<string, int> GetRoleBasedSectors()
     {
-        // Admin can see all sectors
         if (userRole == "Admin")
             return sectorCounts;
-        
-        // Role-based filtering for other users
+
         if (userRole == "Health")
             return sectorCounts.Where(kvp => kvp.Key == "Health").ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         else if (userRole == "Tech")
@@ -4801,7 +4744,6 @@
         else if (userRole == "Energy")
             return sectorCounts.Where(kvp => kvp.Key == "Energy").ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         
-        // Default: return all (for edge cases)
         return sectorCounts;
     }
 
@@ -4817,7 +4759,6 @@
 
     Dictionary<string, int> GetFilteredCompanySizes()
     {
-        // Show all company sizes (updated for dual filtering)
         return companySizeCounts;
     }
 
@@ -4832,18 +4773,15 @@
     {
         var filteredResponses = GetCombinedFilteredResponses();
         
-        // Group by a combination key that represents the current view
         var groupedData = new Dictionary<string, List<SurveyResponse>>();
         
         if (selectedSectorFilter != "all" && selectedCompanySizeFilter != "all")
         {
-            // Both filters applied - show individual survey responses or aggregated data
             var key = $"{selectedSectorFilter} - {selectedCompanySizeFilter}";
             groupedData[key] = filteredResponses.ToList();
         }
         else if (selectedSectorFilter != "all")
         {
-            // Only sector filter applied - group by company size within that sector
             groupedData = filteredResponses
                 .Where(r => !string.IsNullOrEmpty(r.CompanySize))
                 .GroupBy(r => $"{selectedSectorFilter} - {r.CompanySize}")
@@ -4851,7 +4789,6 @@
         }
         else if (selectedCompanySizeFilter != "all")
         {
-            // Only company size filter applied - group by sector within that company size
             groupedData = filteredResponses
                 .Where(r => !string.IsNullOrEmpty(r.Sector))
                 .GroupBy(r => $"{r.Sector} - {selectedCompanySizeFilter}")
@@ -4859,7 +4796,6 @@
         }
         else
         {
-            // No filters applied - group by sector
             groupedData = filteredResponses
                 .Where(r => !string.IsNullOrEmpty(r.Sector))
                 .GroupBy(r => r.Sector)
@@ -4875,13 +4811,11 @@
     {
         var responses = GetRoleBasedResponses();
 
-        // Apply sector filter
         if (selectedSectorFilter != "all")
         {
             responses = responses.Where(r => r.Sector == selectedSectorFilter).ToList();
         }
 
-        // Apply company size filter
         if (selectedCompanySizeFilter != "all")
         {
             responses = responses.Where(r => r.CompanySize == selectedCompanySizeFilter).ToList();
@@ -4896,11 +4830,10 @@
         if (userRole == "Admin")
             return surveyResponses;
         
-        // Filter responses by user's role
+        // Filter responses by user role
         if (userRole == "Health" || userRole == "Tech" || userRole == "Energy")
             return surveyResponses.Where(r => r.Sector == userRole).ToList();
         
-        // Default: return all (for edge cases)
         return surveyResponses;
     }
 
@@ -5218,7 +5151,7 @@
         {
             "quarterly" => GroupByQuarters(completedResponses),
             "yearly" => GroupByYears(completedResponses),
-            _ => GroupByMonths(completedResponses) // default to monthly
+            _ => GroupByMonths(completedResponses) // default = monthly
         };
 
         return groupedData.OrderBy(t => t.Date);
@@ -5346,14 +5279,12 @@
         
         if (data.Count < 3) return challenges;
 
-        // Check for consistently low periods
         var lowPeriods = data.Where(t => t.Score < 6).Count();
         if (lowPeriods > data.Count * 0.3)
         {
             challenges.Add("Recurring low satisfaction periods");
         }
 
-        // Check for declining trend in recent periods
         var recentData = data.TakeLast(5).ToList();
         if (recentData.Count >= 3)
         {
@@ -5392,20 +5323,18 @@
         return data?.ResponseCount ?? 0;
     }
 
-    // Helper methods
     string GetMonthName(int month)
     {
         return new DateTime(2000, month, 1).ToString("MMMM");
     }
 
-    // Visual chart helper methods
     string GetTrendLinePath(List<TrendDataPoint> data)
     {
         if (data.Count < 2) return "";
         
         var points = data.Select((point, index) => {
             var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
-            var y = 100 - (point.Score / 10.0) * 100; // Invert Y for CSS positioning
+            var y = 100 - (point.Score / 10.0) * 100;
             return $"{x}% {y}%";
         });
         
@@ -5418,7 +5347,7 @@
         
         var topPoints = data.Select((point, index) => {
             var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
-            var y = 100 - (point.Score / 10.0) * 100; // Invert Y for CSS positioning
+            var y = 100 - (point.Score / 10.0) * 100;
             return $"{x}% {y}%";
         });
         
@@ -5441,14 +5370,14 @@
         };
     }
 
-    // Forecast chart helper methods
+    // Forecast chart methods
     string GetForecastLinePath(List<ForecastDataPoint> data)
     {
         if (data.Count < 2) return "";
         
         var points = data.Select((point, index) => {
             var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
-            var y = 100 - (point.PredictedScore / 10.0) * 100; // Invert Y for CSS positioning
+            var y = 100 - (point.PredictedScore / 10.0) * 100;
             return $"{x}% {y}%";
         });
         
@@ -5474,7 +5403,6 @@
         return $"clip-path: polygon({string.Join(", ", topPoints)}, {string.Join(", ", bottomPoints)});";
     }
 
-    // New methods for dual filtering system
     void ClearAllFilters()
     {
         selectedSectorFilter = "all";
@@ -5484,69 +5412,60 @@
 
     void SelectItem(string itemKey)
     {
-        // Handle selection of satisfaction cards if needed
         selectedSector = itemKey;
         StateHasChanged();
     }
 
     string GetItemIcon(string itemKey)
     {
-        // Determine if this is a sector or company size based on the key format
         if (itemKey.Contains(" - "))
         {
             var parts = itemKey.Split(" - ");
             if (parts.Length == 2)
             {
-                // Combined sector-company size format
-                return "🏢🏭"; // Combined icon
+                return "🏢🏭";
             }
         }
         
-        // Check if it's a known sector
         var sectors = GetUniqueSectors();
         if (sectors.Contains(itemKey))
         {
             return GetSectorIcon(itemKey);
         }
         
-        // Check if it's a known company size
         var companySizes = GetUniqueCompanySizes();
         if (companySizes.Contains(itemKey))
         {
             return GetCompanySizeIcon(itemKey);
         }
         
-        return "📊"; // Default icon
+        return "📊";
     }
 
     string GetItemColor(string itemKey)
     {
-        // Determine if this is a sector or company size based on the key format
         if (itemKey.Contains(" - "))
         {
             var parts = itemKey.Split(" - ");
             if (parts.Length == 2)
             {
-                // Use sector color for combined items
                 return GetSectorColor(parts[0]);
             }
         }
         
-        // Check if it's a known sector
         var sectors = GetUniqueSectors();
         if (sectors.Contains(itemKey))
         {
             return GetSectorColor(itemKey);
         }
         
-        // Check if it's a known company size
         var companySizes = GetUniqueCompanySizes();
         if (companySizes.Contains(itemKey))
         {
             return GetCompanySizeColor(itemKey);
         }
         
-        return "#95a5a6"; // Default color
+        return "#95a5a6";
     }
 
     int GetFilteredResponseCount(string itemKey)
@@ -5555,11 +5474,9 @@
         
         if (itemKey.Contains(" - "))
         {
-            // This is a combined filter result, return the total count
             return responses.Count();
         }
         
-        // For individual items, filter by that specific item
         var sectors = GetUniqueSectors();
         var companySizes = GetUniqueCompanySizes();
         
@@ -5634,7 +5551,7 @@
             // Get all clients who had surveys in this year
             var clientsThisYear = yearResponses.Where(r => !string.IsNullOrEmpty(r.CustomerName)).Select(r => r.CustomerName).Distinct().ToList();
             
-            // Determine which clients are new vs repeated
+            // Which clients are new vs repeated?
             var newClients = 0;
             var repeatedClients = 0;
             
@@ -5680,7 +5597,7 @@
             // Get all clients who had surveys in this month
             var clientsThisMonth = monthResponses.Where(r => !string.IsNullOrEmpty(r.CustomerName)).Select(r => r.CustomerName).Distinct().ToList();
             
-            // Determine which clients are new vs repeated
+            // Which clients are new vs repeated?
             var newClients = 0;
             var repeatedClients = 0;
             
@@ -5845,7 +5762,7 @@
         };
     }
 
-    // Enhanced Chat Methods
+    // Chat Methods
     async Task SendSuggestionMessage(string message)
     {
         chatInput = message;
@@ -5866,7 +5783,7 @@
         }
         catch
         {
-            // Fallback - clipboard not available
+            
         }
     }
 
@@ -5882,7 +5799,7 @@
             }
             catch
             {
-                // JS function not available yet
+                // Maybe add javascript???
             }
         }
     }

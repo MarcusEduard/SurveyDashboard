@@ -59,7 +59,7 @@
         </div>
 
         <div class="form-group">
-            <label for="projectduration">Project Duration (e.g. 6 months)</label>
+            <label for="projectduration">Project Duration in hours (e.g. 150)</label>
             <input id="projectduration" type="text" class="form-control" @bind="newResponse.ProjectDuration" 
                    placeholder="Enter duration..." 
                    disabled="@(isExistingSurvey)" />
@@ -465,7 +465,7 @@
         }
         else
         {
-            // Set DateSent when survey is loaded/opened (new survey)
+            // Set DateSent when survey is loaded (new survey)
             newResponse.DateSent = DateTime.Now;
         }
     }
@@ -484,16 +484,16 @@
                     newResponse = existingSurvey;
                     isExistingSurvey = true;
                     
-                    // Check if already completed - show completed state immediately
+                    // Check if already completed
                     if (newResponse.DateCompleted.HasValue)
                     {
-                        success = true; // This will trigger the completed view
+                        success = true;
                     }
                 }
             }
             else
             {
-                // Survey not found or error - could be invalid link
+                // Survey not found
                 Console.WriteLine($"Survey not found or error loading: {response.StatusCode}");
             }
         }
@@ -546,9 +546,8 @@
     {
         if (!IsValid()) return;
 
-        // Set completion timestamps
         newResponse.DateCompleted = DateTime.Now;
-        newResponse.SubmittedAt = DateTime.Now; // Keep legacy field synchronized
+        newResponse.SubmittedAt = DateTime.Now;
         
         HttpResponseMessage response;
         
@@ -568,7 +567,6 @@
             success = true;
             StateHasChanged();
             
-            // Only reset for new surveys, not existing ones accessed via link
             if (!isExistingSurvey)
             {
                 _ = Task.Run(async () => 

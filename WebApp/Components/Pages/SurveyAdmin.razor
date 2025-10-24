@@ -215,7 +215,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Get current user's role
+        // Get current user role
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         currentUserRole = user.FindFirst("Role")?.Value;
@@ -229,7 +229,6 @@
             responses = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("http://localhost:5123/api/survey");
         }
 
-        // Filter responses based on user role
         filteredResponses = FilterResponsesByRole(responses ?? new List<SurveyResponse>());
     }
 
@@ -251,7 +250,6 @@
                 r.Sector.Equals(sectorMapping, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        // Default: no access
         return new List<SurveyResponse>();
     }
 
@@ -273,7 +271,7 @@
             "tech" => "Tech & Digitalization",
             "health" => "Health sektor",
             "energy" => "Energy sektor",
-            _ => role ?? "Ukendt"
+            _ => role ?? "Unknown"
         };
     }
 

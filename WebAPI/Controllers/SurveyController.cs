@@ -51,7 +51,6 @@ namespace WebAPI.Controllers
             if (existingSurvey == null)
                 return NotFound();
 
-            // Update all editable fields
             existingSurvey.CustomerName = response.CustomerName;
             existingSurvey.ProjectName = response.ProjectName;
             existingSurvey.ProjectDuration = response.ProjectDuration;

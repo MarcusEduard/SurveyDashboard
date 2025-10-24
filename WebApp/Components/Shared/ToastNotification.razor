@@ -55,7 +55,6 @@
         toasts.Add(toast);
         StateHasChanged();
 
-        // Auto remove after 5 seconds
         _ = Task.Run(async () =>
         {
             await Task.Delay(5000);

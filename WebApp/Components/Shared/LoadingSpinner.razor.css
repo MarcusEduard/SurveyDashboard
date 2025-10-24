@@ -25,7 +25,6 @@
     gap: 16px;
 }
 
-/* Spinner Animation */
 .spinner {
     width: 48px;
     height: 48px;
@@ -40,7 +39,6 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Dots Loader */
 .dots-loader {
     display: flex;
     gap: 8px;
@@ -69,7 +67,6 @@
     }
 }
 
-/* Pulse Loader */
 .pulse-loader {
     width: 48px;
     height: 48px;
@@ -89,7 +86,6 @@
     }
 }
 
-/* Skeleton Loader */
 .skeleton-loader {
     width: 200px;
     display: flex;

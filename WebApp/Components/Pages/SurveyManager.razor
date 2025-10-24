@@ -10,7 +10,7 @@
     <h2>📋 Survey Management</h2>
     <p>Create and send surveys to customers, and track their responses.</p>
 
-    <!-- Create New Survey Section -->
+    <!-- Create New Survey -->
     <div class="card mb-4">
         <div class="card-header">
             <h4>🆕 Create New Survey</h4>
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <!-- Pending Surveys (Sent but not completed) -->
+    <!-- Pending Surveys -->
     <div class="card mb-4">
         <div class="card-header">
             <h4>⏳ Pending Surveys</h4>
@@ -436,14 +436,12 @@
             {
                 var allSurveys = await response.Content.ReadFromJsonAsync<List<SurveyResponse>>();
                 
-                // Split into pending and completed
                 pendingSurveys = allSurveys.Where(s => !s.DateCompleted.HasValue).ToList();
                 completedSurveys = allSurveys.Where(s => s.DateCompleted.HasValue).ToList();
             }
         }
         catch (Exception ex)
         {
-            // Handle error
             Console.WriteLine($"Error loading surveys: {ex.Message}");
         }
     }
@@ -461,11 +459,9 @@
     {
         if (!IsNewSurveyValid()) return;
 
-        // Set the survey as sent but not completed
         newSurvey.DateSent = DateTime.Now;
-        newSurvey.DateCompleted = null; // Not completed yet
+        newSurvey.DateCompleted = null;
         
-        // Clear all question scores (will be set when customer fills it out)
         newSurvey.Question1 = 0;
         newSurvey.Question2 = 0;
         newSurvey.Question3 = 0;
@@ -486,13 +482,10 @@
                 createdSurveyId = newSurvey.SurveyId;
                 currentSurveyLink = $"{Navigation.BaseUri}survey/{createdSurveyId}";
                 
-                // Show modal with link
                 showLinkModal = true;
                 
-                // Reset form
                 newSurvey = new SurveyResponse();
                 
-                // Reload surveys
                 await LoadSurveys();
                 StateHasChanged();
             }
@@ -507,7 +500,6 @@
     {
         var link = $"{Navigation.BaseUri}survey/{surveyId}";
         await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", link);
-        // Could show a toast notification here
     }
 
     async Task DeleteSurvey(int surveyResponseId)

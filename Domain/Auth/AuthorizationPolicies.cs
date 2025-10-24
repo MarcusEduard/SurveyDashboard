@@ -24,7 +24,7 @@ public static class AuthorizationPolicies
             options.AddPolicy("MustBeAdmin", a =>
                 a.RequireAuthenticatedUser().RequireClaim("Role", "Admin"));
 
-            // Guest kan kun tilgå spørgeskemaet
+            // Guest can only access the survey
             options.AddPolicy("SurveyAccess", a =>
                 a.RequireAuthenticatedUser().RequireAssertion(context =>
                 {
@@ -32,7 +32,7 @@ public static class AuthorizationPolicies
                     return roleClaim != null;
                 }));
 
-            // Alle undtagen Guest kan se dashboard og øvrige sider (undtagen spørgeskemaet for Admin)
+            // Everyone except guest can access the dashboard
             options.AddPolicy("NotGuest", a =>
                 a.RequireAuthenticatedUser().RequireAssertion(context =>
                 {
@@ -40,11 +40,11 @@ public static class AuthorizationPolicies
                     return roleClaim != null && !roleClaim.Value.Equals("Guest", StringComparison.OrdinalIgnoreCase);
                 }));
 
-            // Kun Admin kan se Manage Data
+            // Only adnim can see Manage Data
             options.AddPolicy("ManageDataAccess", a =>
                 a.RequireAuthenticatedUser().RequireClaim("Role", "Admin", "Tech", "Health", "Energy"));
 
-            // Tech/Health/Energy kan se deres egen sektor i Manage Data + Admin kan se alt
+            // Tech/Health/Energy can see their own sector data - except admin (can see all)
             options.AddPolicy("SectorDataAccess", a =>
                 a.RequireAuthenticatedUser().RequireAssertion(context =>
                 {
@@ -56,11 +56,11 @@ public static class AuthorizationPolicies
                            roleClaim.Value.Equals("Energy", StringComparison.OrdinalIgnoreCase);
                 }));
 
-            // Kun Guest har adgang til spørgeskemaet
+            // Only guest can access the survey
             options.AddPolicy("GuestSurveyOnly", a =>
                 a.RequireAuthenticatedUser().RequireClaim("Role", "Guest"));
 
-            // Alle undtagen Admin kan se spørgeskemaet
+            // Everyone except admin can see the survey
             options.AddPolicy("NotAdminSurveyAccess", a =>
                 a.RequireAuthenticatedUser().RequireAssertion(context =>
                 {

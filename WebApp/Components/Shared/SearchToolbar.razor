@@ -136,17 +136,14 @@
             return;
         }
 
-        // Simulate search logic - replace with actual implementation
         searchResults = GenerateSearchResults(searchQuery, selectedFilter, sortOption);
         OnSearch.InvokeAsync(searchQuery);
     }
 
     private List<SearchResult> GenerateSearchResults(string query, string filter, string sort)
     {
-        // This is a mock implementation - replace with actual search logic
         var results = new List<SearchResult>();
 
-        // Add different types of results based on query
         if (query.ToLower().Contains("energy"))
         {
             results.Add(new SearchResult 
@@ -171,13 +168,11 @@
             });
         }
 
-        // Apply filters
         if (!string.IsNullOrEmpty(filter))
         {
             results = results.Where(r => r.Type == filter).ToList();
         }
 
-        // Apply sorting
         results = sort switch
         {
             "score" => results.OrderByDescending(r => r.Score ?? 0).ToList(),

@@ -10,7 +10,7 @@
 
 <nav class="modern-navbar">
     <div class="navbar-container">
-        <!-- Logo and Brand Section -->
+        <!-- Logo Section -->
         <div class="navbar-brand">
             <img src="/images/dk_logo.png" alt="Danish Embassy Logo" class="navbar-logo" />
             <div class="brand-text">
@@ -26,7 +26,6 @@
                 <span>Home</span>
             </NavLink>
 
-            <!-- Dashboard til almindelige brugere -->
             <AuthorizeView Policy="NotGuest">
                 <Authorized>
                     <NavLink class="nav-link" href="/survey-dashboard" Match="NavLinkMatch.All">
@@ -51,7 +50,7 @@
             </AuthorizeView>
         </div>
 
-        <!-- User Actions Section -->
+        <!-- User Section -->
         <div class="navbar-actions">
             <AuthorizeView>
                 <Authorized>
@@ -72,7 +71,6 @@
             </AuthorizeView>
         </div>
 
-        <!-- Mobile Menu Toggle -->
         <button class="mobile-toggle" @onclick="ToggleMobileMenu">
             <span class="hamburger-line"></span>
             <span class="hamburger-line"></span>
@@ -80,7 +78,6 @@
         </button>
     </div>
 
-    <!-- Mobile Navigation -->
     <div class="mobile-nav @(mobileMenuOpen ? "open" : "")">
         <div class="mobile-nav-item">
             <NavLink class="mobile-nav-link" href="" Match="NavLinkMatch.All" @onclick="CloseMobileMenu">
@@ -177,7 +174,6 @@
 }
 
 <style>
-    /* Modern Navbar Styles */
     .modern-navbar {
         background: linear-gradient(135deg, #dc35458) 0%, #c82333 100%);
         box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
@@ -199,14 +195,13 @@
         position: relative;
     }
 
-    /* Brand Section */
     .navbar-brand {
         display: flex;
         align-items: center;
         gap: 1rem;
         color: white;
         text-decoration: none;
-        margin-left: -2rem; /* Rykker brand-sektionen endnu tættere på venstre kant */
+        margin-left: -2rem;
     }
 
     .navbar-logo {
@@ -216,7 +211,7 @@
         object-fit: contain;
         background: rgba(255, 255, 255, 0.1);
         padding: 5px;
-        margin-left: -1.5rem; /* Rykker logoet helt ud til venstre */
+        margin-left: -1.5rem;
     }
 
     .brand-text {
@@ -242,21 +237,20 @@
         letter-spacing: 0.5px;
     }
 
-    /* Navigation Items */
     .navbar-nav {
-        display: flex;              /* Gør containeren til flex-række */
-        flex-direction: row;        /* Sørger for horisontal layout */
-        align-items: center;        /* Vertikal centrering af alle links */
-        justify-content: center;    /* Centrerer hele rækken vandret */
-        gap: 1.5rem;                /* Afstand mellem links */
-        flex-wrap: nowrap;          /* Ingen linjeskift – alt på én linje */
+        display: flex;              
+        flex-direction: row;        
+        align-items: center;        
+        justify-content: center;    
+        gap: 1.5rem;                
+        flex-wrap: nowrap;          
         margin: 0 2rem;
     }
 
     .navbar-nav > * {
-        display: flex;              /* Gør hvert link til flex */
-        align-items: center;        /* Vertikal centrering af ikon + tekst */
-        flex-direction: row;        /* Ikon og tekst ved siden af hinanden */
+        display: flex;              
+        align-items: center;        
+        flex-direction: row;        
     }
 
     .nav-link {
@@ -312,7 +306,6 @@
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
     }
 
-    /* Force all navbar children to display inline horizontally */
     .navbar-nav > *,
     .navbar-nav .authorize-view,
     .navbar-nav > div,
@@ -322,13 +315,11 @@
         flex-direction: row !important;
     }
 
-    /* Ensure Blazor AuthorizeView components don't stack */
     ::ng-deep .navbar-nav > * {
         display: flex !important;
         align-items: center !important;
     }
 
-    /* User Actions */
     .navbar-actions {
         display: flex;
         align-items: center;
@@ -389,7 +380,6 @@
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
     }
 
-    /* Mobile Toggle */
     .mobile-toggle {
         display: none;
         flex-direction: column;
@@ -413,7 +403,6 @@
         transform-origin: 1px;
     }
 
-    /* Mobile Navigation */
     .mobile-nav {
         display: none;
         position: absolute;
@@ -494,7 +483,6 @@
         color: white;
     }
 
-    /* Responsive Design */
     @@media (max-width: 1200px) {
         .navbar-nav {
             gap: 1rem;
@@ -548,7 +536,6 @@
         }
     }
 
-    /* Animation for mobile menu toggle */
     .mobile-toggle.open .hamburger-line:first-child {
         transform: rotate(45deg);
     }
@@ -561,12 +548,10 @@
         transform: rotate(-45deg);
     }
 
-    /* Smooth scrolling behavior */
     html {
         scroll-behavior: smooth;
     }
 
-    /* Focus states for accessibility */
     .nav-link:focus,
     .action-btn:focus,
     .mobile-toggle:focus {
@@ -579,22 +564,22 @@
     .user-greeting,
     .action-btn,
     .nav-icon {
-        color: #212529 !important; /* Mørk grå, passer til moderne design */
+        color: #212529 !important; 
     }
 
     .nav-link:hover,
     .nav-link.active {
-        color: #c82333 !important; /* Rød accent ved hover/aktiv */
+        color: #c82333 !important; 
     }
 
     .brand-title {
         background: none;
         -webkit-text-fill-color: unset;
-        color: #212529 !important; /* Mørk grå */
+        color: #212529 !important; 
     }
 
     .brand-subtitle {
-        color: #495057 !important; /* Lidt lysere grå */
+        color: #495057 !important;
         opacity: 0.8;
     }
 

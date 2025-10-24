@@ -26,8 +26,8 @@
         var uri = new Uri(Navigation.Uri);
         var path = uri.LocalPath;
         
-        // Kun skjul navigation for den offentlige survey form
-        // Tillad navigation på alle admin/management sider
+        // Only hide navigation for the clients who get the survey
+        // Allow navigation on all admin/employee roles
         return path.Equals("/survey", StringComparison.OrdinalIgnoreCase) ||
                path.StartsWith("/survey/", StringComparison.OrdinalIgnoreCase);
     }

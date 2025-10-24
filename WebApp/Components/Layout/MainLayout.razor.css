@@ -5,7 +5,6 @@
     min-height: 100vh;
 }
 
-/* Government header styling */
 .main-header {
     position: sticky;
     top: 0;
@@ -13,14 +12,12 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Main content area */
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-/* Standard content with top navigation */
 .main-content:not(.full-width) {
     padding-top: 0;
 }
@@ -95,7 +92,6 @@
     top: 0.5rem;
 }
 
-/* Mobile adjustments */
 @media (max-width: 768px) {
     .top-row {
         height: auto;

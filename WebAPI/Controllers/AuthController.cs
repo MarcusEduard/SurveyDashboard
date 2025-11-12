@@ -61,11 +61,7 @@ public class AuthController(IConfiguration config, IAuthService authService) : C
             new Claim(ClaimTypes.Role, user.Role),
             new Claim("Username", user.Username),
             new Claim("Role", user.Role),
-            new Claim("Fullname", user.FullName),
-            new Claim("Email", user.Email),
-            new Claim("Birthday", user.Birthday.ToString("d")),
-            new Claim("Domain", user.Domain),
-            new Claim("SecurityLevel", user.SecurityLevel.ToString())
+            new Claim("Fullname", user.FullName)
         };
         return [.. claims];
     }

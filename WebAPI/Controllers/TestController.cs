@@ -21,10 +21,10 @@ public class TestController : ControllerBase
         return Ok("This was accepted as anonymous");
     }
 
-    [HttpGet("mustbevia"), Authorize("MustBeVia")]
-    public ActionResult GetAsVia()
+    [HttpGet("mustbeadmin"), Authorize("MustBeAdmin")]
+    public ActionResult GetAsAdmin()
     {
-        return Ok("This was accepted as via.dk domain");
+        return Ok("This was accepted as admin");
     }
 
     [HttpGet("manualcheck")]
@@ -36,12 +36,12 @@ public class TestController : ControllerBase
             return StatusCode(403, "You have no role");
         }
 
-        if (!claim.Value.Equals("Teacher"))
+        if (!claim.Value.Equals("Admin"))
         {
-            return StatusCode(403, "You are not a teacher");
+            return StatusCode(403, "You are not an administrator");
         }
 
-        return Ok("You are a teacher, you may proceed");
+        return Ok("You are an admin, you may proceed");
     }
 
 

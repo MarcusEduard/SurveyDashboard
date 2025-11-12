@@ -253,7 +253,7 @@
             <!-- Satisfaction Trends Over Time -->
             <div class="chart-container" id="trends">
                 <div class="chart-header">
-                    <h4>📈 Satisfaction Trends Over Time</h4>
+                    <h4>📈 Satisfaction Trends Over Time - Alle Måneder Vises</h4>
                     <div class="chart-controls">
                         <button class="view-btn @(trendsView == "monthly" ? "active" : "")" @onclick='() => SetTrendsView("monthly")'>Monthly</button>
                         <button class="view-btn @(trendsView == "quarterly" ? "active" : "")" @onclick='() => SetTrendsView("quarterly")'>Quarterly</button>
@@ -307,8 +307,17 @@
                                 @if (trendData.Any())
                                 {
                                     <div class="trend-chart-header">
-                                        <span class="chart-title">📈 Satisfaction Score Over Time</span>
-                                        <span class="chart-range">Scale: 0 - 10</span>
+                                        <span class="chart-title">📈 Satisfaction Score Over Time (Viser alle @trendData.Count() måneder)</span>
+                                        <span class="chart-range">
+                                            @if (trendData.Any())
+                                            {
+                                                <span>@trendData.First().Period til @trendData.Last().Period | Scale: 0 - 10</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Scale: 0 - 10</span>
+                                            }
+                                        </span>
                                     </div>
                                     
                                     <!-- Visual Line Chart -->
@@ -378,19 +387,16 @@
                                                     }
                                                 </div>
                                                 
-                                                <!-- X-axis labels -->
-                                                <div class="x-axis">
+                                                <!-- X-axis labels - Show ALL months with data -->
+                                                <div class="x-axis @(trendData.Count > 6 ? "medium-labels" : "") @(trendData.Count > 12 ? "many-labels" : "")">
                                                     @foreach (var (point, index) in trendData.Select((p, i) => (p, i)))
                                                     {
                                                         var leftPosition = trendData.Count > 1 ? (index * 100.0 / (trendData.Count - 1)) : 50;
-                                                        var showLabel = trendData.Count <= 8 || index % Math.Max(1, trendData.Count / 6) == 0;
                                                         
-                                                        @if (showLabel)
-                                                        {
-                                                            <div class="x-label" style="left: @(leftPosition)%;">
-                                                                @point.ShortPeriod
-                                                            </div>
-                                                        }
+                                                        <!-- Show ALL labels, no filtering -->
+                                                        <div class="x-label" style="left: @(leftPosition)%;" title="@point.Period">
+                                                            @point.ShortPeriod
+                                                        </div>
                                                     }
                                                 </div>
                                             </div>
@@ -3191,7 +3197,7 @@
         position: relative;
         background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
         border-radius: 12px;
-        padding: 20px;
+        padding: 20px 20px 60px 20px; /* Extra bottom padding for rotated labels */
         border: 1px solid #dee2e6;
     }
 
@@ -3537,22 +3543,71 @@
 
     .x-axis {
         position: absolute;
-        bottom: -25px;
+        bottom: -35px;
         left: 0;
         right: 0;
-        height: 20px;
+        height: 30px;
+    }
+
+    /* Add more space when labels are rotated */
+    .x-axis.medium-labels {
+        bottom: -45px;
+        height: 40px;
+    }
+
+    .x-axis.many-labels {
+        bottom: -50px;
+        height: 45px;
     }
 
     .x-label {
         position: absolute;
         transform: translateX(-50%);
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: #666;
         font-weight: 500;
         background: white;
         padding: 2px 4px;
         border-radius: 4px;
         border: 1px solid #e9ecef;
+        white-space: nowrap;
+        z-index: 10;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .x-label:hover {
+        background: #f8f9fa;
+        color: #333;
+        z-index: 20;
+        transform: translateX(-50%) scale(1.05);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Styles for medium number of labels (6-12) */
+    .x-axis.medium-labels .x-label {
+        font-size: 0.7rem;
+        transform: translateX(-50%) rotate(-30deg);
+        transform-origin: center bottom;
+        margin-top: 6px;
+        padding: 1px 3px;
+    }
+
+    .x-axis.medium-labels .x-label:hover {
+        transform: translateX(-50%) rotate(-30deg) scale(1.1);
+    }
+
+    /* Styles for many labels (12+) */
+    .x-axis.many-labels .x-label {
+        font-size: 0.65rem;
+        transform: translateX(-50%) rotate(-45deg);
+        transform-origin: center bottom;
+        margin-top: 10px;
+        padding: 1px 2px;
+    }
+
+    .x-axis.many-labels .x-label:hover {
+        transform: translateX(-50%) rotate(-45deg) scale(1.15);
     }
 
     .chart-legend {
@@ -5145,6 +5200,12 @@
     {
         var completedResponses = surveyResponses.Where(r => r.DateCompleted.HasValue).ToList();
         
+        Console.WriteLine($"GetTrendData: Found {completedResponses.Count} completed responses");
+        foreach (var response in completedResponses.Take(5)) // Log first 5 responses
+        {
+            Console.WriteLine($"  Response: {response.DateCompleted}, Score: {response.Question1}");
+        }
+        
         if (!completedResponses.Any()) return new List<TrendDataPoint>();
 
         var groupedData = trendsView switch
@@ -5154,22 +5215,25 @@
             _ => GroupByMonths(completedResponses) // default = monthly
         };
 
-        return groupedData.OrderBy(t => t.Date);
+        var sortedData = groupedData.OrderBy(t => t.Date).ToList();
+        Console.WriteLine($"Final trend data: {sortedData.Count} data points from {sortedData.FirstOrDefault()?.Period} to {sortedData.LastOrDefault()?.Period}");
+        
+        return sortedData;
     }
 
     IEnumerable<TrendDataPoint> GroupByMonths(List<SurveyResponse> responses)
     {
-        return responses
-            .GroupBy(r => new { r.DateCompleted!.Value.Year, r.DateCompleted!.Value.Month })
-            .Select(g => new TrendDataPoint
-            {
-                Score = Math.Round(g.Average(r => r.Question1), 1),
-                Period = $"{GetMonthName(g.Key.Month)} {g.Key.Year}",
-                ShortPeriod = $"{GetMonthName(g.Key.Month).Substring(0, 3)} '{g.Key.Year.ToString().Substring(2)}",
-                Date = new DateTime(g.Key.Year, g.Key.Month, 1),
-                ResponseCount = g.Count()
-            })
-            .OrderBy(t => t.Date);
+        // Use the complete monthly trends function to show ALL months with data
+        var monthlyData = GetCompleteMonthlyTrends(responses);
+
+        // Debug information - log the data to console
+        Console.WriteLine($"Grouped {responses.Count} responses into {monthlyData.Count()} monthly periods:");
+        foreach (var point in monthlyData.Take(10)) // Show first 10 to avoid too much logging
+        {
+            Console.WriteLine($"  {point.Period}: {point.Score} avg score, {point.ResponseCount} responses");
+        }
+
+        return monthlyData;
     }
 
     IEnumerable<TrendDataPoint> GroupByQuarters(List<SurveyResponse> responses)
@@ -5326,6 +5390,46 @@
     string GetMonthName(int month)
     {
         return new DateTime(2000, month, 1).ToString("MMMM");
+    }
+
+    // Generate complete month sequence to ensure all months are shown
+    IEnumerable<TrendDataPoint> GetCompleteMonthlyTrends(List<SurveyResponse> responses)
+    {
+        if (!responses.Any()) return new List<TrendDataPoint>();
+
+        var monthlyGroups = responses
+            .GroupBy(r => new { r.DateCompleted!.Value.Year, r.DateCompleted!.Value.Month })
+            .ToDictionary(g => new DateTime(g.Key.Year, g.Key.Month, 1), g => g.ToList());
+
+        var minDate = responses.Min(r => r.DateCompleted!.Value);
+        var maxDate = responses.Max(r => r.DateCompleted!.Value);
+        
+        var startMonth = new DateTime(minDate.Year, minDate.Month, 1);
+        var endMonth = new DateTime(maxDate.Year, maxDate.Month, 1);
+
+        var result = new List<TrendDataPoint>();
+        var currentMonth = startMonth;
+
+        while (currentMonth <= endMonth)
+        {
+            if (monthlyGroups.ContainsKey(currentMonth))
+            {
+                var monthResponses = monthlyGroups[currentMonth];
+                result.Add(new TrendDataPoint
+                {
+                    Score = Math.Round(monthResponses.Average(r => r.Question1), 1),
+                    Period = $"{GetMonthName(currentMonth.Month)} {currentMonth.Year}",
+                    ShortPeriod = $"{GetMonthName(currentMonth.Month).Substring(0, 3)} '{currentMonth.Year.ToString().Substring(2)}",
+                    Date = currentMonth,
+                    ResponseCount = monthResponses.Count
+                });
+            }
+
+            currentMonth = currentMonth.AddMonths(1);
+        }
+
+        Console.WriteLine($"Generated complete monthly trends: {result.Count} months from {startMonth:MMM yyyy} to {endMonth:MMM yyyy}");
+        return result;
     }
 
     string GetTrendLinePath(List<TrendDataPoint> data)

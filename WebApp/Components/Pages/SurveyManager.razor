@@ -88,16 +88,46 @@
                                     <td>@survey.ProjectName</td>
                                     <td><span class="badge bg-info">@survey.Sector</span></td>
                                     <td><span class="badge bg-secondary">@(survey.CompanySize ?? "N/A")</span></td>
-                                    <td>@survey.DateSent?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        @if (editingId == survey.SurveyResponseId && editingField == "datesent")
+                                        {
+                                            <div class="date-edit-container">
+                                                <input type="datetime-local" value="@editValue" @onchange="@((e) => editValue = e.Value?.ToString() ?? "")" 
+                                                       @onkeypress="@(async (e) => await HandleKeyPress(e, survey))" 
+                                                       class="edit-input date-input" />
+                                                <button type="button" @onclick="() => ClearDate()" class="btn-clear-date" title="Clear date">✕</button>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="editable date-text" @onclick="() => StartEditDate(survey.SurveyResponseId, survey.DateSent)">
+                                                @(survey.DateSent?.ToString("dd/MM/yyyy HH:mm") ?? "Click to set date")
+                                            </span>
+                                        }
+                                    </td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-primary" @onclick="() => CopyLink(survey.SurveyId)">
                                             <i class="fas fa-copy"></i> Copy Link
                                         </button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-danger" title="Delete Survey" @onclick="() => ShowDeleteModal(survey)">
-                                            🗑️
-                                        </button>
+                                        <div class="action-buttons">
+                                            @if (editingId == survey.SurveyResponseId)
+                                            {
+                                                <button class="btn-save" @onclick="() => SaveEdit(survey)" title="Save changes">
+                                                    💾
+                                                </button>
+                                                <button class="btn-cancel" @onclick="CancelEdit" title="Cancel editing">
+                                                    ❌
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-sm btn-danger" title="Delete Survey" @onclick="() => ShowDeleteModal(survey)">
+                                                    🗑️
+                                                </button>
+                                            }
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -383,6 +413,122 @@
     .btn-cancel-modal:hover {
         background: #5a6268;
     }
+
+    /* Editing Styles */
+    .editable {
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        display: inline-block;
+        min-width: 80px;
+    }
+
+    .editable:hover {
+        background-color: #e7f3ff;
+        border: 1px dashed #007bff;
+    }
+
+    .edit-input {
+        width: 100%;
+        padding: 6px 8px;
+        border: 2px solid #007bff;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        background: white;
+        color: #111 !important;
+    }
+
+    .edit-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+    }
+
+    .date-input {
+        min-width: 180px;
+        font-size: 0.85rem;
+        color: #111 !important;
+    }
+
+    .date-edit-container {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .btn-clear-date {
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .btn-clear-date:hover {
+        background: #c82333;
+        transform: scale(1.1);
+    }
+
+    .date-text {
+        color: #666;
+        font-size: 0.85rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .date-text.editable:hover {
+        background-color: #e7f3ff;
+        border: 1px dashed #007bff;
+        color: #333;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .btn-save, .btn-cancel {
+        padding: 6px 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+    }
+
+    .btn-save {
+        background: #28a745;
+        color: white;
+    }
+
+    .btn-save:hover {
+        background: #218838;
+        transform: scale(1.1);
+    }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: scale(1.1);
+    }
 </style>
 
 @code {
@@ -396,6 +542,11 @@
 
     bool showDeleteModal = false;
     SurveyResponse? surveyToDelete = null;
+    
+    // Editing state
+    int editingId = 0;
+    string editingField = "";
+    string editValue = "";
 
     void ShowDeleteModal(SurveyResponse survey)
     {
@@ -537,5 +688,75 @@
             return surveyId;
             
         return surveyId.Substring(0, 8) + "...";
+    }
+    
+    void StartEditDate(int id, DateTime? currentValue)
+    {
+        editingId = id;
+        editingField = "datesent";
+        editValue = currentValue?.ToString("yyyy-MM-ddTHH:mm") ?? "";
+        StateHasChanged();
+    }
+
+    void CancelEdit()
+    {
+        editingId = 0;
+        editingField = "";
+        editValue = "";
+        StateHasChanged();
+    }
+
+    void ClearDate()
+    {
+        editValue = "";
+        StateHasChanged();
+    }
+
+    async Task SaveEdit(SurveyResponse survey)
+    {
+        try
+        {
+            if (editingField == "datesent")
+            {
+                if (DateTime.TryParse(editValue, out DateTime dateSent))
+                {
+                    survey.DateSent = dateSent;
+                }
+                else
+                {
+                    survey.DateSent = null;
+                }
+            }
+
+            // Save to API
+            var apiResponse = await httpClient.PutAsJsonAsync($"http://localhost:5123/api/survey/{survey.SurveyResponseId}", survey);
+            
+            if (apiResponse.IsSuccessStatusCode)
+            {
+                CancelEdit();
+                await LoadSurveys(); // Refresh data
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine($"Error saving changes: {apiResponse.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving changes: {ex.Message}");
+        }
+    }
+
+    async Task HandleKeyPress(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e, SurveyResponse survey)
+    {
+        if (e.Key == "Enter")
+        {
+            await SaveEdit(survey);
+        }
+        else if (e.Key == "Escape")
+        {
+            CancelEdit();
+        }
     }
 }

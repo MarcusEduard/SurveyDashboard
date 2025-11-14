@@ -26,7 +26,7 @@
             <p>Thank you! This survey has been completed.</p>
             @if (isExistingSurvey && newResponse.DateCompleted.HasValue)
             {
-                <p class="completion-info">Completed on: @newResponse.DateCompleted.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                <p class="completion-info">Completed on: @newResponse.DateCompleted.Value.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture)</p>
             }
         </div>
     }

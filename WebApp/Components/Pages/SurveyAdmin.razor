@@ -6,32 +6,32 @@
 @inject HttpClient httpClient
 @inject AuthenticationStateProvider AuthStateProvider
 
-<PageTitle>Survey Besvarelser</PageTitle>
+<PageTitle>Survey Responses</PageTitle>
 
 <div class="admin-container">
     <div class="header-section">
-        <h1>Survey Besvarelser</h1>
+        <h1>Survey Responses</h1>
         <div class="stats-row">
             @if (filteredResponses != null)
             {
                 <div class="stat-card">
                     <span class="stat-number">@filteredResponses.Count</span>
-                    <span class="stat-label">Total besvarelser</span>
+                    <span class="stat-label">Total responses</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-number">@filteredResponses.GroupBy(r => r.Sector).Count()</span>
-                    <span class="stat-label">Sektorer</span>
+                    <span class="stat-label">Sectors</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-number">@(filteredResponses.Any() ? filteredResponses.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0).ToString("F1") : "0")</span>
-                    <span class="stat-label">Gennemsnit</span>
+                    <span class="stat-label">Average</span>
                 </div>
             }
         </div>
         @if (!string.IsNullOrEmpty(currentUserRole) && currentUserRole != "Admin")
         {
             <div class="role-indicator">
-                <span>Viser data for: @GetSectorDisplayName(currentUserRole)</span>
+                <span>Showing data for: @GetSectorDisplayName(currentUserRole)</span>
             </div>
         }
     </div>
@@ -40,32 +40,32 @@
     {
         <div class="loading-container">
             <div class="spinner"></div>
-            <span>Indlæser besvarelser...</span>
+            <span>Loading responses...</span>
         </div>
     }
     else if (!filteredResponses.Any())
     {
         <div class="empty-state">
             <span class="empty-icon">📊</span>
-            <div>Ingen besvarelser endnu.</div>
-            <small>Besvarelser vil vises her når de modtages</small>
+            <div>No responses yet.</div>
+            <small>Responses will appear here as they are received</small>
         </div>
     }
     else
     {
-        @foreach (var sectorGroup in filteredResponses.GroupBy(r => r.Sector ?? "Ikke angivet").OrderBy(g => g.Key))
+        @foreach (var sectorGroup in filteredResponses.GroupBy(r => r.Sector ?? "Not specified").OrderBy(g => g.Key))
         {
             var sectorKey = sectorGroup.Key;
 
             <div class="sector-section @(expandedSectors.Contains(sectorKey) ? "open" : "")">
                 <div class="sector-header" @onclick="() => ToggleSector(sectorKey)">
                     <h2>@sectorKey</h2>
-                    <span class="sector-count">@sectorGroup.Count() besvarelser</span>
+                    <span class="sector-count">@sectorGroup.Count() responses</span>
                 </div>
 
                 @if (expandedSectors.Contains(sectorKey))
                 {
-                    @foreach (var companyGroup in sectorGroup.GroupBy(r => r.CustomerName ?? "Ukendt virksomhed").OrderBy(g => g.Key))
+                    @foreach (var companyGroup in sectorGroup.GroupBy(r => r.CustomerName ?? "Unknown Company").OrderBy(g => g.Key))
                     {
                         var companyKey = $"{sectorKey}::{companyGroup.Key}";
                         var visibleCount = companyVisibleCounts.ContainsKey(companyKey) ? companyVisibleCounts[companyKey] : defaultVisible;
@@ -73,7 +73,7 @@
                         <div class="company-section @(expandedCompanies.Contains(companyKey) ? "open" : "")">
                             <div class="company-header" @onclick="() => ToggleCompany(companyKey)">
                                 <h3>@companyGroup.Key</h3>
-                                <span class="company-count">@companyGroup.Count() besvarelser</span>
+                                <span class="company-count">@companyGroup.Count() responses</span>
                             </div>
 
                             @if (expandedCompanies.Contains(companyKey))
@@ -103,19 +103,19 @@
                                             <div class="scores-preview">
                                                 <div class="score-summary">
                                                     <span class="overall-score">@((response.Question1 + response.Question2 + response.Question3 + response.Question4 + response.Question5 + response.Question6 + response.Question7 + response.Question8 + response.Question9) / 9.0).ToString("F1")</span>
-                                                    <span class="score-label">Samlet score</span>
+                                                    <span class="score-label">Overall Score</span>
                                                 </div>
                                                 <div class="key-scores">
                                                     <div class="mini-score">
-                                                        <span class="mini-label">Tilfredshed</span>
+                                                        <span class="mini-label">Satisfaction</span>
                                                         <span class="mini-value">@response.Question1</span>
                                                     </div>
                                                     <div class="mini-score">
-                                                        <span class="mini-label">Professionalisme</span>
+                                                        <span class="mini-label">Professionalism</span>
                                                         <span class="mini-value">@response.Question2</span>
                                                     </div>
                                                     <div class="mini-score">
-                                                        <span class="mini-label">Fremtidig brug</span>
+                                                        <span class="mini-label">Future Use</span>
                                                         <span class="mini-value">@response.Question9</span>
                                                     </div>
                                                 </div>
@@ -137,7 +137,7 @@
                                 {
                                     <div class="load-more-container">
                                         <button class="detail-btn" @onclick="() => LoadMore(companyKey)">
-                                            Indlæs flere...
+                                            Load more...
                                         </button>
                                     </div>
                                 }
@@ -156,7 +156,7 @@
                 <div class="modal-header">
                     <div class="modal-title">
                         <h3>@selected.CustomerName</h3>
-                        <span class="modal-sector">@(selected.Sector ?? "Ikke angivet")</span>
+                        <span class="modal-sector">@(selected.Sector ?? "Not specified")</span>
                     </div>
                     <button class="close-btn" @onclick="() => selected = null">×</button>
                 </div>
@@ -168,14 +168,14 @@
                             @if (!string.IsNullOrEmpty(selected.ProjectName))
                             {
                                 <div class="info-item">
-                                    <span class="info-label">Projekt:</span>
+                                    <span class="info-label">Project:</span>
                                     <span class="info-value">@selected.ProjectName</span>
                                 </div>
                             }
                             @if (!string.IsNullOrEmpty(selected.ProjectDuration))
                             {
                                 <div class="info-item">
-                                    <span class="info-label">Varighed:</span>
+                                    <span class="info-label">Duration:</span>
                                     <span class="info-value">@selected.ProjectDuration</span>
                                 </div>
                             }
@@ -188,10 +188,10 @@
 
                     <div class="modal-footer">
                         <div class="submitted-info">
-                            <span>📅 Indsendt: @selected.SubmittedAt.ToString("dddd d. MMMM yyyy 'kl.' HH:mm")</span>
+                            <span>📅 Submitted: @selected.SubmittedAt.ToString("dddd, MMMM d, yyyy 'at' HH:mm", System.Globalization.CultureInfo.InvariantCulture)</span>
                         </div>
                         <div class="overall-rating">
-                            <span class="overall-label">Gennemsnit:</span>
+                            <span class="overall-label">Average:</span>
                             <span class="overall-value">@((selected.Question1 + selected.Question2 + selected.Question3 + selected.Question4 + selected.Question5 + selected.Question6 + selected.Question7 + selected.Question8 + selected.Question9) / 9.0).ToString("F1")</span>
                         </div>
                     </div>
@@ -269,8 +269,8 @@
         return role?.ToLower() switch
         {
             "tech" => "Tech & Digitalization",
-            "health" => "Health sektor",
-            "energy" => "Energy sektor",
+            "health" => "Health sector",
+            "energy" => "Energy sector",
             _ => role ?? "Unknown"
         };
     }

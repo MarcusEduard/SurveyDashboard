@@ -101,7 +101,7 @@
                                         else
                                         {
                                             <span class="editable date-text" @onclick="() => StartEditDate(survey.SurveyResponseId, survey.DateSent)">
-                                                @(survey.DateSent?.ToString("dd/MM/yyyy HH:mm") ?? "Click to set date")
+                                                @(survey.DateSent?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "Click to set date")
                                             </span>
                                         }
                                     </td>
@@ -182,7 +182,7 @@
                                     <td><code>@GetShortSurveyId(survey.SurveyId)</code></td>
                                     <td>@survey.CustomerName</td>
                                     <td>@survey.ProjectName</td>
-                                    <td>@survey.DateCompleted?.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@survey.DateCompleted?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture)</td>
                                     <td>
                                         <span class="badge @(survey.Question1 >= 8 ? "bg-success" : survey.Question1 >= 6 ? "bg-info" : survey.Question1 >= 4 ? "bg-warning" : "bg-danger")">
                                             @survey.Question1/10
@@ -694,7 +694,7 @@
     {
         editingId = id;
         editingField = "datesent";
-        editValue = currentValue?.ToString("yyyy-MM-ddTHH:mm") ?? "";
+        editValue = currentValue?.ToString("yyyy-MM-ddTHH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "";
         StateHasChanged();
     }
 

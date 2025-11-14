@@ -172,7 +172,7 @@
                                 else
                                 {
                                     <span class="editable date-text" @onclick="() => StartEditDate(response.SurveyResponseId, DATE_SENT_FIELD, response.DateSent)">
-                                        @(response.DateSent?.ToString("dd/MM/yyyy HH:mm") ?? "Click to set date")
+                                        @(response.DateSent?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "Click to set date")
                                     </span>
                                 }
                             </td>
@@ -191,7 +191,7 @@
                                 else
                                 {
                                     <span class="editable date-text" @onclick="() => StartEditDate(response.SurveyResponseId, DATE_COMPLETED_FIELD, response.DateCompleted)">
-                                        @(response.DateCompleted?.ToString("dd/MM/yyyy HH:mm") ?? "Click to set completion date")
+                                        @(response.DateCompleted?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "Click to set completion date")
                                     </span>
                                 }
                             </td>
@@ -858,7 +858,7 @@
     {
         editingId = id;
         editingField = field;
-        editValue = currentValue?.ToString("yyyy-MM-ddTHH:mm") ?? "";
+        editValue = currentValue?.ToString("yyyy-MM-ddTHH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "";
         StateHasChanged();
     }
 

@@ -84,6 +84,9 @@
                     </div>
                 </div>
                 <div class="interactive-bar-chart">
+                    @{
+                        var totalResponses = sectorCounts.Sum(x => x.Value);
+                    }
                     @foreach (var sector in sectorCounts.OrderByDescending(x => x.Value))
                     {
                         var totalCount = sector.Value;
@@ -101,8 +104,10 @@
                         {
                             "percentage" => (double)sector.Value / surveyResponses.Count * 100,
                             "completion" => completionRate,
-                            _ => totalCount > 0 ? Math.Max(((double)totalCount / surveyResponses.Count * 100), 5) : 0
+                            _ => totalCount > 0 && totalResponses > 0 ? ((double)totalCount / totalResponses * 100) : 0
                         };
+                        
+                        Console.WriteLine($"Sector: {sector.Key}, Count: {totalCount}, TotalResponses: {totalResponses}, View: {chartView}, BarWidth: {barWidth:F2}%");
                         
                         <div class="interactive-bar-item @(hoveredSector == sector.Key ? "hovered" : "")" 
                              @onclick="() => ToggleSectorDetails(sector.Key)"
@@ -116,14 +121,17 @@
                                 <div class="bar-value-display">@displayValue</div>
                             </div>
                             <div class="bar-wrapper">
-                                <div class="interactive-bar" 
-                                     style="width: @(barWidth)%; background: linear-gradient(135deg, @GetSectorColor(sector.Key), @GetSectorColorDark(sector.Key)); animation-delay: @(Array.IndexOf(sectorCounts.Keys.ToArray(), sector.Key) * 0.1)s">
-                                    <div class="bar-shine"></div>
-                                </div>
                                 @if (chartView == "completion")
                                 {
                                     <div class="completion-progress-bg">
                                         <div class="completion-progress-fill" style="width: @(completionRate)%"></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="interactive-bar" 
+                                         style="width: @(barWidth.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%; background: linear-gradient(135deg, @GetSectorColor(sector.Key), @GetSectorColorDark(sector.Key)); animation-delay: @(Array.IndexOf(sectorCounts.Keys.ToArray(), sector.Key) * 0.1)s">
+                                        <div class="bar-shine"></div>
                                     </div>
                                 }
                             </div>
@@ -213,6 +221,7 @@
                         var percentage = item.Value / 10 * 100;
                         var satisfaction = item.Value;
                         var satisfactionClass = satisfaction >= 8 ? "excellent" : satisfaction >= 6 ? "good" : satisfaction >= 4 ? "average" : "poor";
+                        Console.WriteLine($"Satisfaction item: {item.Key}, value={item.Value}, percentage={percentage:F2}");
                         
                         <div class="satisfaction-card @satisfactionClass" @onclick="() => SelectItem(item.Key)">
                             <div class="satisfaction-header">
@@ -221,10 +230,10 @@
                                 <div class="satisfaction-score-big">@Math.Round(item.Value, 1)</div>
                             </div>
                             <div class="satisfaction-meter">
-                                <div class="meter-track" style="position: relative;">
-                                    <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: 0; bottom: 0; width: 2px; background: #28a745; opacity: 0.7;"></div>
-                                </div>
-                                <div class="meter-fill" style="width: @(percentage)%; background: @GetItemColor(item.Key);"></div>
+                                    <div class="meter-track" style="position: relative;">
+                                        <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: 0; bottom: 0; width: 2px; background: #28a745; opacity: 0.7;"></div>
+                                        <div class="meter-fill" style="width: @(percentage.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%; background: @GetItemColor(item.Key);"></div>
+                                    </div>
                                 <div class="meter-labels">
                                     @for (int i = 0; i <= 10; i += 2)
                                     {
@@ -319,40 +328,63 @@
                                 }
                                 
                                 @{
-                                    // Get data for the selected year - always generate 12 months
+                                    // Get all trend data based on selected view and year
                                     var chartYear = selectedTrendsYear != "all" && int.TryParse(selectedTrendsYear, out int year) ? year : DateTime.Now.Year;
                                     var allTrendData = GetTrendData().ToList();
-                                    var yearData = allTrendData.Where(t => t.Date.Year == chartYear).ToList();
                                     
-                                    // Create all 12 months for the year
-                                    var allMonths = new List<TrendDataPoint>();
-                                    for (int month = 1; month <= 12; month++)
+                                    // Filter by year if a specific year is selected (except for yearly view - always show all years)
+                                    List<TrendDataPoint> displayData;
+                                    if (trendsView == "yearly")
                                     {
-                                        var monthData = yearData.FirstOrDefault(d => d.Date.Month == month);
-                                        if (monthData != null)
+                                        // For yearly view, always show all years regardless of year filter
+                                        displayData = allTrendData;
+                                    }
+                                    else if (selectedTrendsYear != "all")
+                                    {
+                                        displayData = allTrendData.Where(t => t.Date.Year == chartYear).ToList();
+                                    }
+                                    else
+                                    {
+                                        displayData = allTrendData;
+                                    }
+                                    
+                                    // For monthly view with specific year, generate all 12 months
+                                    var allMonths = new List<TrendDataPoint>();
+                                    if (trendsView == "monthly" && selectedTrendsYear != "all")
+                                    {
+                                        for (int month = 1; month <= 12; month++)
                                         {
-                                            allMonths.Add(monthData);
-                                        }
-                                        else
-                                        {
-                                            // Add empty month
-                                            allMonths.Add(new TrendDataPoint
+                                            var monthData = displayData.FirstOrDefault(d => d.Date.Month == month);
+                                            if (monthData != null)
                                             {
-                                                Score = 0,
-                                                Period = $"{GetMonthName(month)} {chartYear}",
-                                                ShortPeriod = $"{GetMonthName(month).Substring(0, 3)} '{chartYear.ToString().Substring(2)}",
-                                                Date = new DateTime(chartYear, month, 1),
-                                                ResponseCount = 0
-                                            });
+                                                allMonths.Add(monthData);
+                                            }
+                                            else
+                                            {
+                                                // Add empty month
+                                                allMonths.Add(new TrendDataPoint
+                                                {
+                                                    Score = 0,
+                                                    Period = $"{GetMonthName(month)} {chartYear}",
+                                                    ShortPeriod = $"{GetMonthName(month).Substring(0, 3)} '{chartYear.ToString().Substring(2)}",
+                                                    Date = new DateTime(chartYear, month, 1),
+                                                    ResponseCount = 0
+                                                });
+                                            }
                                         }
+                                    }
+                                    else
+                                    {
+                                        // For quarterly/yearly or "all years", just use the filtered data
+                                        allMonths = displayData;
                                     }
                                 }
 
                                 @if (allMonths.Any())
                                 {
                                     <div class="new-chart-header">
-                                        <h3>📈 Satisfaction Score Over Time - @chartYear</h3>
-                                        <p>Scale: 0 - 10 | All 12 months shown</p>
+                                        <h3>📈 Satisfaction Score Over Time @(trendsView == "yearly" ? "" : $"- {chartYear}")</h3>
+                                        <p>Scale: 0 - 10 | @(trendsView == "monthly" && selectedTrendsYear != "all" ? "All 12 months shown" : trendsView == "quarterly" ? "Quarterly averages" : "Yearly averages")</p>
 
                                     </div>
                                     
@@ -374,20 +406,19 @@
                                                 <div class="grid-line" style="bottom: @(i * 10)%;"></div>
                                             }
                                             
-                                            <!-- Month columns with data bars -->
-                                            @for (int month = 1; month <= 12; month++)
+                                            <!-- Data columns (months/quarters/years) -->
+                                            @for (int i = 0; i < allMonths.Count; i++)
                                             {
-                                                var monthData = allMonths[month - 1];
-                                                var hasData = monthData.ResponseCount > 0;
-                                                var barHeight = hasData ? (monthData.Score / 10.0) * 100 : 0; // Percentage height
-                                                var barColor = hasData ? GetBarColor(monthData.Score) : "#f8f9fa";
-                                                var monthName = GetMonthName(month).Substring(0, 3);
+                                                var dataPoint = allMonths[i];
+                                                var hasData = dataPoint.ResponseCount > 0;
+                                                var barHeight = hasData ? (dataPoint.Score / 10.0) * 100 : 0; // Percentage height
+                                                var barColor = hasData ? GetBarColor(dataPoint.Score) : "#f8f9fa";
                                                 
                                                 <div class="month-column">
                                                     @if (hasData)
                                                     {
                                                         <div class="data-bar" style="height: @barHeight%; background-color: @barColor;">
-                                                            <div class="bar-value">@monthData.Score.ToString("F1")</div>
+                                                            <div class="bar-value">@dataPoint.Score.ToString("F1")</div>
                                                         </div>
                                                     }
                                                     else
@@ -396,7 +427,7 @@
                                                             <span>-</span>
                                                         </div>
                                                     }
-                                                    <div class="month-label">@monthName</div>
+                                                    <div class="month-label">@dataPoint.ShortPeriod</div>
                                                 </div>
                                             }
                                         </div>
@@ -487,15 +518,26 @@
                                             }
                                         </div>
                                         
-                                        <!-- Forecast content -->
+                                        <!-- Forecast content with SVG -->
                                         <div class="line-chart-content">
-                                            <!-- Confidence interval area -->
-                                            <div class="forecast-confidence-area" style="@GetForecastAreaPath(forecastData)"></div>
+                                            <svg class="forecast-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                                <!-- Confidence interval area -->
+                                                <polygon class="confidence-area" 
+                                                         points="@GetConfidenceAreaPoints(forecastData)" 
+                                                         fill="rgba(103, 58, 183, 0.1)" />
+                                                
+                                                <!-- Forecast line -->
+                                                <path class="forecast-path" 
+                                                      d="@GetForecastLinePath(forecastData)" 
+                                                      fill="none" 
+                                                      stroke="#673ab7" 
+                                                      stroke-width="1" 
+                                                      stroke-linejoin="round"
+                                                      stroke-linecap="round" 
+                                                      vector-effect="non-scaling-stroke" />
+                                            </svg>
                                             
-                                            <!-- Forecast line -->
-                                            <div class="forecast-line" style="@GetForecastLinePath(forecastData)"></div>
-                                            
-                                            <!-- Forecast points -->
+                                            <!-- Forecast points with hover tooltips -->
                                             @foreach (var (point, index) in forecastData.Select((p, i) => (p, i)))
                                             {
                                                 var leftPosition = forecastData.Count > 1 ? (index * 100.0 / (forecastData.Count - 1)) : 50;
@@ -506,14 +548,11 @@
                                                      @onmouseover="() => hoveredForecastPoint = index"
                                                      @onmouseout="() => hoveredForecastPoint = -1">
                                                     <div class="point-dot forecast-dot"></div>
-                                                    @if (hoveredForecastPoint == index)
-                                                    {
-                                                        <div class="point-tooltip forecast-tooltip">
-                                                            <strong>@point.Period</strong>
-                                                            <div>Predicted: @point.PredictedScore.ToString("F1")/10</div>
-                                                            <div>Confidence: ±@point.ConfidenceInterval.ToString("F1")</div>
-                                                        </div>
-                                                    }
+                                                    <div class="point-tooltip forecast-tooltip @(hoveredForecastPoint == index ? "visible" : "")">
+                                                        <strong>@point.Period</strong>
+                                                        <div class="tooltip-score">Score: @point.PredictedScore.ToString("F1")/10</div>
+                                                        <div class="tooltip-confidence">±@point.ConfidenceInterval.ToString("F1")</div>
+                                                    </div>
                                                 </div>
                                             }
                                         </div>
@@ -609,9 +648,14 @@
             <div class="chart-container" id="clients">
                 <div class="chart-header">
                     <h4>👥 Client Analytics</h4>
-                    <div class="chart-controls">
-                        <button class="view-btn @(clientView == "yearly" ? "active" : "")" @onclick='() => SetClientView("yearly")'>Yearly</button>
-                        <button class="view-btn @(clientView == "monthly" ? "active" : "")" @onclick='() => SetClientView("monthly")'>Monthly</button>
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <select @bind="selectedClientYear" class="filter-dropdown" style="padding: 6px 10px; border: 1px solid #dee2e6; border-radius: 6px; background: white; font-size: 0.9em;">
+                            <option value="all">All Years</option>
+                            @foreach (var year in GetAvailableYears().OrderByDescending(y => y))
+                            {
+                                <option value="@year">@year</option>
+                            }
+                        </select>
                     </div>
                 </div>
                 
@@ -624,7 +668,26 @@
                                 var totalClients = GetTotalUniqueClients();
                                 var newClients = GetNewClientsForPeriod();
                                 var repeatedClients = GetRepeatedClientsForPeriod();
-                                var retentionRate = totalClients > 0 ? (double)repeatedClients / totalClients * 100 : 0;
+                                
+                                // Calculate retention rate based on the selected period
+                                double retentionRate = 0;
+                                if (selectedClientYear == "all")
+                                {
+                                    // For all years: (repeated clients / total clients) * 100
+                                    retentionRate = totalClients > 0 ? (double)repeatedClients / totalClients * 100 : 0;
+                                }
+                                else
+                                {
+                                    // For specific year: (repeated clients / (new + repeated clients in that year)) * 100
+                                    var clientsInYear = newClients + repeatedClients;
+                                    retentionRate = clientsInYear > 0 ? (double)repeatedClients / clientsInYear * 100 : 0;
+                                }
+                                
+                                var periodLabel = "All time";
+                                if (selectedClientYear != "all" && int.TryParse(selectedClientYear, out int year))
+                                {
+                                    periodLabel = year.ToString();
+                                }
                             }
                             
                             <div class="client-card total-clients">
@@ -638,21 +701,21 @@
                                 <div class="card-icon">🆕</div>
                                 <div class="client-value">@newClients</div>
                                 <div class="client-label">New Clients</div>
-                                <div class="client-sublabel">This @clientView.TrimEnd('l', 'y')</div>
+                                <div class="client-sublabel">@periodLabel</div>
                             </div>
                             
                             <div class="client-card repeated-clients">
                                 <div class="card-icon">🔄</div>
                                 <div class="client-value">@repeatedClients</div>
                                 <div class="client-label">Repeated Clients</div>
-                                <div class="client-sublabel">This @clientView.TrimEnd('l', 'y')</div>
+                                <div class="client-sublabel">@periodLabel</div>
                             </div>
                             
                             <div class="client-card retention-rate">
                                 <div class="card-icon">📈</div>
                                 <div class="client-value">@(retentionRate.ToString("F1"))%</div>
                                 <div class="client-label">Client Retention Rate</div>
-                                <div class="client-sublabel">@clientView basis</div>
+                                <div class="client-sublabel">@periodLabel basis</div>
                             </div>
                         </div>
 
@@ -2112,8 +2175,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: flex-end;
         width: 40px;
-        height: 200px;
+        height: 100%;
         position: relative;
     }
 
@@ -2123,8 +2187,8 @@
         border-radius: 6px 6px 0 0;
         transition: all 0.3s ease;
         cursor: pointer;
-        position: relative;
-        margin-top: auto;
+        position: absolute;
+        bottom: 25px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
@@ -2142,7 +2206,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: auto;
+        position: absolute;
+        bottom: 25px;
         font-size: 12px;
         color: #6c757d;
     }
@@ -3641,6 +3706,24 @@
         border-radius: 4px 4px 0 0;
         z-index: 0;
     }
+    
+    /* New SVG-based forecast styling */
+    .forecast-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    
+    .forecast-path {
+        filter: drop-shadow(0 2px 4px rgba(103, 58, 183, 0.3));
+    }
+    
+    .confidence-area {
+        opacity: 0.15;
+    }
 
     .forecast-point {
         position: absolute;
@@ -3675,11 +3758,31 @@
         color: white;
         padding: 10px 14px;
         border-radius: 10px;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         white-space: nowrap;
         z-index: 20;
         box-shadow: 0 6px 24px rgba(111,66,193,0.4);
         border: 1px solid rgba(255,255,255,0.2);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+        pointer-events: none;
+    }
+    
+    .forecast-tooltip.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .tooltip-score {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 4px 0;
+    }
+    
+    .tooltip-confidence {
+        font-size: 0.75rem;
+        opacity: 0.85;
     }
 
     .forecast-tooltip::after {
@@ -4469,6 +4572,8 @@
     string clientView = "yearly";
     string? selectedClientPeriod = null;
     string selectedClientFilter = "all";
+    string selectedClientYear = "all";
+    string selectedClientMonth = "all";
     
     string? selectedCustomer = null;
     string? selectedProject = null;
@@ -4826,7 +4931,6 @@
     {
         StateHasChanged();
     }
-
     void SetChartView(string view)
     {
         chartView = view;
@@ -5562,7 +5666,7 @@
 
     double GetTrendPercentage()
     {
-        var data = GetTrendData().ToList();
+        var data = GetTrendData().Where(t => t.ResponseCount > 0).ToList(); // Only months with actual data
         if (data.Count < 2) return 0;
 
         // Get the latest and previous data points
@@ -5575,13 +5679,13 @@
 
     TrendDataPoint GetHighestPeriod()
     {
-        var data = GetTrendData().ToList();
+        var data = GetTrendData().Where(t => t.ResponseCount > 0).ToList(); // Only months with actual data
         return data.Any() ? data.OrderByDescending(t => t.Score).First() : new TrendDataPoint();
     }
 
     TrendDataPoint GetLowestPeriod()
     {
-        var data = GetTrendData().ToList();
+        var data = GetTrendData().Where(t => t.ResponseCount > 0).ToList(); // Only months with actual data
         return data.Any() ? data.OrderBy(t => t.Score).First() : new TrendDataPoint();
     }
 
@@ -5781,17 +5885,69 @@
     }
 
     // Forecast chart methods
+    string GetForecastLinePoints(List<ForecastDataPoint> data)
+    {
+        if (!data.Any()) return "";
+        
+        var points = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - (point.PredictedScore / 10.0 * 100);
+            Console.WriteLine($"Forecast point {index}: Score={point.PredictedScore}, x={x:F2}, y={y:F2}");
+            return $"{x:F2},{y:F2}";
+        });
+        
+        var result = string.Join(" ", points);
+        Console.WriteLine($"Forecast line points: {result}");
+        return result;
+    }
+    
+    string GetConfidenceAreaPoints(List<ForecastDataPoint> data)
+    {
+        if (!data.Any()) return "";
+        
+        Console.WriteLine($"GetConfidenceAreaPoints: Processing {data.Count} points");
+        
+        // Top line (predicted + confidence)
+        var topPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - ((point.PredictedScore + point.ConfidenceInterval) / 10.0 * 100);
+            Console.WriteLine($"  Top point {index}: x={x:F2}, y={y:F2}");
+            return $"{x:F2},{y:F2}";
+        });
+        
+        // Bottom line (predicted - confidence), reversed
+        var bottomPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - ((point.PredictedScore - point.ConfidenceInterval) / 10.0 * 100);
+            return $"{x:F2},{y:F2}";
+        }).Reverse();
+        
+        var result = string.Join(" ", topPoints) + " " + string.Join(" ", bottomPoints);
+        Console.WriteLine($"Confidence area result: {result}");
+        return result;
+    }
+
     string GetForecastLinePath(List<ForecastDataPoint> data)
     {
         if (data.Count < 2) return "";
         
-        var points = data.Select((point, index) => {
-            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
-            var y = 100 - (point.PredictedScore / 10.0) * 100;
-            return $"{x}% {y}%";
-        });
+        var pathCommands = new List<string>();
+        for (int i = 0; i < data.Count; i++)
+        {
+            var x = data.Count > 1 ? (i * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - (data[i].PredictedScore / 10.0 * 100);
+            
+            if (i == 0)
+                pathCommands.Add($"M{x.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{y.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}");
+            else
+                pathCommands.Add($"L{x.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)},{y.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)}");
+                
+            Console.WriteLine($"Forecast path point {i}: Score={data[i].PredictedScore}, x={x:F2}, y={y:F2}");
+        }
         
-        return $"clip-path: polygon({string.Join(", ", points)});";
+        var result = string.Join(" ", pathCommands);
+        Console.WriteLine($"Forecast path: {result}");
+        return result;
     }
 
     string GetForecastAreaPath(List<ForecastDataPoint> data)
@@ -6050,72 +6206,68 @@
 
     int GetNewClientsForPeriod()
     {
-        var currentDate = DateTime.Now;
+        // If "All Years" is selected, count clients who have only ever had 1 survey total
+        if (selectedClientYear == "all")
+        {
+            var allClientSurveyCounts = surveyResponses
+                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue)
+                .GroupBy(r => r.CustomerName)
+                .ToDictionary(g => g.Key, g => g.Count());
+            
+            return allClientSurveyCounts.Count(kvp => kvp.Value == 1);
+        }
         
-        if (clientView == "yearly")
+        // For specific year, count clients who had EXACTLY 1 survey in that year
+        if (int.TryParse(selectedClientYear, out int targetYear))
         {
-            var currentYear = currentDate.Year;
-            
-            // Get all clients with surveys in current year and their survey counts
-            var clientSurveyCounts = surveyResponses
-                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue && r.DateCompleted.Value.Year == currentYear)
+            var newClientsInYear = surveyResponses
+                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue)
                 .GroupBy(r => r.CustomerName)
-                .ToDictionary(g => g.Key, g => g.Count());
+                .Select(g => new
+                {
+                    ClientName = g.Key,
+                    SurveyCountInTargetYear = g.Count(r => r.DateCompleted!.Value.Year == targetYear)
+                })
+                .Where(c => c.SurveyCountInTargetYear == 1)
+                .Count();
             
-            // Count clients with only 1 survey in current year as "new"
-            return clientSurveyCounts.Count(kvp => kvp.Value == 1);
+            return newClientsInYear;
         }
-        else // monthly
-        {
-            var currentMonth = currentDate.Month;
-            var currentYear = currentDate.Year;
-            
-            // Get all clients with surveys in current month and their survey counts
-            var clientSurveyCounts = surveyResponses
-                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue && 
-                           r.DateCompleted.Value.Year == currentYear && 
-                           r.DateCompleted.Value.Month == currentMonth)
-                .GroupBy(r => r.CustomerName)
-                .ToDictionary(g => g.Key, g => g.Count());
-            
-            // Count clients with only 1 survey in current month as "new"
-            return clientSurveyCounts.Count(kvp => kvp.Value == 1);
-        }
+        
+        return 0;
     }
 
     int GetRepeatedClientsForPeriod()
     {
-        var currentDate = DateTime.Now;
+        // If "All Years" is selected, count clients who have more than 1 survey total
+        if (selectedClientYear == "all")
+        {
+            var allClientSurveyCounts = surveyResponses
+                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue)
+                .GroupBy(r => r.CustomerName)
+                .ToDictionary(g => g.Key, g => g.Count());
+            
+            return allClientSurveyCounts.Count(kvp => kvp.Value > 1);
+        }
         
-        if (clientView == "yearly")
+        // For specific year, count clients who had MORE THAN 1 survey in that year
+        if (int.TryParse(selectedClientYear, out int targetYear))
         {
-            var currentYear = currentDate.Year;
-            
-            // Get all clients with surveys in current year and their survey counts
-            var clientSurveyCounts = surveyResponses
-                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue && r.DateCompleted.Value.Year == currentYear)
+            var repeatedClientsInYear = surveyResponses
+                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue)
                 .GroupBy(r => r.CustomerName)
-                .ToDictionary(g => g.Key, g => g.Count());
+                .Select(g => new
+                {
+                    ClientName = g.Key,
+                    SurveyCountInTargetYear = g.Count(r => r.DateCompleted!.Value.Year == targetYear)
+                })
+                .Where(c => c.SurveyCountInTargetYear > 1)
+                .Count();
             
-            // Count clients with more than 1 survey in current year as "repeated"
-            return clientSurveyCounts.Count(kvp => kvp.Value > 1);
+            return repeatedClientsInYear;
         }
-        else // monthly
-        {
-            var currentMonth = currentDate.Month;
-            var currentYear = currentDate.Year;
-            
-            // Get all clients with surveys in current month and their survey counts
-            var clientSurveyCounts = surveyResponses
-                .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue && 
-                           r.DateCompleted.Value.Year == currentYear && 
-                           r.DateCompleted.Value.Month == currentMonth)
-                .GroupBy(r => r.CustomerName)
-                .ToDictionary(g => g.Key, g => g.Count());
-            
-            // Count clients with more than 1 survey in current month as "repeated"
-            return clientSurveyCounts.Count(kvp => kvp.Value > 1);
-        }
+        
+        return 0;
     }
 
     IEnumerable<ClientDetail> GetFilteredClientDetails()
@@ -6132,9 +6284,16 @@
 
     IEnumerable<ClientDetail> GetAllClientDetails()
     {
-        var clientGroups = surveyResponses
-            .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue)
-            .GroupBy(r => r.CustomerName);
+        var filteredResponses = surveyResponses
+            .Where(r => !string.IsNullOrEmpty(r.CustomerName) && r.DateCompleted.HasValue);
+        
+        // Apply year filter
+        if (selectedClientYear != "all" && int.TryParse(selectedClientYear, out int filterYear))
+        {
+            filteredResponses = filteredResponses.Where(r => r.DateCompleted!.Value.Year == filterYear);
+        }
+        
+        var clientGroups = filteredResponses.GroupBy(r => r.CustomerName);
         
         foreach (var clientGroup in clientGroups.OrderBy(g => g.Key))
         {

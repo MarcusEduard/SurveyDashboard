@@ -553,11 +553,15 @@ HISTORICAL DATA:
 Current trend: {(trendData.Count > 1 ? (trendData.Last().AverageScore > trendData.First().AverageScore ? "improving" : "declining") : "stable")}
 
 Generate realistic monthly predictions for the next {monthsAhead} months starting from {DateTime.Now:yyyy-MM}. 
-Consider:
-- Historical patterns and seasonality
-- Current trajectory
-- Realistic confidence intervals
-- Market conditions
+IMPORTANT CONSTRAINTS:
+- Scores must be between 1-10, with realistic variation
+- Include natural fluctuations (±0.3 to ±0.8 per month)
+- DO NOT predict perfect scores (10/10) - be realistic
+- Confidence intervals should be 0.3-0.6
+- Consider that satisfaction rarely improves or declines dramatically
+- Maintain some unpredictability
+- If current average is 8.0, realistic range for next months: 7.5-8.5
+- Cap maximum prediction at 9.5 to be realistic
 
 Return ONLY a JSON array in this exact format:
 [
@@ -586,18 +590,45 @@ Return ONLY a JSON array in this exact format:
             {
                 _logger.LogError(ex, "Error generating satisfaction forecast");
                 
-                // Generate forecast based on current trend
+                // Generate fallback forecast based on realistic trend continuation
                 var fallbackForecast = new List<ForecastDataPoint>();
-                var currentAvg = responses.Any() ? responses.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0) : 7.0;
                 
+                // Use Question1 to be consistent with the rest of the dashboard
+                var currentAvg = responses.Any() && responses.Any(r => r.Question1 > 0) 
+                    ? responses.Where(r => r.Question1 > 0).Average(r => r.Question1) 
+                    : 7.0;
+                
+                // Calculate realistic growth rate (if improving, max 0.05 per month, if declining, max -0.05)
+                var trendData = CalculateMonthlyTrend(responses);
+                double growthRate = 0;
+                if (trendData.Count >= 2)
+                {
+                    var recentScores = trendData.TakeLast(3).Select(t => t.AverageScore).ToList();
+                    if (recentScores.Count >= 2)
+                    {
+                        growthRate = (recentScores.Last() - recentScores.First()) / recentScores.Count;
+                        growthRate = Math.Max(-0.05, Math.Min(0.05, growthRate)); // Cap growth rate
+                    }
+                }
+                
+                var random = new Random();
                 for (int i = 1; i <= monthsAhead; i++)
                 {
                     var futureDate = DateTime.Now.AddMonths(i);
+                    
+                    // Calculate predicted score with realistic variation
+                    var basePrediction = currentAvg + (growthRate * i);
+                    var randomVariation = (random.NextDouble() - 0.5) * 0.6; // ±0.3 variation
+                    var predictedScore = basePrediction + randomVariation;
+                    
+                    // Cap at realistic maximum (9.5) and minimum (1.0)
+                    predictedScore = Math.Max(1.0, Math.Min(9.5, predictedScore));
+                    
                     fallbackForecast.Add(new ForecastDataPoint
                     {
                         Date = futureDate,
-                        PredictedScore = Math.Max(1, Math.Min(10, currentAvg + (Random.Shared.NextDouble() - 0.5) * 0.5)),
-                        ConfidenceInterval = 0.3,
+                        PredictedScore = Math.Round(predictedScore, 1),
+                        ConfidenceInterval = Math.Round(0.3 + (i * 0.05), 1), // Confidence decreases over time
                         Period = futureDate.ToString("MMM yyyy")
                     });
                 }

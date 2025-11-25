@@ -247,23 +247,6 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Pagination -->
-        @if (filteredResponses.Count > pageSize)
-        {
-            <div class="pagination-controls">
-                <button class="btn-page" @onclick="PreviousPage" disabled="@(currentPage <= 1)">
-                    ← Previous
-                </button>
-                <span class="page-info">
-                    Page @currentPage of @((int)Math.Ceiling((double)filteredResponses.Count / pageSize))
-                    (@filteredResponses.Count total responses)
-                </span>
-                <button class="btn-page" @onclick="NextPage" disabled="@(currentPage >= Math.Ceiling((double)filteredResponses.Count / pageSize))">
-                    Next →
-                </button>
-            </div>
-        }
     }
 </div>
 
@@ -778,7 +761,7 @@
     string dateFilter = "";
     
     int currentPage = 1;
-    int pageSize = 20;
+    int pageSize = 10;
     
     // Editing
     int editingId = 0;

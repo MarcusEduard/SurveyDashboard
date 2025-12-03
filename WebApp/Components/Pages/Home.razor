@@ -6,13 +6,8 @@
 @inject NavigationManager navMgr
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("eval", "document.body.style.setProperty('--main-bg', \"url('/images/BackgroundBachelor.avif') center/cover no-repeat fixed\")");
-        }
-    }
+    // Removed background image injection for a cleaner, more professional look
+    protected override Task OnAfterRenderAsync(bool firstRender) => Task.CompletedTask;
 
     void GoToDashboard() => navMgr.NavigateTo("/survey-dashboard");
     void GoToEditor() => navMgr.NavigateTo("/survey-editor");
@@ -51,32 +46,32 @@
     <Authorized Context="context">
         <div class="home-hero">
             <div class="hero-logo">
-                <img src="/images/dk_logo.png" alt="dk Logo" />
+                <img src="/images/dk_logo.png" alt="Danish Embassy Logo" />
             </div>
-            <h1>
-                @GetWelcomeText(context)
-            </h1>
+            <h1>@GetWelcomeText(context)</h1>
             <div class="sub-message">
-                Get customer insights<br />
-                See the latest analytics, manage surveys, and track your impact.
+                Get customer insights. See analytics, manage surveys, and track your impact.
             </div>
             <div class="quick-actions">
                 <button class="quick-action-btn" @onclick="GoToDashboard">
-                    📊 Dashboard
+                    <img class="home-icon" src="/images/dashboard.png" alt="Dashboard" />
+                    <span>Dashboard</span>
                 </button>
                 @if (IsAdmin(context))
                 {
                     <button class="quick-action-btn" @onclick="GoToEditor">
-                        ✏️ Survey Editor
+                        <img class="home-icon" src="/images/edit.png" alt="Survey Editor" />
+                        <span>Survey Editor</span>
                     </button>
                     <button class="quick-action-btn" @onclick="GoToManager">
-                        📋 Survey Manager
+                        <img class="home-icon" src="/images/add.png" alt="Survey Manager" />
+                        <span>Survey Manager</span>
                     </button>
                 }
             </div>
             <div class="user-info">
-                <span>👤 @context.User.Identity?.Name</span>
-                <span>•</span>
+                <span>@context.User.Identity?.Name</span>
+                <span class="dot">•</span>
                 <span>Role: @GetRole(context)</span>
             </div>
         </div>
@@ -92,7 +87,8 @@
             </div>
             <div class="quick-actions">
                 <button class="quick-action-btn" @onclick="GoToLogin">
-                    🔑 Login
+                    <img class="home-icon" src="/images/enter.png" alt="Login" />
+                    <span>Login</span>
                 </button>
             </div>
         </div>
@@ -100,120 +96,105 @@
 </AuthorizeView>
 
 <style>
-    body {
-        background: url('/images/BackgroundBachelor.avif') center/cover no-repeat fixed !important;
-    }
     .home-hero {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         min-height: 65vh;
-        padding: 3rem 2rem 2rem 2rem;
-        background: rgba(255,255,255,0.90);
-        border-radius: 32px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.14);
-        max-width: 650px;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: none;
+        max-width: 720px;
         margin: 60px auto 0 auto;
         position: relative;
         z-index: 2;
-        animation: fadeIn 0.8s;
+        animation: fadeIn 0.4s ease;
     }
     @@keyframes fadeIn {
         from { opacity: 0; transform: translateY(30px);}
         to { opacity: 1; transform: translateY(0);}
     }
     .hero-logo {
-        margin-bottom: 1.2em;
-        width: 110px;
-        height: 110px;
-        border-radius: 50%;
-        background: #fff;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        margin-bottom: 1rem;
+        width: 56px;
+        height: 56px;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
     }
     .hero-logo img {
-        width: 80px;
-        height: 80px;
+        width: 48px;
+        height: 48px;
         object-fit: contain;
-        border-radius: 50%;
     }
     .home-hero h1 {
-        font-size: 2.7em;
-        font-weight: 800;
-        color: #c82333;
-        margin-bottom: 0.5em;
-        letter-spacing: 1px;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.2px;
         text-align: center;
     }
     .home-hero .sub-message {
-        font-size: 1.25em;
-        color: #212529;
-        margin-bottom: 1.5em;
-        font-weight: 500;
+        font-size: 1rem;
+        color: #6b7280;
+        margin-bottom: 1.25rem;
+        font-weight: 400;
         text-align: center;
+        max-width: 46rem;
     }
     .home-hero .quick-actions {
         display: flex;
-        gap: 1.2em;
-        margin-top: 1em;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
         flex-wrap: wrap;
         justify-content: center;
     }
     .quick-action-btn {
-        background: linear-gradient(90deg, #c82333 70%, #007bff 100%);
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        padding: 0.9em 2em;
-        font-size: 1.15em;
-        font-weight: 600;
-        box-shadow: 0 2px 8px rgba(200,35,51,0.08);
+        background: #ffffff;
+        color: #111827;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.95rem;
+        font-weight: 500;
         cursor: pointer;
-        transition: background 0.2s, transform 0.2s;
+        transition: background-color 0.2s ease, color 0.2s ease;
         display: flex;
         align-items: center;
-        gap: 0.5em;
-        margin-bottom: 0.5em;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
     }
     .quick-action-btn:hover {
-        background: linear-gradient(90deg, #a71d2a 70%, #0056b3 100%);
-        transform: translateY(-2px) scale(1.04);
+        background: #f9fafb;
+        color: #111827;
+    }
+    .home-icon {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
     }
     .home-hero .user-info {
-        margin-top: 2em;
-        font-size: 1.05em;
-        color: #495057;
-        background: #f8f9fa;
+        margin-top: 1.25rem;
+        font-size: 0.95rem;
+        color: #6b7280;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
         border-radius: 8px;
-        padding: 0.7em 1.2em;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        padding: 0.5rem 0.75rem;
         display: flex;
         align-items: center;
-        gap: 0.7em;
+        gap: 0.5rem;
     }
+    .home-hero .user-info .dot { color: #cbd5e1; }
     @@media (max-width: 700px) {
-        .home-hero {
-            padding: 1.2rem;
-            max-width: 98vw;
-        }
-        .home-hero h1 {
-            font-size: 2em;
-        }
-        .hero-logo {
-            width: 70px;
-            height: 70px;
-        }
-        .hero-logo img {
-            width: 50px;
-            height: 50px;
-        }
-        .quick-action-btn {
-            font-size: 1em;
-            padding: 0.7em 1.2em;
-        }
+        .home-hero { padding: 1rem; max-width: 94vw; }
+        .home-hero h1 { font-size: 1.5rem; }
+        .hero-logo { width: 40px; height: 40px; }
+        .hero-logo img { width: 36px; height: 36px; }
+        .quick-action-btn { font-size: 0.95rem; padding: 0.5rem 0.75rem; }
     }
 </style>

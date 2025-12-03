@@ -4,7 +4,7 @@
 @inject HttpClient httpClient
 
 <div class="editor-container">
-    <h2>📝 Survey Editor</h2>
+    <h2>Survey Editor</h2>
     <p class="editor-subtitle">Manage customer names, project names, durations, and delete survey responses</p>
     
     @if (isLoading)
@@ -27,7 +27,7 @@
             <div class="search-controls" style="flex: 1; min-width: 180px; max-width: 300px;">
                 <input type="text" @bind="searchFilter" @oninput="FilterSurveys" @onkeydown="HandleSearchKeyDown"
                        class="form-control search-input" 
-                       placeholder="🔍 Search customer, project, or sector..." style="font-size:0.95rem; padding:7px 12px;" />
+                       placeholder="Search customer, project, or sector..." style="font-size:0.95rem; padding:7px 12px;" />
             </div>
             <div class="filter-controls">
                 <select @bind="sectorFilter" @bind:after="FilterSurveys" class="form-select">
@@ -200,11 +200,11 @@
                             <td>
                                 @if (response.DateCompleted.HasValue)
                                 {
-                                    <span class="badge status-completed">✓ Completed</span>
+                                    <span class="badge status-completed">Completed</span>
                                 }
                                 else
                                 {
-                                    <span class="badge status-pending">⏳ Pending</span>
+                                    <span class="badge status-pending">Pending</span>
                                 }
                             </td>
                             
@@ -228,16 +228,16 @@
                                     @if (editingId == response.SurveyResponseId)
                                     {
                                         <button class="btn-save" @onclick="() => SaveEdit(response)" title="Save changes">
-                                            💾
+                                            <img class="icon" src="/images/checklist.png" alt="Save" />
                                         </button>
                                         <button class="btn-cancel" @onclick="CancelEdit" title="Cancel editing">
-                                            ❌
+                                            <img class="icon" src="/images/trash.png" alt="Cancel" />
                                         </button>
                                     }
                                     else
                                     {
                                         <button class="btn-delete" @onclick="() => ConfirmDelete(response)" title="Delete response">
-                                            🗑️
+                                            <img class="icon" src="/images/trash.png" alt="Delete" />
                                         </button>
                                     }
                                 </div>
@@ -255,7 +255,7 @@
 {
     <div class="modal-overlay" @onclick="CancelDelete">
         <div class="modal-content" @onclick:stopPropagation="true">
-            <h3>⚠️ Confirm Deletion</h3>
+            <h3>Confirm Deletion</h3>
             <p>Are you sure you want to delete this survey response?</p>
             <div class="modal-details">
                 <p><strong>Customer:</strong> @responseToDelete.CustomerName</p>
@@ -264,7 +264,8 @@
             </div>
             <div class="modal-actions">
                 <button class="btn-confirm-delete" @onclick="DeleteResponse">
-                    🗑️ Delete Response
+                    <img class="icon" src="/images/trash.png" alt="Delete" />
+                    <span>Delete Response</span>
                 </button>
                 <button class="btn-cancel-modal" @onclick="CancelDelete">
                     Cancel
@@ -745,6 +746,31 @@
         color: #666;
         font-size: 1.1rem;
     }
+</style>
+
+<style>
+    /* Professional neutral overrides */
+    .editor-container { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; box-shadow: none; }
+    .editor-container h2 { color: #111827; font-size: 1.8rem; }
+    .editor-table-container { border: 1px solid #e5e7eb; box-shadow: none; }
+    .editor-table th { background: #f9fafb !important; color: #374151 !important; border-bottom: 1px solid #e5e7eb; letter-spacing: 0; text-transform: none; }
+    .editing-row { background-color: #f9fafb !important; border-left: 4px solid #e5e7eb; }
+    .editable:hover { background-color: #f3f4f6; border: 1px dashed #cbd5e1; }
+    .status-completed { background: #dcfce7; color: #166534; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .score-excellent { background: #22c55e; }
+    .score-good { background: #06b6d4; }
+    .score-average { background: #f59e0b; color: #111827; }
+    .score-poor { background: #ef4444; }
+    .btn-delete { background: #fff; color: #ef4444; border: 1px solid #ef4444; }
+    .btn-delete:hover { background: #fef2f2; }
+    .btn-save { background: #fff; color: #16a34a; border: 1px solid #16a34a; }
+    .btn-save:hover { background: #f0fdf4; }
+    .btn-cancel { background: #fff; color: #374151; border: 1px solid #e5e7eb; }
+    .btn-cancel:hover { background: #f9fafb; }
+    .modal-content { border: 1px solid #e5e7eb; box-shadow: none; }
+    .spinner { border: 4px solid #f3f4f6; border-top: 4px solid #cbd5e1; }
+    .icon { width: 16px; height: 16px; object-fit: contain; }
 </style>
 
 @code {

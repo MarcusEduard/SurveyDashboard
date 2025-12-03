@@ -49,7 +49,7 @@
                 @foreach (var result in searchResults.Take(10))
                 {
                     <div class="result-item @GetResultTypeClass(result.Type)" @onclick="() => OnResultClick(result)">
-                        <div class="result-icon">@GetResultIcon(result.Type)</div>
+                        <div class="result-icon">@GetResultIcon(result)</div>
                         <div class="result-content">
                             <div class="result-title">@result.Title</div>
                             <div class="result-subtitle">@result.Subtitle</div>
@@ -230,14 +230,31 @@
 
     private string GetResultTypeClass(string type) => $"result-{type}";
 
-    private string GetResultIcon(string type) => type switch
+    private MarkupString GetResultIcon(SearchResult result)
     {
-        "customer" => "🏢",
-        "project" => "📋",
-        "sector" => "🏭",
-        "survey" => "📊",
-        _ => "📄"
-    };
+        if (result.Type == "sector" && (result.Title?.Contains("Health", StringComparison.OrdinalIgnoreCase) ?? false))
+        {
+            return new MarkupString("<img src=\"/images/healthcare.png\" alt=\"Health\" class=\"icon-svg\" />");
+        }
+        if (result.Type == "sector" && (result.Title?.Contains("Tech", StringComparison.OrdinalIgnoreCase) ?? false))
+        {
+            return new MarkupString("<img src=\"/images/technology.png\" alt=\"Tech\" class=\"icon-svg\" />");
+        }
+        if (result.Type == "sector" && (result.Title?.Contains("Energy", StringComparison.OrdinalIgnoreCase) ?? false))
+        {
+            return new MarkupString("<img src=\"/images/power.png\" alt=\"Energy\" class=\"icon-svg\" />");
+        }
+
+        var icon = result.Type switch
+        {
+            "customer" => "🏢",
+            "project" => "📋",
+            "sector" => "🏭",
+            "survey" => "📊",
+            _ => "📄"
+        };
+        return new MarkupString(icon);
+    }
 
     private string GetScoreClass(double score) => score >= 8 ? "excellent" : score >= 6 ? "good" : score >= 4 ? "average" : "poor";
 
@@ -256,4 +273,13 @@
         debounceTimer?.Dispose();
     }
 }
+
+<style>
+    .result-icon img.icon-svg {
+        width: 1.2em;
+        height: 1.2em;
+        vertical-align: middle;
+        display: inline-block;
+    }
+</style>
 

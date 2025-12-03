@@ -46,13 +46,13 @@
         <!-- Main Dashboard Overview -->
         <div class="summary-cards">
             <div class="card clickable" @onclick='() => ScrollToSection("responses")'>
-                <div class="card-icon">📊</div>
+                <div class="card-icon"><img src="/images/checklist.png" alt="Total Responses" /></div>
                 <h3 class="counter" data-target="@surveyResponses.Count">@surveyResponses.Count</h3>
                 <p>Total Responses</p>
                 <div class="card-arrow">→</div>
             </div>
             <div class="card clickable" @onclick='() => ScrollToSection("satisfaction")'>
-                <div class="card-icon">⭐</div>
+                <div class="card-icon"><img src="/images/satisfaction.png" alt="Average Satisfaction" /></div>
                 <h3 class="counter satisfaction-score" data-target="@Math.Round(avgSatisfaction, 1)">@Math.Round(avgSatisfaction, 1)</h3>
                 <p>Avg Overall Satisfaction</p>
                 <div class="satisfaction-bar" style="position: relative;">
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="card clickable" @onclick='() => ScrollToSection("clients")'>
-                <div class="card-icon">👥</div>
+                <div class="card-icon"><img src="/images/public-relation.png" alt="Unique Clients" /></div>
                 <h3 class="counter" data-target="@GetTotalUniqueClients()">@GetTotalUniqueClients()</h3>
                 <p>Unique Clients</p>
                 <div class="card-arrow">→</div>
@@ -71,12 +71,12 @@
         <!-- Sector Overview Charts -->
         <div class="charts-section">
             <div class="section-header">
-                <h3>📈 Completion By Sector</h3>
+                <h3><img class="section-icon" src="/images/customer-segment.png" alt="Completion By Sector" /> Completion By Sector</h3>
             </div>
             
             <div class="chart-container" id="responses">
                 <div class="chart-header">
-                    <h4>🔍 Survey Responses by Sector</h4>
+                    <h4><img class="section-icon" src="/images/margin.png" alt="Survey Responses by Sector" /> Survey Responses by Sector</h4>
                     <div class="chart-controls">
                         <button class="view-btn @(chartView == "count" ? "active" : "")" @onclick='() => SetChartView("count")'>Count</button>
                         <button class="view-btn @(chartView == "percentage" ? "active" : "")" @onclick='() => SetChartView("percentage")'>%</button>
@@ -162,7 +162,7 @@
             <!-- Average Satisfaction by Sector -->
             <div class="chart-container" id="satisfaction">
                 <div class="chart-header">
-                    <h4>⭐ Satisfaction Ratings</h4>
+                    <h4><img class="section-icon" src="/images/rating.png" alt="Satisfaction Ratings" /> Satisfaction Ratings</h4>
                     <div class="filter-controls">
                         <div class="filter-section">
                             <label class="filter-label">Filter by Sector</label>
@@ -190,7 +190,7 @@
                         {
                             <div class="filter-section">
                                 <button class="clear-filters-btn" @onclick="ClearAllFilters">
-                                    🗑️ Clear Filters
+                                    <img class="inline-icon" src="/images/trash.png" alt="Clear Filters" /> Clear Filters
                                 </button>
                             </div>
                         }
@@ -251,7 +251,7 @@
                     @if (!filteredSatisfactionData.Any())
                     {
                         <div class="no-data-message">
-                            <div class="no-data-icon">📊</div>
+                            <div class="no-data-icon"><img class="no-data-img" src="/images/graph.png" alt="No data" /></div>
                             <h4>No Data Available</h4>
                             <p>No survey responses found for the selected filters.</p>
                         </div>
@@ -262,7 +262,7 @@
             <!-- Satisfaction Trends Over Time -->
             <div class="chart-container" id="trends">
                 <div class="chart-header">
-                    <h4>📈 Satisfaction Trends Over Time</h4>
+                    <h4><img class="section-icon" src="/images/trend.png" alt="Satisfaction Trends Over Time" /> Satisfaction Trends Over Time</h4>
                     <div class="chart-controls">
                         <div class="control-group">
                             <button class="view-btn @(trendsView == "monthly" ? "active" : "")" @onclick='() => SetTrendsView("monthly")'>Monthly</button>
@@ -290,7 +290,7 @@
                         <!-- Trend Summary Cards -->
                         <div class="trend-summary-cards">
                             <div class="trend-card">
-                                <div class="trend-icon">📈</div>
+                                <div class="trend-icon"><img src="/images/graph.png" alt="Trend" class="trend-icon-img" /></div>
                                 <div class="trend-value @(GetTrendDirection() == "up" ? "positive" : GetTrendDirection() == "down" ? "negative" : "neutral")">
                                     @GetTrendPercentage()%
                                 </div>
@@ -299,21 +299,21 @@
                             </div>
                             
                             <div class="trend-card">
-                                <div class="trend-icon">🎯</div>
+                                <div class="trend-icon"><img src="/images/best-seller.png" alt="Highest Score" class="trend-icon-img" /></div>
                                 <div class="trend-value">@GetHighestPeriod().Score.ToString("F1")</div>
                                 <div class="trend-label">Highest Score</div>
                                 <div class="trend-period">@GetHighestPeriod().Period</div>
                             </div>
                             
                             <div class="trend-card">
-                                <div class="trend-icon">⚠️</div>
+                                <div class="trend-icon"><img src="/images/vote.png" alt="Lowest Score" class="trend-icon-img" /></div>
                                 <div class="trend-value">@GetLowestPeriod().Score.ToString("F1")</div>
                                 <div class="trend-label">Lowest Score</div>
                                 <div class="trend-period">@GetLowestPeriod().Period</div>
                             </div>
                             
                             <div class="trend-card">
-                                <div class="trend-icon">📊</div>
+                                <div class="trend-icon"><img src="/images/statistic-business.png" alt="Data Points" class="trend-icon-img" /></div>
                                 <div class="trend-value">@GetTrendData().Count()</div>
                                 <div class="trend-label">Data Points</div>
                                 <div class="trend-period">@trendsView periods</div>
@@ -383,7 +383,7 @@
                                 @if (allMonths.Any())
                                 {
                                     <div class="new-chart-header">
-                                        <h3>📈 Satisfaction Score Over Time @(trendsView == "yearly" ? "" : $"- {chartYear}")</h3>
+                                        <h3><img class="section-icon" src="/images/trend.png" alt="Satisfaction Score Over Time" /> Satisfaction Score Over Time @(trendsView == "yearly" ? "" : $"- {chartYear}")</h3>
                                         <p>Scale: 0 - 10 | @(trendsView == "monthly" && selectedTrendsYear != "all" ? "All 12 months shown" : trendsView == "quarterly" ? "Quarterly averages" : "Yearly averages")</p>
 
                                     </div>
@@ -485,7 +485,7 @@
                 <div class="trend-chart-container">
                     <div class="visual-trend-chart">
                         <div class="trend-chart-header">
-                            <span class="chart-title">🔮 AI Satisfaction Predictions</span>
+                            <span class="chart-title"><img class="section-icon" src="/images/predictive-analysis.png" alt="AI Satisfaction Predictions" /> AI Satisfaction Predictions</span>
                             <span class="chart-range">Next 6 Months Forecast</span>
                         </div>
                         
@@ -601,7 +601,7 @@
                         else
                         {
                             <div class="no-forecast-data">
-                                <p>🔮 AI forecast will be generated once sufficient historical data is available!</p>
+                                <p><img class="inline-icon" src="/images/predictive-analysis.png" alt="AI forecast" /> AI forecast will be generated once sufficient historical data is available!</p>
                             </div>
                         }
                     </div>
@@ -610,7 +610,7 @@
 
             <!-- Question Performance Chart -->
             <div class="chart-container">
-                <h4>📊 Question Performance</h4>
+                <h4><img class="section-icon" src="/images/customer-survey.png" alt="Question Performance" /> Question Performance</h4>
                 <div class="question-performance">
                     <div class="question-bars">
                         @for (int q = 1; q <= 9; q++)
@@ -647,7 +647,7 @@
             <!-- Client Analytics Section -->
             <div class="chart-container" id="clients">
                 <div class="chart-header">
-                    <h4>👥 Client Analytics</h4>
+                    <h4><img class="section-icon" src="/images/analysis.png" alt="Client Analytics" /> Client Analytics</h4>
                     <div style="display: flex; gap: 15px; align-items: center;">
                         <select @bind="selectedClientYear" class="filter-dropdown" style="padding: 6px 10px; border: 1px solid #dee2e6; border-radius: 6px; background: white; font-size: 0.9em;">
                             <option value="all">All Years</option>
@@ -691,28 +691,28 @@
                             }
                             
                             <div class="client-card total-clients">
-                                <div class="card-icon">👥</div>
+                                <div class="card-icon"><img class="card-icon-img" src="/images/customers.png" alt="Client Details" /></div>
                                 <div class="client-value">@totalClients</div>
                                 <div class="client-label">Total Unique Clients</div>
                                 <div class="client-sublabel">All time</div>
                             </div>
                             
                             <div class="client-card new-clients">
-                                <div class="card-icon">🆕</div>
+                                <div class="card-icon"><img class="card-icon-img" src="/images/new.png" alt="New Clients" /></div>
                                 <div class="client-value">@newClients</div>
                                 <div class="client-label">New Clients</div>
                                 <div class="client-sublabel">@periodLabel</div>
                             </div>
                             
                             <div class="client-card repeated-clients">
-                                <div class="card-icon">🔄</div>
+                                <div class="card-icon"><img class="card-icon-img" src="/images/repeat.png" alt="Repeated Clients" /></div>
                                 <div class="client-value">@repeatedClients</div>
                                 <div class="client-label">Repeated Clients</div>
                                 <div class="client-sublabel">@periodLabel</div>
                             </div>
                             
                             <div class="client-card retention-rate">
-                                <div class="card-icon">📈</div>
+                                <div class="card-icon"><img class="card-icon-img" src="/images/graph.png" alt="Client Trends" /></div>
                                 <div class="client-value">@(retentionRate.ToString("F1"))%</div>
                                 <div class="client-label">Client Retention Rate</div>
                                 <div class="client-sublabel">@periodLabel basis</div>
@@ -747,12 +747,19 @@
                                         {
                                             <tr class="client-row">
                                                 <td class="client-name">
-                                                    <span class="client-icon">🏢</span>
+                                                    <span class="client-icon"><img class="inline-icon" src="/images/customer-segment.png" alt="Client" /></span>
                                                     @client.ClientName
                                                 </td>
                                                 <td>
                                                     <span class="client-type-badge @(client.IsRepeatedClient ? "repeated" : "new")">
-                                                        @(client.IsRepeatedClient ? "🔄 Repeated" : "🆕 New")
+                                                        @if (client.IsRepeatedClient)
+                                                        {
+                                                            <img class="chip-icon-img" src="/images/repeat.png" alt="Repeated" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img class="chip-icon-img" src="/images/new.png" alt="New" />
+                                                        }
                                                     </span>
                                                 </td>
                                                 <td>@client.FirstSurveyDate?.ToString("MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture)</td>
@@ -774,7 +781,7 @@
                 else
                 {
                     <div class="no-client-data">
-                        <p>📊 No client data available yet. Complete more surveys to see client analytics!</p>
+                        <p><img class="inline-icon" src="/images/graph.png" alt="No client data" /> No client data available yet. Complete more surveys to see client analytics!</p>
                     </div>
                 }
             </div>
@@ -834,7 +841,13 @@
                     }
 
                     .ai-icon {
-                        font-size: 24px;
+                        font-size: 24px; /* legacy text fallback */
+                    }
+                    .ai-icon-img {
+                        width: 24px;
+                        height: 24px;
+                        object-fit: contain;
+                        display: inline-block;
                     }
 
                     .status-indicator {
@@ -923,8 +936,14 @@
                     }
 
                     .welcome-ai-icon {
-                        font-size: 40px;
+                        font-size: 40px; /* legacy text fallback */
                         color: white;
+                    }
+                    .welcome-ai-icon-img {
+                        width: 40px;
+                        height: 40px;
+                        object-fit: contain;
+                        display: inline-block;
                     }
 
                     .welcome-content h5 {
@@ -1329,7 +1348,7 @@
                     <div class="chat-title-area">
                         <div class="ai-avatar">
                             <div class="avatar-circle">
-                                <span class="ai-icon">🤖</span>
+                                <img class="ai-icon-img" src="/images/chat-bot.png" alt="AI" />
                                 <div class="status-indicator online"></div>
                             </div>
                         </div>
@@ -1340,7 +1359,7 @@
                     </div>
                     <div class="chat-actions">
                         <button class="clear-chat-btn" @onclick="ClearChatHistory" title="Clear chat history">
-                            <span class="icon">🗑️</span>
+                            <span class="icon"><img class="inline-icon" src="/images/trash.png" alt="Delete" /></span>
                         </button>
                     </div>
                 </div>
@@ -1352,7 +1371,7 @@
                         <div class="welcome-section">
                             <div class="welcome-avatar">
                                 <div class="welcome-circle">
-                                    <span class="welcome-ai-icon">🤖</span>
+                                    <img class="welcome-ai-icon-img" src="/images/chat-bot.png" alt="AI" />
                                 </div>
                             </div>
                             <div class="welcome-content">
@@ -1360,11 +1379,11 @@
                                 <p>I can help you analyze your survey data and provide insights. Here are some things you can ask me:</p>
                                 <div class="suggestion-chips">
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("Which sector has the lowest satisfaction?")'>
-                                        <span class="chip-icon">📊</span>
+                                        <span class="chip-icon"><img class="chip-icon-img" src="/images/graph.png" alt="Trend" /></span>
                                         Sector performance
                                     </button>
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("What are the main issues in my survey data?")'>
-                                        <span class="chip-icon">⚠️</span>
+                                        <span class="chip-icon"><img class="chip-icon-img" src="/images/vote.png" alt="Low score" /></span>
                                         Main issues
                                     </button>
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("Give me recommendations to improve satisfaction")'>
@@ -1372,7 +1391,7 @@
                                         Recommendations
                                     </button>
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("What trends do you see in my data?")'>
-                                        <span class="chip-icon">📈</span>
+                                        <span class="chip-icon"><img class="chip-icon-img" src="/images/trend.png" alt="Trend analysis" /></span>
                                         Trends analysis
                                     </button>
                                 </div>
@@ -1389,7 +1408,7 @@
                                 {
                                     <div class="message-avatar">
                                         <div class="avatar-small">
-                                            <span>🤖</span>
+                                            <img class="ai-icon-img" src="/images/chat-bot.png" alt="AI" />
                                         </div>
                                     </div>
                                 }
@@ -1428,7 +1447,7 @@
                             <div class="message-wrapper ai-message">
                                 <div class="message-avatar">
                                     <div class="avatar-small thinking">
-                                        <span>🤖</span>
+                                        <img class="ai-icon-img" src="/images/chat-bot.png" alt="AI" />
                                     </div>
                                 </div>
                                 <div class="message-bubble ai-bubble typing-bubble">
@@ -1470,7 +1489,7 @@
                                         }
                                         else
                                         {
-                                            <span class="send-icon">📤</span>
+                                            <span class="send-icon"><img class="inline-icon" src="/images/send.png" alt="Send" /></span>
                                         }
                                     </button>
                                 </div>
@@ -1492,7 +1511,7 @@
                     <h3>
                         @if (currentNavigationLevel == "sectors")
                         {
-                            <span>🏢 Select Sector for Detailed Analysis</span>
+                            <span><img class="section-icon" src="/images/customer-segment.png" alt="Select Sector" /> Select Sector for Detailed Analysis</span>
                         }
                         else if (currentNavigationLevel == "customers")
                         {
@@ -1504,7 +1523,7 @@
                         }
                         else if (currentNavigationLevel == "analysis")
                         {
-                            <span>📊 Detailed Analysis: @selectedProject</span>
+                            <span><img class="inline-icon" src="/images/analysis.png" alt="Detailed Analysis" /> Detailed Analysis: @selectedProject</span>
                         }
                     </h3>
                     
@@ -1636,7 +1655,7 @@
                         <!-- Question Breakdown for this specific project -->
                         <div class="analysis-charts">
                             <div class="chart-container">
-                                <h5>📊 Question Breakdown</h5>
+                                <h5><img class="inline-icon" src="/images/customer-survey.png" alt="Question Breakdown" /> Question Breakdown</h5>
                                 <div class="question-analysis-grid">
                                     @for (int q = 1; q <= 9; q++)
                                     {
@@ -1721,36 +1740,18 @@
         max-width: 1400px;
         margin: 20px auto;
         padding: 20px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        position: relative;
-        overflow: hidden;
+        background: transparent;
     }
 
-    .dashboard-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #007bff, #28a745, #ffc107, #dc3545);
-        z-index: 1;
-    }
+    .dashboard-container::before { display: none; }
 
     .dashboard-container h2 {
         text-align: center;
-        color: #0056b3;
+        color: #0f172a;
         font-weight: 700;
-        margin-bottom: 30px;
-        letter-spacing: 1px;
-        font-size: 2.5rem;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        background: linear-gradient(135deg, #007bff, #0056b3);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        margin-bottom: 24px;
+        letter-spacing: 0.2px;
+        font-size: 2rem;
     }
 
     .dashboard-header {
@@ -1805,74 +1806,61 @@
         justify-content: center;
     }
     .card {
-        background: linear-gradient(135deg, #f8f9fa 80%, #e9ecef 100%);
-        padding: 32px 24px;
-        border-radius: 18px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+        background: #fff;
+        padding: 24px 20px;
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         text-align: center;
-        border-left: 6px solid #007bff;
+        border: 1px solid #e5e7eb;
         min-width: 220px;
-        transition: box-shadow 0.3s, transform 0.3s;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         position: relative;
     }
 
     .card, .chart-container, .navigation-card, .satisfaction-card {
-        transition: box-shadow 0.3s, transform 0.3s;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .card.clickable:hover, .chart-container:hover, .navigation-card:hover, .satisfaction-card:hover {
-        box-shadow: 0 16px 48px rgba(0,0,0,0.18);
-        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transform: translateY(-2px);
+        border-color: #d1d5db;
     }
 
-    .card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, transparent 0%, rgba(0,123,255,0.02) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
+    .card::before { display: none; }
 
     .card.clickable {
         cursor: pointer;
     }
 
     .card.clickable:hover {
-        box-shadow: 0 16px 48px rgba(0,0,0,0.18);
-        border-left-color: #28a745;
-        transform: translateY(-6px) scale(1.03);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transform: translateY(-2px);
     }
 
-    .card.clickable:hover::before {
-        opacity: 1;
-    }
+    .card.clickable:hover::before { display: none; }
 
     .card-icon {
-        font-size: 2.7rem;
-        margin-bottom: 14px;
-        color: #007bff;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        color: #334155;
     }
 
     .card h3 {
-        font-size: 3rem;
-        color: #007bff;
-        margin: 0 0 8px 0;
+        font-size: 2.2rem;
+        color: #111827;
+        margin: 0 0 6px 0;
         font-weight: 700;
-        transition: all 0.3s ease;
+        transition: color 0.2s ease;
     }
 
     .card.clickable:hover h3 {
-        color: #28a745;
-        transform: scale(1.1);
+        color: #0f172a;
     }
 
     .card p {
-        color: #666;
-        margin: 0 0 16px 0;
-        font-size: 1rem;
+        color: #4b5563;
+        margin: 0 0 12px 0;
+        font-size: 0.95rem;
         font-weight: 500;
     }
 
@@ -1899,7 +1887,7 @@
 
     .satisfaction-fill {
         height: 100%;
-        background: linear-gradient(90deg, #dc3545 0%, #ffc107 50%, #28a745 100%);
+        background: #64748b;
         border-radius: 4px;
         transition: width 1s ease;
     }
@@ -1941,50 +1929,47 @@
 
     .year-filter-dropdown {
         padding: 6px 12px;
-        border: 2px solid #dee2e6;
+        border: 1px solid #e5e7eb;
         border-radius: 8px;
         background: white;
-        color: #495057;
+        color: #374151;
         font-size: 0.9rem;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
         min-width: 100px;
     }
 
-    .year-filter-dropdown:hover {
-        border-color: #007bff;
-    }
+    .year-filter-dropdown:hover { border-color: #d1d5db; }
 
     .year-filter-dropdown:focus {
         outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        border-color: #c82333;
+        box-shadow: 0 0 0 3px rgba(200,35,51,0.12);
     }
 
     .filter-btn, .view-btn, .toggle-btn, .perf-btn {
-        padding: 8px 16px;
-        border: 2px solid #dee2e6;
-        background: white;
-        border-radius: 20px;
+        padding: 8px 14px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        border-radius: 10px;
         cursor: pointer;
         font-size: 0.9rem;
         font-weight: 500;
-        transition: all 0.3s ease;
-        color: #6c757d;
+        transition: border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+        color: #374151;
     }
 
     .filter-btn:hover, .view-btn:hover, .toggle-btn:hover, .perf-btn:hover {
-        border-color: #007bff;
-        color: #007bff;
-        transform: translateY(-2px);
+        border-color: #d1d5db;
+        transform: translateY(-1px);
     }
 
     .filter-btn.active, .view-btn.active, .toggle-btn.active, .perf-btn.active {
-        background: #007bff;
-        color: white;
-        border-color: #007bff;
-        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+        background: #c82333;
+        color: #fff;
+        border-color: #c82333;
+        box-shadow: none;
     }
 
     .filter-controls {
@@ -2010,23 +1995,23 @@
 
     .filter-dropdown {
         padding: 8px 12px;
-        border: 2px solid #e9ecef;
+        border: 1px solid #e5e7eb;
         border-radius: 8px;
         background: white;
-        color: #495057;
+        color: #374151;
         font-size: 0.9rem;
-        transition: all 0.2s ease;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
         cursor: pointer;
     }
 
     .filter-dropdown:hover {
-        border-color: #007bff;
+        border-color: #d1d5db;
     }
 
     .filter-dropdown:focus {
         outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        border-color: #c82333;
+        box-shadow: 0 0 0 3px rgba(200, 35, 51, 0.12);
     }
 
     .clear-filters-btn {
@@ -2057,7 +2042,7 @@
         padding: 12px;
         background: #f8f9fa;
         border-radius: 8px;
-        border-left: 4px solid #007bff;
+        border: 1px solid #e5e7eb;
     }
 
     .filter-indicator {
@@ -2071,18 +2056,22 @@
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
-        color: white;
+        color: #374151;
+        background: #eef2f7;
+        border: 1px solid #e5e7eb;
         display: flex;
         align-items: center;
         gap: 4px;
     }
 
     .filter-badge.sector {
-        background: linear-gradient(135deg, #007bff, #0056b3);
+        background: #e5e7eb;
+        color: #374151;
     }
 
     .filter-badge.company-size {
-        background: linear-gradient(135deg, #28a745, #1e7e34);
+        background: #e5e7eb;
+        color: #374151;
     }
 
     .satisfaction-details {
@@ -2097,16 +2086,17 @@
 
     .chart-container {
         background: #fff;
-        padding: 32px 24px;
-        margin-bottom: 32px;
-        border-radius: 18px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-        border-top: 5px solid #007bff;
-        transition: box-shadow 0.3s, transform 0.3s;
+        padding: 24px 20px;
+        margin-bottom: 24px;
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        border: 1px solid #e5e7eb;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .chart-container:hover {
-        box-shadow: 0 16px 48px rgba(0,0,0,0.18);
-        transform: translateY(-4px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transform: translateY(-2px);
+        border-color: #d1d5db;
     }
 
     /* New Simple Chart CSS */
@@ -2264,9 +2254,9 @@
     }
 
     .chart-header h4 {
-        color: #333;
+        color: #0f172a;
         margin: 0;
-        font-size: 1.4rem;
+        font-size: 1.25rem;
         font-weight: 600;
     }
 
@@ -2284,9 +2274,9 @@
     }
 
     .interactive-bar-item:hover, .interactive-bar-item.hovered {
-        background: rgba(0,123,255,0.05);
-        border-color: #007bff;
-        transform: translateX(8px);
+        background: #f9fafb;
+        border-color: #e5e7eb;
+        transform: translateX(4px);
     }
 
     .bar-header {
@@ -2309,9 +2299,60 @@
         font-size: 1.2rem;
     }
 
+    /* Ensure SVG icons render at similar size as emojis */
+    .sector-icon img,
+    .sector-icon-large img,
+    .card-icon img {
+        width: 1.4em;
+        height: 1.4em;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+        /* Icon sizing utilities for PNGs */
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .inline-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            vertical-align: text-bottom;
+            margin-right: 6px;
+        }
+        .chip-icon-img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+        .trend-icon-img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            vertical-align: middle;
+        }
+        .card-icon-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            vertical-align: middle;
+        }
+        .no-data-img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            opacity: 0.7;
+        }
+
     .bar-value-display {
         font-weight: 700;
-        color: #007bff;
+        color: #111827;
         font-size: 1.1rem;
     }
 
@@ -2335,7 +2376,7 @@
 
     .completion-progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, #28a745, #20c997);
+        background: #64748b;
         border-radius: 6px;
         transition: width 0.8s ease;
     }
@@ -2350,7 +2391,7 @@
 
     .completion-fill {
         height: 100%;
-        background: linear-gradient(90deg, #28a745, #20c997);
+        background: #64748b;
         border-radius: 3px;
         transition: width 0.8s ease;
     }
@@ -2403,7 +2444,7 @@
     .sector-dropdown {
         margin-top: 16px;
         padding: 16px;
-        background: rgba(0,123,255,0.05);
+        background: #f9fafb;
         border-radius: 8px;
         animation: slideDown 0.3s ease;
     }
@@ -2422,7 +2463,7 @@
         display: block;
         font-size: 1.4rem;
         font-weight: 700;
-        color: #007bff;
+        color: #111827;
     }
 
     .mini-stat-label {
@@ -2628,7 +2669,8 @@
         position: relative;
         height: 350px;
         margin: 20px 0;
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        background: #fff;
+        border: 1px solid #e5e7eb;
         border-radius: 12px;
         padding: 24px;
         overflow: hidden;
@@ -2644,18 +2686,18 @@
     .point {
         width: 14px;
         height: 14px;
-        background: #007bff;
+        background: #374151;
         border: 3px solid white;
         border-radius: 50%;
         cursor: pointer;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-        transition: all 0.3s ease;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .point:hover, .point.selected {
-        transform: scale(1.4);
-        background: #28a745;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        transform: scale(1.2);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        background: #374151;
     }
 
     .chart-point.hovered .point {
@@ -2668,19 +2710,19 @@
         bottom: 130%;
         left: 50%;
         transform: translateX(-50%) scale(0.95);
-        background: linear-gradient(135deg, #007bff 60%, #28a745 100%);
+        background: #111827;
         color: #fff;
         padding: 16px 22px;
-        border-radius: 14px;
-        font-size: 1rem;
+        border-radius: 12px;
+        font-size: 0.95rem;
         font-weight: 500;
         white-space: nowrap;
         z-index: 20;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-        border: 2px solid #fff;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.08);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.25s, transform 0.25s;
+        transition: opacity 0.2s, transform 0.2s;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -2698,7 +2740,7 @@
         left: 50%;
         transform: translateX(-50%);
         border: 10px solid transparent;
-        border-top-color: #007bff;
+        border-top-color: #111827;
         filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
     }
 
@@ -2753,34 +2795,19 @@
     .enhanced-sector-card {
         background: white;
         padding: 24px;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-        border-left: 4px solid #007bff;
-        transition: all 0.4s ease;
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        border: 1px solid #e5e7eb;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         cursor: pointer;
         position: relative;
         overflow: hidden;
     }
 
-    .enhanced-sector-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, transparent, rgba(0,123,255,0.03));
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .enhanced-sector-card:hover::before, .enhanced-sector-card.selected::before {
-        opacity: 1;
-    }
-
     .enhanced-sector-card:hover, .enhanced-sector-card.selected {
-        transform: translateY(-8px);
-        box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border-color: #d1d5db;
     }
 
     .sector-card-header {
@@ -2887,9 +2914,9 @@
 
     .trend-item {
         padding: 12px;
-        background: rgba(0,123,255,0.05);
+        background: #f9fafb;
         border-radius: 8px;
-        border-left: 3px solid #007bff;
+        border: 1px solid #e5e7eb;
     }
 
     .trend-label {
@@ -2986,19 +3013,19 @@
     }
 
     .interactive-table th {
-        background: linear-gradient(135deg, #007bff, #0056b3);
-        color: white;
+        background: #f3f4f6;
+        color: #374151;
         padding: 16px 12px;
         text-align: left;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: background-color 0.2s ease;
         user-select: none;
         position: relative;
     }
 
     .interactive-table th:hover {
-        background: linear-gradient(135deg, #0056b3, #004085);
+        background: #e5e7eb;
     }
 
     .table-row {
@@ -3029,12 +3056,13 @@
     }
 
     .response-count {
-        background: #007bff;
-        color: white;
+        background: #e5e7eb;
+        color: #374151;
         padding: 4px 12px;
         border-radius: 12px;
         font-weight: 600;
         font-size: 0.9rem;
+        border: 1px solid #d1d5db;
     }
 
     .responses-table th, .responses-table td {
@@ -3047,7 +3075,7 @@
         color: #333;
         padding: 6px 12px;
         border-radius: 8px;
-        background: rgba(0,123,255,0.1);
+        background: #f3f4f6;
     }
 
     .loading-spinner {
@@ -3101,35 +3129,19 @@
     .navigation-card {
         background: white;
         padding: 24px;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         cursor: pointer;
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid #e5e7eb;
         position: relative;
         overflow: hidden;
     }
 
-    .navigation-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, transparent, rgba(0,123,255,0.02) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
     .navigation-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-        border-color: #007bff;
-    }
-
-    .navigation-card:hover::before {
-        opacity: 1;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border-color: #d1d5db;
     }
 
     .navigation-card .card-icon {
@@ -3160,7 +3172,7 @@
         display: block;
         font-size: 1.8rem;
         font-weight: 700;
-        color: #007bff;
+        color: #111827;
         margin-bottom: 4px;
     }
 
@@ -3180,7 +3192,7 @@
     .navigation-card .card-arrow {
         text-align: center;
         font-size: 2rem;
-        color: #007bff;
+        color: #6b7280;
         opacity: 0;
         transition: all 0.3s ease;
     }
@@ -3351,15 +3363,16 @@
         background: white;
         padding: 20px;
         border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         text-align: center;
-        transition: all 0.3s ease;
-        border-left: 4px solid #007bff;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid #e5e7eb;
     }
 
     .trend-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border-color: #d1d5db;
     }
 
     .trend-icon {
@@ -3371,7 +3384,7 @@
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 4px;
-        color: #007bff;
+        color: #111827;
     }
 
     .trend-value.positive {
@@ -3417,10 +3430,10 @@
     .line-chart-container {
         margin-top: 20px;
         position: relative;
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        background: #fff;
         border-radius: 12px;
         padding: 20px 20px 60px 20px; /* Extra bottom padding for rotated labels */
-        border: 1px solid #dee2e6;
+        border: 1px solid #e5e7eb;
     }
 
     .chart-grid {
@@ -3481,15 +3494,15 @@
         bottom: 0;
     }
 
-    .trend-area {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 0.2;
-        background: linear-gradient(to bottom, #007bff, transparent);
-        border-radius: 4px 4px 0 0;
+    .trend-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        text-align: center;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid #e5e7eb;
+    }
     }
 
     .trend-line {
@@ -4138,14 +4151,15 @@
         padding: 20px;
         border-radius: 12px;
         text-align: center;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        border-left: 4px solid #007bff;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid #e5e7eb;
     }
 
     .client-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border-color: #d1d5db;
     }
 
     .client-card.total-clients {
@@ -4372,7 +4386,8 @@
         background: white;
         padding: 24px;
         border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        border: 1px solid #e5e7eb;
     }
 
     .client-details-section h5 {
@@ -5338,14 +5353,14 @@
         };
     }
 
-    string GetSectorIcon(string sector)
+    Microsoft.AspNetCore.Components.MarkupString GetSectorIcon(string sector)
     {
         return sector switch
         {
-            "Health" => "🏥",
-            "Tech & Digitalization" => "💻",
-            "Energy" => "⚡",
-            _ => "🏢"
+            "Health" => new Microsoft.AspNetCore.Components.MarkupString("<img src=\"/images/healthcare.png\" alt=\"Health\" class=\"icon-svg\" />"),
+            "Tech & Digitalization" => new Microsoft.AspNetCore.Components.MarkupString("<img src=\"/images/technology.png\" alt=\"Tech\" class=\"icon-svg\" />"),
+            "Energy" => new Microsoft.AspNetCore.Components.MarkupString("<img src=\"/images/power.png\" alt=\"Energy\" class=\"icon-svg\" />"),
+            _ => new Microsoft.AspNetCore.Components.MarkupString("<img src=\"/images/customer-segment.png\" alt=\"Sector\" class=\"icon-svg\" />")
         };
     }
 
@@ -5419,7 +5434,7 @@
         return companySize switch
         {
             "Micro" => "🏪",
-            "SME" => "🏢",
+            "SME" => "<img src=\"/images/customer-segment.png\" alt=\"SME\" class=\"icon-svg\" />",
             "Large" => "🏭",
             _ => "👥"
         };
@@ -5982,14 +5997,14 @@
         StateHasChanged();
     }
 
-    string GetItemIcon(string itemKey)
+    Microsoft.AspNetCore.Components.MarkupString GetItemIcon(string itemKey)
     {
         if (itemKey.Contains(" - "))
         {
             var parts = itemKey.Split(" - ");
             if (parts.Length == 2)
             {
-                return "🏢🏭";
+                return new Microsoft.AspNetCore.Components.MarkupString("<img src=\"/images/customer-segment.png\" alt=\"Company\" class=\"icon-svg\" />");
             }
         }
         
@@ -6002,10 +6017,10 @@
         var companySizes = GetUniqueCompanySizes();
         if (companySizes.Contains(itemKey))
         {
-            return GetCompanySizeIcon(itemKey);
+            return new Microsoft.AspNetCore.Components.MarkupString(GetCompanySizeIcon(itemKey));
         }
         
-        return "📊";
+        return new Microsoft.AspNetCore.Components.MarkupString("📊");
     }
 
     string GetItemColor(string itemKey)

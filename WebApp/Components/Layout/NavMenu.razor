@@ -22,14 +22,14 @@
         <!-- Navigation Menu -->
         <div class="navbar-nav">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <i class="nav-icon">🏠</i>
+                <img class="nav-icon-img" src="/images/home.png" alt="Home" />
                 <span>Home</span>
             </NavLink>
 
             <AuthorizeView Policy="NotGuest">
                 <Authorized>
                     <NavLink class="nav-link" href="/survey-dashboard" Match="NavLinkMatch.All">
-                        <i class="nav-icon">📊</i>
+                        <img class="nav-icon-img" src="/images/dashboard.png" alt="Dashboard" />
                         <span>Dashboard</span>
                     </NavLink>
                 </Authorized>
@@ -38,12 +38,12 @@
             <AuthorizeView Policy="MustBeAdmin">
                 <Authorized>
                     <NavLink class="nav-link" href="survey-manager">
-                        <i class="nav-icon">📋</i>
+                        <img class="nav-icon-img" src="/images/Add.png" alt="Generate Survey" />
                         <span>Generate Survey</span>
                     </NavLink>
                     
                     <NavLink class="nav-link" href="survey-editor">
-                        <i class="nav-icon">✏️</i>
+                        <img class="nav-icon-img" src="/images/edit.png" alt="Manage" />
                         <span>Manage</span>
                     </NavLink>
                 </Authorized>
@@ -57,14 +57,14 @@
                     <div class="user-info">
                         <span class="user-greeting">Welcome back!</span>
                         <button class="action-btn logout-btn" @onclick="Logout" title="Logout">
-                            <i class="action-icon">🚪</i>
+                            <img class="action-icon-img" src="/images/logout.png" alt="Logout" />
                             <span>Logout</span>
                         </button>
                     </div>
                 </Authorized>
                 <NotAuthorized>
                     <button class="action-btn login-btn" @onclick="Login" title="Login">
-                        <i class="action-icon">🔑</i>
+                        <img class="action-icon-img" src="/images/enter.png" alt="Login" />
                         <span>Login</span>
                     </button>
                 </NotAuthorized>
@@ -81,7 +81,7 @@
     <div class="mobile-nav @(mobileMenuOpen ? "open" : "")">
         <div class="mobile-nav-item">
             <NavLink class="mobile-nav-link" href="" Match="NavLinkMatch.All" @onclick="CloseMobileMenu">
-                <i class="nav-icon">🏠</i>
+                <img class="nav-icon-img" src="/images/home.png" alt="Home" />
                 <span>Home</span>
             </NavLink>
         </div>
@@ -90,7 +90,7 @@
             <Authorized>
                 <div class="mobile-nav-item">
                     <NavLink class="mobile-nav-link" href="/survey-dashboard" Match="NavLinkMatch.All" @onclick="CloseMobileMenu">
-                        <i class="nav-icon">📊</i>
+                        <img class="nav-icon-img" src="/images/dashboard.png" alt="Dashboard" />
                         <span>Dashboard</span>
                     </NavLink>
                 </div>
@@ -101,7 +101,7 @@
             <Authorized>
                 <div class="mobile-nav-item">
                     <NavLink class="mobile-nav-link" href="surveyadmin" @onclick="CloseMobileMenu">
-                        <i class="nav-icon">⚙️</i>
+                        <img class="nav-icon-img" src="/images/edit.png" alt="Manage Data" />
                         <span>Manage Data</span>
                     </NavLink>
                 </div>
@@ -112,13 +112,13 @@
             <Authorized>
                 <div class="mobile-nav-item">
                     <NavLink class="mobile-nav-link" href="survey-manager" @onclick="CloseMobileMenu">
-                        <i class="nav-icon">📋</i>
+                        <img class="nav-icon-img" src="/images/Add.png" alt="Survey Manager" />
                         <span>Survey Manager</span>
                     </NavLink>
                 </div>
                 <div class="mobile-nav-item">
                     <NavLink class="mobile-nav-link" href="survey-editor" @onclick="CloseMobileMenu">
-                        <i class="nav-icon">✏️</i>
+                        <img class="nav-icon-img" src="/images/edit.png" alt="Survey Editor" />
                         <span>Survey Editor</span>
                     </NavLink>
                 </div>
@@ -131,7 +131,7 @@
             <Authorized>
                 <div class="mobile-nav-item">
                     <button class="mobile-action-btn logout-btn" @onclick="Logout">
-                        <i class="action-icon">🚪</i>
+                        <img class="action-icon-img" src="/images/logout.png" alt="Logout" />
                         <span>Logout</span>
                     </button>
                 </div>
@@ -139,7 +139,7 @@
             <NotAuthorized>
                 <div class="mobile-nav-item">
                     <button class="mobile-action-btn login-btn" @onclick="Login">
-                        <i class="action-icon">🔑</i>
+                        <img class="action-icon-img" src="/images/enter.png" alt="Login" />
                         <span>Login</span>
                     </button>
                 </div>
@@ -301,8 +301,10 @@
         border-color: rgba(255, 255, 255, 0.4);
     }
 
-    .nav-icon {
-        font-size: 1.1rem;
+    .nav-icon-img {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
     }
 
@@ -375,8 +377,10 @@
         box-shadow: 0 6px 20px rgba(253, 126, 20, 0.4);
     }
 
-    .action-icon {
-        font-size: 1rem;
+    .action-icon-img {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
     }
 

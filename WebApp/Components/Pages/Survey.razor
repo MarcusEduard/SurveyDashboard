@@ -5,7 +5,7 @@
 
 <div class="survey-page">
     <div class="survey-header">
-        <h1>Customer Satisfaction Survey</h1>
+        <h1>Evaluation Form</h1>
     </div>
     
     <div class="survey-container">
@@ -15,15 +15,15 @@
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p>Loading survey...</p>
+                <p>Loading form...</p>
             </div>
         }
     else if (success || (isExistingSurvey && newResponse.DateCompleted.HasValue))
     {
         <div class="success-message">
             <span>✅</span>
-            <h3>Survey Completed</h3>
-            <p>Thank you! This survey has been completed.</p>
+            <h3>Form Completed</h3>
+            <p>Thank you! This form has been completed.</p>
             @if (isExistingSurvey && newResponse.DateCompleted.HasValue)
             {
                 <p class="completion-info">Completed on: @newResponse.DateCompleted.Value.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture)</p>
@@ -59,7 +59,7 @@
         </div>
 
         <div class="form-group">
-            <label for="projectduration">Project Duration in hours (e.g. 150)</label>
+            <label for="projectduration">Project Duration in hours</label>
             <input id="projectduration" type="text" class="form-control" @bind="newResponse.ProjectDuration" 
                    placeholder="Enter duration..." 
                    disabled="@(isExistingSurvey)" />
@@ -266,7 +266,7 @@
         <button class="submit-btn"
                 @onclick="AddSurveyResponse"
                 disabled="@(!IsValid())">
-            Submit Response
+            Submit feedback
         </button>
 
         @if (success)
@@ -337,7 +337,7 @@
         border-radius: 8px;
         border: 1px solid #b0c4de;
         font-size: 1.1rem;
-        margin-top: 8px;
+        margin: 8px auto 0 auto;
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         transition: border-color 0.2s;
     }

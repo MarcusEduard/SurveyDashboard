@@ -8,23 +8,24 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 
-<div class="dashboard-footer">
-    <span>
-        Last updated: @(GetLastUpdatedDate()?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "No data")
-    </span>
-</div>
-
 <div class="dashboard-container">
-    <div class="dashboard-header">
-        <img src="/images/dk_logo.png" alt="Logo" class="dashboard-logo" />
-        <div class="dashboard-title-group">
-            <h2 class="dashboard-title">Survey Analytics Dashboard</h2>
-            <span class="dashboard-subtitle">Customer Satisfaction & Survey Insights</span>
-        </div>
-        <div class="dashboard-actions">
+    <div class="dashboard-top-bar">
+        <div class="dashboard-export-toolbar">
             <ExportToolbar Data="@surveyResponses" 
                           FileName="survey-dashboard-data" 
                           Title="Survey Analytics Dashboard Export" />
+        </div>
+        <div class="dashboard-footer">
+            <span>
+                Last updated: @(GetLastUpdatedDate()?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "No data")
+            </span>
+        </div>
+    </div>
+
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="page-title">Survey Analytics</h1>
+            <p class="page-subtitle">Client Satisfaction & Survey Insights</p>
         </div>
     </div>
     
@@ -54,7 +55,7 @@
             <div class="card clickable" @onclick='() => ScrollToSection("satisfaction")'>
                 <div class="card-icon"><img src="/images/satisfaction.png" alt="Average Satisfaction" /></div>
                 <h3 class="counter satisfaction-score" data-target="@Math.Round(avgSatisfaction, 1)">@Math.Round(avgSatisfaction, 1)</h3>
-                <p>Avg Overall Satisfaction</p>
+                <p>Avg Overall Satisfaction Score</p>
                 <div class="pro-sat-progress" style="margin-top: 12px;">
                     <div class="pro-sat-track">
                         <div class="pro-sat-goal-marker" title="Goal: 9.0"></div>
@@ -167,7 +168,7 @@
             <!-- Average Satisfaction by Sector -->
             <div class="chart-container" id="satisfaction">
                 <div class="chart-header">
-                    <h4><img class="section-icon" src="/images/rating.png" alt="Satisfaction Ratings" /> Satisfaction Ratings</h4>
+                    <h4><img class="section-icon" src="/images/rating.png" alt="Satisfaction Score" /> Satisfaction Score</h4>
                     <div class="filter-controls">
                         <div class="filter-section">
                             <label class="filter-label">Filter by Sector</label>
@@ -275,15 +276,15 @@
                         <img class="section-icon" src="/images/trend.png" alt="Satisfaction Trends" />
                         @if (trendTimeView == "monthly")
                         {
-                            <text>Monthly Satisfaction – @trendSelectedYear</text>
+                            <text>Monthly Overall Satisfaction Score – @trendSelectedYear</text>
                         }
                         else if (trendTimeView == "quarterly")
                         {
-                            <text>Quarterly Satisfaction – @trendSelectedYear</text>
+                            <text>Quarterly Overall Satisfaction Score – @trendSelectedYear</text>
                         }
                         else
                         {
-                            <text>Yearly Satisfaction Trends</text>
+                            <text>Yearly Overall Satisfaction Score</text>
                         }
                     </h4>
                     <div style="display: flex; gap: 12px; align-items: center;">
@@ -666,7 +667,7 @@
             <!-- Question Performance Chart -->
             <div class="chart-container">
                 <div class="chart-header">
-                    <h4><img class="section-icon" src="/images/customer-survey.png" alt="Question Performance" /> Question Performance</h4>
+                    <h4><img class="section-icon" src="/images/customer-survey.png" alt=" OverallQuestion Performance" />  Overall Question Performance</h4>
                 </div>
                 <div class="professional-question-performance">
                     @for (int q = 1; q <= 9; q++)
@@ -695,10 +696,10 @@
                 </div>
             </div>
 
-            <!-- Client Analytics Section -->
+            <!-- Client Insights Section -->
             <div class="chart-container" id="clients">
                 <div class="chart-header">
-                    <h4><img class="section-icon" src="/images/analysis.png" alt="Client Analytics" /> Client Analytics</h4>
+                    <h4><img class="section-icon" src="/images/analysis.png" alt="Client Insights" /> Client Insights</h4>
                     <div style="display: flex; gap: 15px; align-items: center;">
                         <select @bind="selectedClientYear" class="filter-dropdown" style="padding: 6px 10px; border: 1px solid #dee2e6; border-radius: 6px; background: white; font-size: 0.9em;">
                             <option value="all">All Years</option>
@@ -785,7 +786,7 @@
                                 <table class="client-table">
                                     <thead>
                                         <tr>
-                                            <th>Client Name</th>
+                                            <th>Client</th>
                                             <th>Type</th>
                                             <th>First Survey</th>
                                             <th>Latest Survey</th>
@@ -1430,11 +1431,10 @@
                         </div>
                         <div class="chat-title-text">
                             <h4>AI Assistant</h4>
-                            <p class="status-text">Ready to analyze your data</p>
                         </div>
                     </div>
                     <div class="chat-actions">
-                        <button class="clear-chat-btn" @onclick="ClearChatHistory" title="Clear chat history">
+                        <button class="clear-chat-btn" @onclick="ClearChatHistory" title="Clear chat">
                             <span class="icon"><img class="inline-icon" src="/images/trash.png" alt="Delete" /></span>
                         </button>
                     </div>
@@ -1451,7 +1451,7 @@
                                 </div>
                             </div>
                             <div class="welcome-content">
-                                <h5>Hello! I'm your TCH's AI Assistant</h5>
+                                <h5>Hello! I'm TCH's AI Assistant</h5>
                                 <p>I can help you analyze your survey data and provide insights. Here are some things you can ask me:</p>
                                 <div class="suggestion-chips">
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("Which sector has the lowest satisfaction?")'>
@@ -1552,7 +1552,7 @@
                                     <button class="send-button @(string.IsNullOrWhiteSpace(chatInput) ? "disabled" : "")" 
                                             @onclick="SendChatMessage" 
                                             disabled="@(isProcessingChat || string.IsNullOrWhiteSpace(chatInput))"
-                                            title="Send message">
+                                            title="Ask">
                                         @if (isProcessingChat)
                                         {
                                             <div class="spinner-small"></div>
@@ -1581,11 +1581,11 @@
                     <h3>
                         @if (currentNavigationLevel == "sectors")
                         {
-                            <span><img class="section-icon" src="/images/customer-segment.png" alt="Select Sector" /> Select Sector for Detailed Analysis</span>
+                            <span><img class="section-icon" src="/images/customer-segment.png" alt="Select Sector" /> Select sector to view responses</span>
                         }
                         else if (currentNavigationLevel == "customers")
                         {
-                            <span><img class="inline-icon" src="/images/workplace.png" alt="Customers" /> Customers in @selectedSector Sector</span>
+                            <span><img class="inline-icon" src="/images/workplace.png" alt="Clients" /> Clients in @selectedSector sector</span>
                         }
                         else if (currentNavigationLevel == "projects")
                         {
@@ -1593,7 +1593,7 @@
                         }
                         else if (currentNavigationLevel == "analysis")
                         {
-                            <span><img class="inline-icon" src="/images/analysis.png" alt="Detailed Analysis" /> Detailed Analysis: @selectedProject</span>
+                            <span><img class="inline-icon" src="/images/analysis.png" alt="Responses" /> Responses: @selectedProject</span>
                         }
                     </h3>
                     
@@ -1709,7 +1709,7 @@
                         <div class="analysis-header">
                             <div class="project-info">
                                 <h4>@selectedProject</h4>
-                                <p><strong>Customer:</strong> @selectedCustomer</p>
+                                <p><strong>Client:</strong> @selectedCustomer</p>
                                 <p><strong>Sector:</strong> @selectedSector</p>
                                 <p><strong>Total Responses:</strong> @analysisResponses.Count</p>
                                 @if (analysisResponses.Any())
@@ -1818,6 +1818,24 @@
         background: transparent;
     }
 
+    .dashboard-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-export-toolbar {
+        display: flex;
+        gap: 8px;
+    }
+
+    .dashboard-footer {
+        font-size: 0.95rem;
+        color: #888;
+        opacity: 0.7;
+    }
+
     .dashboard-container::before { display: none; }
 
     .dashboard-container h2 {
@@ -1830,48 +1848,48 @@
     }
 
     .dashboard-header {
-        display: flex;
-        align-items: center;
-        gap: 24px;
-        margin-bottom: 32px;
-        padding: 0 0 16px 0;
-        border-bottom: 2px solid #e9ecef;
-        background: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border-radius: 16px !important;
+        padding: 48px 40px !important;
+        margin-bottom: 32px !important;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.25) !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
-    .dashboard-logo {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        object-fit: contain;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-        background: #fff;
+    .dashboard-header::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+        opacity: 0.4 !important;
     }
-    .dashboard-title-group {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
+    .header-content {
+        position: relative !important;
+        z-index: 1 !important;
+        text-align: center !important;
+        width: 100% !important;
     }
-    .dashboard-title {
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: #212529;
-        margin: 0;
-        letter-spacing: 1px;
+    .page-title {
+        font-size: 2.8rem !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        margin: 0 0 12px 0 !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25) !important;
+        font-family: 'Poppins', sans-serif !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
     }
-    .dashboard-subtitle {
-        font-size: 1.1rem;
-        color: #007bff;
-        font-weight: 500;
-        opacity: 0.8;
-        margin-left: 2px;
-    }
-
-    .dashboard-footer {
-        text-align: right;
-        font-size: 0.95rem;
-        color: #888;
-        margin-top: 24px;
-        opacity: 0.7;
+    .page-subtitle {
+        font-size: 1.15rem !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+        margin: 0 !important;
+        font-weight: 400 !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
+        text-align: center !important;
     }
 
     .summary-cards {
@@ -4117,7 +4135,7 @@
         background: #f1f3f4;
         padding: 2px 6px;
         border-radius: 4px;
-        font-family: 'Courier New', monospace;
+        font-family: 'Poppins', sans-serif !important;
         font-size: 0.9rem;
     }
 

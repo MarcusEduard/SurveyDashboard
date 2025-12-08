@@ -1,14 +1,20 @@
 @page "/survey-manager"
 @attribute [Authorize(Policy = "MustBeAdmin")]
 @using WebAPI.Models
+@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Authorization
+@using WebApp.Components.Shared
 @inject HttpClient httpClient
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 
 <div class="survey-manager-container">
-    <h2>Survey Management</h2>
-    <p>Create and send surveys to customers, and track their responses.</p>
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">Generate Survey</h1>
+            <p class="page-subtitle">Create and send surveys to customers, and track their responses.</p>
+        </div>
+    </div>
 
     <!-- Create New Survey -->
     <div class="card mb-4">
@@ -18,7 +24,7 @@
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label">Customer Name *</label>
+                    <label class="form-label">Client Name *</label>
                     <input type="text" class="form-control" @bind="newSurvey.CustomerName" placeholder="Company Name" />
                 </div>
                 <div class="col-md-6">
@@ -27,7 +33,7 @@
                         <option value="">Select Sector</option>
                         <option value="Energy">Energy</option>
                         <option value="Health">Health</option>
-                        <option value="Tech">Tech</option>
+                        <option value="Tech & Digitalization">Tech & Digitalization</option>
                     </select>
                 </div>
                 <div class="col-md-6">
@@ -74,7 +80,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Survey ID</th>
-                                <th>Customer</th>
+                                <th>Client</th>
                                 <th>Project</th>
                                 <th>Sector</th>
                                 <th>Company Size</th>
@@ -90,8 +96,8 @@
                                     <td><code>@GetShortSurveyId(survey.SurveyId)</code></td>
                                     <td>@survey.CustomerName</td>
                                     <td>@survey.ProjectName</td>
-                                    <td><span class="badge bg-info">@survey.Sector</span></td>
-                                    <td><span class="badge bg-secondary">@(survey.CompanySize ?? "N/A")</span></td>
+                                    <td><span class="badge bg-info">@((MarkupString)GetSectorIcon(survey.Sector))@survey.Sector</span></td>
+                                    <td><span class="badge bg-secondary">@((MarkupString)GetCompanySizeIcon(survey.CompanySize))@(survey.CompanySize ?? "N/A")</span></td>
                                     <td>
                                         @if (editingId == survey.SurveyResponseId && editingField == "datesent")
                                         {
@@ -188,7 +194,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Survey ID</th>
-                                <th>Customer</th>
+                                <th>Client</th>
                                 <th>Project</th>
                                 <th>Completed</th>
                                 <th>Overall Score</th>
@@ -255,7 +261,7 @@
 @if (showLinkModal)
 {
     <div class="modal fade show" style="display: block;" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Survey Link Created</h5>
@@ -263,10 +269,10 @@
                 </div>
                 <div class="modal-body">
                     <p><strong>Survey created successfully!</strong></p>
-                    <p>Customer: <strong>@newSurvey.CustomerName</strong></p>
-                    <p>Project: <strong>@newSurvey.ProjectName</strong></p>
-                    <p>Sector: <strong>@newSurvey.Sector</strong></p>
-                    <p>Company Size: <strong>@newSurvey.CompanySize</strong></p>
+                    <p>Customer: <strong>@createdSurveyCustomer</strong></p>
+                    <p>Project: <strong>@createdSurveyProject</strong></p>
+                    <p>Sector: <strong>@createdSurveySector</strong></p>
+                    <p>Company Size: <strong>@createdSurveyCompanySize</strong></p>
                     
                     <div class="alert alert-info">
                         <strong>Survey Link:</strong>
@@ -320,6 +326,48 @@
         padding: 20px;
     }
 
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 16px;
+        padding: 48px 40px;
+        margin-bottom: 32px;
+        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.25);
+        position: relative;
+        overflow: hidden;
+    }
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.4;
+    }
+    .header-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+    .page-title {
+        font-size: 2.8rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin: 0 0 12px 0;
+        letter-spacing: 0.5px;
+        text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.3;
+    }
+    .page-subtitle {
+        font-size: 1.15rem;
+        color: rgba(255, 255, 255, 0.95);
+        margin: 0;
+        font-weight: 400;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
     .card {
         border: none;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -352,7 +400,7 @@
         background: #f1f3f4;
         padding: 2px 6px;
         border-radius: 4px;
-        font-family: 'Courier New', monospace;
+        font-family: 'Poppins', sans-serif !important;
     }
 
     .badge {
@@ -610,6 +658,10 @@
     bool showLinkModal = false;
     string currentSurveyLink = "";
     string createdSurveyId = "";
+    string createdSurveyCustomer = "";
+    string createdSurveyProject = "";
+    string createdSurveySector = "";
+    string createdSurveyCompanySize = "";
 
     bool showDeleteModal = false;
     SurveyResponse? surveyToDelete = null;
@@ -748,6 +800,12 @@
                 createdSurveyId = newSurvey.SurveyId;
                 currentSurveyLink = $"{Navigation.BaseUri}survey/{createdSurveyId}";
                 
+                // Store survey info before resetting
+                createdSurveyCustomer = newSurvey.CustomerName;
+                createdSurveyProject = newSurvey.ProjectName;
+                createdSurveySector = newSurvey.Sector;
+                createdSurveyCompanySize = newSurvey.CompanySize ?? "";
+                
                 showLinkModal = true;
                 
                 newSurvey = new SurveyResponse();
@@ -873,5 +931,27 @@
         {
             CancelEdit();
         }
+    }
+
+    string GetSectorIcon(string sector)
+    {
+        return sector switch
+        {
+            "Health" => "<img src='/images/healthcare.png' alt='Health' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "Tech & Digitalization" => "<img src='/images/technology.png' alt='Tech' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "Energy" => "<img src='/images/power.png' alt='Energy' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            _ => "<img src='/images/customer-segment.png' alt='Sector' style='width: 16px; height: 16px; margin-right: 4px;' />"
+        };
+    }
+
+    string GetCompanySizeIcon(string? companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "<img src='/images/building.png' alt='Micro' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "SME" => "<img src='/images/building(1).png' alt='SME' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "Large" => "<img src='/images/skyline.png' alt='Large' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            _ => ""
+        };
     }
 }

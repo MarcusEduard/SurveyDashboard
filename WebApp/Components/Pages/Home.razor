@@ -50,7 +50,7 @@
             </div>
             <h1>@GetWelcomeText(context)</h1>
             <div class="sub-message">
-                Get customer insights. See analytics, manage surveys, and track your impact.
+                Get client insights. See analytics, manage surveys, and track your impact.
             </div>
             <div class="quick-actions">
                 <button class="quick-action-btn" @onclick="GoToDashboard">
@@ -59,13 +59,13 @@
                 </button>
                 @if (IsAdmin(context))
                 {
-                    <button class="quick-action-btn" @onclick="GoToEditor">
-                        <img class="home-icon" src="/images/edit.png" alt="Survey Editor" />
-                        <span>Survey Editor</span>
-                    </button>
                     <button class="quick-action-btn" @onclick="GoToManager">
                         <img class="home-icon" src="/images/add.png" alt="Survey Manager" />
-                        <span>Survey Manager</span>
+                        <span>Generate Survey</span>
+                    </button>
+                    <button class="quick-action-btn" @onclick="GoToEditor">
+                        <img class="home-icon" src="/images/edit.png" alt="Survey Editor" />
+                        <span>Manage</span>
                     </button>
                 }
             </div>
@@ -96,105 +96,119 @@
 </AuthorizeView>
 
 <style>
+    body {
+        background: #f8f9fa !important;
+    }
     .home-hero {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         min-height: 65vh;
-        padding: 2rem;
+        padding: 3rem 2rem;
         background: #ffffff;
-        border-radius: 12px;
+        border-radius: 16px;
         border: 1px solid #e5e7eb;
-        box-shadow: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         max-width: 720px;
-        margin: 60px auto 0 auto;
+        margin: 80px auto 0 auto;
         position: relative;
         z-index: 2;
-        animation: fadeIn 0.4s ease;
+        animation: fadeIn 0.5s ease;
     }
     @@keyframes fadeIn {
-        from { opacity: 0; transform: translateY(30px);}
+        from { opacity: 0; transform: translateY(20px);}
         to { opacity: 1; transform: translateY(0);}
     }
     .hero-logo {
-        margin-bottom: 1rem;
-        width: 56px;
-        height: 56px;
+        margin-bottom: 1.5rem;
+        width: 80px;
+        height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .hero-logo img {
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
         object-fit: contain;
+        border-radius: 8px;
     }
     .home-hero h1 {
         font-size: 2rem;
-        font-weight: 700;
+        font-weight: 600;
         color: #111827;
-        margin-bottom: 0.5rem;
-        letter-spacing: 0.2px;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.5px;
         text-align: center;
+        font-family: 'Poppins', sans-serif !important;
     }
     .home-hero .sub-message {
-        font-size: 1rem;
+        font-size: 1.05rem;
         color: #6b7280;
-        margin-bottom: 1.25rem;
+        margin-bottom: 2rem;
         font-weight: 400;
         text-align: center;
-        max-width: 46rem;
+        max-width: 500px;
+        line-height: 1.6;
+        font-family: 'Poppins', sans-serif !important;
     }
     .home-hero .quick-actions {
         display: flex;
-        gap: 0.75rem;
-        margin-top: 0.75rem;
+        gap: 1rem;
+        margin-top: 1rem;
         flex-wrap: wrap;
         justify-content: center;
     }
     .quick-action-btn {
         background: #ffffff;
-        color: #111827;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 0.6rem 0.9rem;
-        font-size: 0.95rem;
+        color: #374151;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        padding: 12px 24px;
+        font-size: 1rem;
         font-weight: 500;
         cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease;
+        transition: all 0.2s ease;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
+        gap: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        font-family: 'Poppins', sans-serif !important;
     }
     .quick-action-btn:hover {
         background: #f9fafb;
-        color: #111827;
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .home-icon {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         object-fit: contain;
     }
     .home-hero .user-info {
-        margin-top: 1.25rem;
+        margin-top: 2rem;
         font-size: 0.95rem;
         color: #6b7280;
         background: #f9fafb;
         border: 1px solid #e5e7eb;
         border-radius: 8px;
-        padding: 0.5rem 0.75rem;
+        padding: 10px 16px;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 8px;
+        font-family: 'Poppins', sans-serif !important;
     }
     .home-hero .user-info .dot { color: #cbd5e1; }
     @@media (max-width: 700px) {
-        .home-hero { padding: 1rem; max-width: 94vw; }
-        .home-hero h1 { font-size: 1.5rem; }
-        .hero-logo { width: 40px; height: 40px; }
-        .hero-logo img { width: 36px; height: 36px; }
-        .quick-action-btn { font-size: 0.95rem; padding: 0.5rem 0.75rem; }
+        .home-hero { padding: 2rem 1.5rem; max-width: 94vw; margin-top: 40px; }
+        .home-hero h1 { font-size: 1.6rem; }
+        .hero-logo { width: 64px; height: 64px; }
+        .hero-logo img { width: 48px; height: 48px; }
+        .quick-action-btn { font-size: 0.95rem; padding: 10px 20px; }
     }
 </style>

@@ -8,23 +8,24 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime
 
-<div class="dashboard-footer">
-    <span>
-        Last updated: @(GetLastUpdatedDate()?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "No data")
-    </span>
-</div>
-
 <div class="dashboard-container">
-    <div class="dashboard-header">
-        <img src="/images/dk_logo.png" alt="Logo" class="dashboard-logo" />
-        <div class="dashboard-title-group">
-            <h2 class="dashboard-title">Survey Analytics Dashboard</h2>
-            <span class="dashboard-subtitle">Customer Satisfaction & Survey Insights</span>
-        </div>
-        <div class="dashboard-actions">
+    <div class="dashboard-top-bar">
+        <div class="dashboard-export-toolbar">
             <ExportToolbar Data="@surveyResponses" 
                           FileName="survey-dashboard-data" 
                           Title="Survey Analytics Dashboard Export" />
+        </div>
+        <div class="dashboard-footer">
+            <span>
+                Last updated: @(GetLastUpdatedDate()?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "No data")
+            </span>
+        </div>
+    </div>
+
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="page-title">Survey Analytics</h1>
+            <p class="page-subtitle">Client Satisfaction & Survey Insights</p>
         </div>
     </div>
     
@@ -54,10 +55,18 @@
             <div class="card clickable" @onclick='() => ScrollToSection("satisfaction")'>
                 <div class="card-icon"><img src="/images/satisfaction.png" alt="Average Satisfaction" /></div>
                 <h3 class="counter satisfaction-score" data-target="@Math.Round(avgSatisfaction, 1)">@Math.Round(avgSatisfaction, 1)</h3>
-                <p>Avg Overall Satisfaction</p>
-                <div class="satisfaction-bar" style="position: relative;">
-                    <div class="satisfaction-fill" style="width: @(avgSatisfaction * 10)%"></div>
-                    <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: 0; bottom: 0; width: 2px; background: #28a745; opacity: 0.7;"></div>
+                <p>Avg Overall Satisfaction Score</p>
+                <div class="pro-sat-progress" style="margin-top: 12px;">
+                    <div class="pro-sat-track">
+                        <div class="pro-sat-goal-marker" title="Goal: 9.0"></div>
+                        <div class="pro-sat-fill @(avgSatisfaction >= 8 ? "excellent" : avgSatisfaction >= 6 ? "good" : avgSatisfaction >= 4 ? "average" : "poor")" style="width: @((avgSatisfaction / 10.0 * 100.0).ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%;"></div>
+                    </div>
+                    <div class="pro-sat-scale">
+                        @for (int i = 0; i <= 10; i += 2)
+                        {
+                            <span class="scale-tick">@i</span>
+                        }
+                    </div>
                 </div>
             </div>
             <div class="card clickable" @onclick='() => ScrollToSection("clients")'>
@@ -70,9 +79,6 @@
 
         <!-- Sector Overview Charts -->
         <div class="charts-section">
-            <div class="section-header">
-                <h3><img class="section-icon" src="/images/customer-segment.png" alt="Completion By Sector" /> Completion By Sector</h3>
-            </div>
             
             <div class="chart-container" id="responses">
                 <div class="chart-header">
@@ -124,7 +130,7 @@
                                 @if (chartView == "completion")
                                 {
                                     <div class="completion-progress-bg">
-                                        <div class="completion-progress-fill" style="width: @(completionRate)%"></div>
+                                        <div class="completion-progress-fill" style="width: @(completionRate.ToString("F1", System.Globalization.CultureInfo.InvariantCulture))%"></div>
                                     </div>
                                 }
                                 else
@@ -162,7 +168,7 @@
             <!-- Average Satisfaction by Sector -->
             <div class="chart-container" id="satisfaction">
                 <div class="chart-header">
-                    <h4><img class="section-icon" src="/images/rating.png" alt="Satisfaction Ratings" /> Satisfaction Ratings</h4>
+                    <h4><img class="section-icon" src="/images/rating.png" alt="Satisfaction Score" /> Satisfaction Score</h4>
                     <div class="filter-controls">
                         <div class="filter-section">
                             <label class="filter-label">Filter by Sector</label>
@@ -223,27 +229,31 @@
                         var satisfactionClass = satisfaction >= 8 ? "excellent" : satisfaction >= 6 ? "good" : satisfaction >= 4 ? "average" : "poor";
                         Console.WriteLine($"Satisfaction item: {item.Key}, value={item.Value}, percentage={percentage:F2}");
                         
-                        <div class="satisfaction-card @satisfactionClass" @onclick="() => SelectItem(item.Key)">
-                            <div class="satisfaction-header">
-                                <span class="sector-icon">@GetItemIcon(item.Key)</span>
-                                <h5>@item.Key</h5>
-                                <div class="satisfaction-score-big">@Math.Round(item.Value, 1)</div>
+                        <div class="professional-satisfaction-card @satisfactionClass" @onclick="() => SelectItem(item.Key)">
+                            <div class="pro-sat-header">
+                                <div class="pro-sat-title">
+                                    <span class="pro-sat-icon">@GetItemIcon(item.Key)</span>
+                                    <h5>@item.Key</h5>
+                                </div>
+                                <div class="pro-sat-score-badge @satisfactionClass">
+                                    @Math.Round(item.Value, 1)
+                                </div>
                             </div>
-                            <div class="satisfaction-meter">
-                                    <div class="meter-track" style="position: relative;">
-                                        <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: -8px; bottom: -8px; width: 3px; background: #28a745; z-index: 10; box-shadow: 0 0 8px rgba(40, 167, 69, 0.6);"></div>
-                                        <div class="meter-fill" style="width: @(percentage.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%; background: @GetItemColor(item.Key);"></div>
-                                    </div>
-                                <div class="meter-labels">
+                            <div class="pro-sat-progress">
+                                <div class="pro-sat-track">
+                                    <div class="pro-sat-goal-marker" title="Goal: 9.0"></div>
+                                    <div class="pro-sat-fill @satisfactionClass" style="width: @(percentage.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%;"></div>
+                                </div>
+                                <div class="pro-sat-scale">
                                     @for (int i = 0; i <= 10; i += 2)
                                     {
-                                        <span class="meter-label">@i</span>
+                                        <span class="scale-tick">@i</span>
                                     }
                                 </div>
                             </div>
-                            <div class="satisfaction-emotion">@GetSatisfactionEmoji(satisfaction)</div>
-                            <div class="satisfaction-details">
-                                <small>@GetFilteredResponseCount(item.Key) responses</small>
+                            <div class="pro-sat-footer">
+                                <span class="pro-sat-category @satisfactionClass">@GetSatisfactionEmoji(satisfaction) @GetQuestionCategory(satisfaction)</span>
+                                <span class="pro-sat-responses">@GetFilteredResponseCount(item.Key) responses</span>
                             </div>
                         </div>
                     }
@@ -259,226 +269,272 @@
                 </div>
             </div>
 
-            <!-- Satisfaction Trends Over Time -->
+            <!-- Satisfaction Score – Monthly Line Chart (Clean, Professional) -->
             <div class="chart-container" id="trends">
                 <div class="chart-header">
-                    <h4><img class="section-icon" src="/images/trend.png" alt="Satisfaction Trends Over Time" /> Satisfaction Trends Over Time</h4>
-                    <div class="chart-controls">
-                        <div class="control-group">
-                            <button class="view-btn @(trendsView == "monthly" ? "active" : "")" @onclick='() => SetTrendsView("monthly")'>Monthly</button>
-                            <button class="view-btn @(trendsView == "quarterly" ? "active" : "")" @onclick='() => SetTrendsView("quarterly")'>Quarterly</button>
-                            <button class="view-btn @(trendsView == "yearly" ? "active" : "")" @onclick='() => SetTrendsView("yearly")'>Yearly</button>
-                        </div>
-                        <div class="control-group">
-                            <label class="year-filter-label">Year:</label>
-                            <select @bind="selectedTrendsYear" @bind:after="OnTrendsYearChanged" class="year-filter-dropdown">
-                                <option value="all">All Years</option>
-                                @foreach (var year in GetAvailableYears().OrderByDescending(y => y))
-                                {
-                                    <option value="@year">@year</option>
-                                }
+                    <h4>
+                        <img class="section-icon" src="/images/trend.png" alt="Satisfaction Trends" />
+                        @if (trendTimeView == "monthly")
+                        {
+                            <text>Monthly Overall Satisfaction Score – @trendSelectedYear</text>
+                        }
+                        else if (trendTimeView == "quarterly")
+                        {
+                            <text>Quarterly Overall Satisfaction Score – @trendSelectedYear</text>
+                        }
+                        else
+                        {
+                            <text>Yearly Overall Satisfaction Score</text>
+                        }
+                    </h4>
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        @if (trendTimeView == "monthly" || trendTimeView == "quarterly")
+                        {
+                            <div class="filter-section">
+                                <select class="filter-dropdown" @bind="trendSelectedYear">
+                                    @foreach (var year in GetAvailableYears())
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        <div class="filter-section">
+                            <select class="filter-dropdown" @bind="trendTimeView">
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                                <option value="yearly">Yearly</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                
 
-                
-                @if (GetTrendData().Any())
+                @{
+                    var chartYear = trendSelectedYear;
+                    List<TrendDataPoint> periodData = new List<TrendDataPoint>();
+                    int periodsCount = 12;
+                    
+                    if (trendTimeView == "monthly")
+                    {
+                        periodsCount = 12;
+                        var monthlyResponses = surveyResponses
+                            .Where(r => r.DateCompleted.HasValue && r.DateCompleted.Value.Year == chartYear)
+                            .ToList();
+                        
+                        var monthlyGroups = monthlyResponses
+                            .GroupBy(r => r.DateCompleted!.Value.Month)
+                            .ToDictionary(g => g.Key, g => g.ToList());
+                        
+                        for (int m = 1; m <= 12; m++)
+                        {
+                            if (monthlyGroups.ContainsKey(m))
+                            {
+                                var monthResponses = monthlyGroups[m];
+                                var avgScore = monthResponses.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0);
+                                periodData.Add(new TrendDataPoint
+                                {
+                                    Score = avgScore,
+                                    Period = $"{GetMonthName(m)} {chartYear}",
+                                    ShortPeriod = new DateTime(chartYear, m, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture),
+                                    Date = new DateTime(chartYear, m, 1),
+                                    ResponseCount = monthResponses.Count
+                                });
+                            }
+                            else
+                            {
+                                periodData.Add(new TrendDataPoint
+                                {
+                                    Score = 0,
+                                    Period = $"{GetMonthName(m)} {chartYear}",
+                                    ShortPeriod = new DateTime(chartYear, m, 1).ToString("MMM", System.Globalization.CultureInfo.InvariantCulture),
+                                    Date = new DateTime(chartYear, m, 1),
+                                    ResponseCount = 0
+                                });
+                            }
+                        }
+                    }
+                    else if (trendTimeView == "quarterly")
+                    {
+                        periodsCount = 4;
+                        var quarterlyResponses = surveyResponses
+                            .Where(r => r.DateCompleted.HasValue && r.DateCompleted.Value.Year == chartYear)
+                            .ToList();
+                        
+                        for (int q = 1; q <= 4; q++)
+                        {
+                            var quarterMonths = new[] { (q-1)*3+1, (q-1)*3+2, (q-1)*3+3 };
+                            var quarterData = quarterlyResponses
+                                .Where(r => quarterMonths.Contains(r.DateCompleted!.Value.Month))
+                                .ToList();
+                            
+                            var avgScore = quarterData.Any() 
+                                ? quarterData.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0) 
+                                : 0;
+                            
+                            periodData.Add(new TrendDataPoint
+                            {
+                                Score = avgScore,
+                                Period = $"Q{q} {chartYear}",
+                                ShortPeriod = $"Q{q}",
+                                Date = new DateTime(chartYear, quarterMonths[0], 1),
+                                ResponseCount = quarterData.Count
+                            });
+                        }
+                    }
+                    else // yearly
+                    {
+                        periodsCount = 5;
+                        var allResponses = surveyResponses.Where(r => r.DateCompleted.HasValue).ToList();
+                        for (int y = 0; y < 5; y++)
+                        {
+                            var year = DateTime.Now.Year - (4 - y);
+                            var yearResponses = allResponses.Where(r => r.DateCompleted.Value.Year == year).ToList();
+                            var avgScore = yearResponses.Any() ? yearResponses.Average(r => (r.Question1 + r.Question2 + r.Question3 + r.Question4 + r.Question5 + r.Question6 + r.Question7 + r.Question8 + r.Question9) / 9.0) : 0;
+                            
+                            periodData.Add(new TrendDataPoint
+                            {
+                                Score = avgScore,
+                                Period = year.ToString(),
+                                ShortPeriod = year.ToString(),
+                                Date = new DateTime(year, 1, 1),
+                                ResponseCount = yearResponses.Count
+                            });
+                        }
+                    }
+                }
+
+                @if (periodData.Any())
                 {
-                    <div class="trends-container">
-                        <!-- Trend Summary Cards -->
-                        <div class="trend-summary-cards">
-                            <div class="trend-card">
-                                <div class="trend-icon"><img src="/images/graph.png" alt="Trend" class="trend-icon-img" /></div>
-                                <div class="trend-value @(GetTrendDirection() == "up" ? "positive" : GetTrendDirection() == "down" ? "negative" : "neutral")">
-                                    @GetTrendPercentage()%
+                    var dataWithScores = periodData.Where(p => p.Score > 0).ToList();
+                    var latestData = dataWithScores.LastOrDefault();
+                    var previousData = dataWithScores.Count > 1 ? dataWithScores[dataWithScores.Count - 2] : null;
+                    var trendPercent = 0.0;
+                    var trendDirection = "";
+                    
+                    if (latestData != null && previousData != null && previousData.Score > 0)
+                    {
+                        trendPercent = ((latestData.Score - previousData.Score) / previousData.Score) * 100;
+                        trendDirection = trendPercent >= 0 ? "up" : "down";
+                    }
+                    
+                    var highestScore = dataWithScores.Any() ? dataWithScores.Max(p => p.Score) : 0;
+                    var lowestScore = dataWithScores.Any() ? dataWithScores.Min(p => p.Score) : 0;
+
+                    <!-- Info boxes -->
+                    <div class="trend-info-boxes">
+                        <div class="trend-info-box">
+                            <div class="trend-info-icon trend-icon">
+                                @if (trendDirection == "up")
+                                {
+                                    <span style="color: #28a745;">▲</span>
+                                }
+                                else if (trendDirection == "down")
+                                {
+                                    <span style="color: #dc3545;">▼</span>
+                                }
+                                else
+                                {
+                                    <span style="color: #6c757d;">━</span>
+                                }
+                            </div>
+                            <div class="trend-info-content">
+                                <div class="trend-info-label">Trend</div>
+                                <div class="trend-info-value @(trendDirection == "up" ? "positive" : trendDirection == "down" ? "negative" : "neutral")">
+                                    @if (trendPercent != 0)
+                                    {
+                                        <text>@(trendPercent > 0 ? "+" : "")@trendPercent.ToString("F1")%</text>
+                                    }
+                                    else
+                                    {
+                                        <text>No change</text>
+                                    }
                                 </div>
-                                <div class="trend-label">@GetTrendDirection().ToUpper() trend</div>
-                                <div class="trend-period">Last @trendsView</div>
-                            </div>
-                            
-                            <div class="trend-card">
-                                <div class="trend-icon"><img src="/images/best-seller.png" alt="Highest Score" class="trend-icon-img" /></div>
-                                <div class="trend-value">@GetHighestPeriod().Score.ToString("F1")</div>
-                                <div class="trend-label">Highest Score</div>
-                                <div class="trend-period">@GetHighestPeriod().Period</div>
-                            </div>
-                            
-                            <div class="trend-card">
-                                <div class="trend-icon"><img src="/images/vote.png" alt="Lowest Score" class="trend-icon-img" /></div>
-                                <div class="trend-value">@GetLowestPeriod().Score.ToString("F1")</div>
-                                <div class="trend-label">Lowest Score</div>
-                                <div class="trend-period">@GetLowestPeriod().Period</div>
-                            </div>
-                            
-                            <div class="trend-card">
-                                <div class="trend-icon"><img src="/images/statistic-business.png" alt="Data Points" class="trend-icon-img" /></div>
-                                <div class="trend-value">@GetTrendData().Count()</div>
-                                <div class="trend-label">Data Points</div>
-                                <div class="trend-period">@trendsView periods</div>
                             </div>
                         </div>
 
-                        <!-- Interactive Trend Chart -->
-                        <div class="trend-chart-container">
-                            <div class="visual-trend-chart">
-                                @{
-                                    var trendData = GetTrendData().ToList();
-                                }
-                                
-                                @{
-                                    // Get all trend data based on selected view and year
-                                    var chartYear = selectedTrendsYear != "all" && int.TryParse(selectedTrendsYear, out int year) ? year : DateTime.Now.Year;
-                                    var allTrendData = GetTrendData().ToList();
-                                    
-                                    // Filter by year if a specific year is selected (except for yearly view - always show all years)
-                                    List<TrendDataPoint> displayData;
-                                    if (trendsView == "yearly")
-                                    {
-                                        // For yearly view, always show all years regardless of year filter
-                                        displayData = allTrendData;
-                                    }
-                                    else if (selectedTrendsYear != "all")
-                                    {
-                                        displayData = allTrendData.Where(t => t.Date.Year == chartYear).ToList();
-                                    }
-                                    else
-                                    {
-                                        displayData = allTrendData;
-                                    }
-                                    
-                                    // For monthly view with specific year, generate all 12 months
-                                    var allMonths = new List<TrendDataPoint>();
-                                    if (trendsView == "monthly" && selectedTrendsYear != "all")
-                                    {
-                                        for (int month = 1; month <= 12; month++)
+                        <div class="trend-info-box">
+                            <div class="trend-info-icon highest-icon">
+                                <img src="/images/best-seller.png" alt="Highest Score" style="width: 28px; height: 28px;" />
+                            </div>
+                            <div class="trend-info-content">
+                                <div class="trend-info-label">Highest Score</div>
+                                <div class="trend-info-value">@highestScore.ToString("F1")</div>
+                            </div>
+                        </div>
+
+                        <div class="trend-info-box">
+                            <div class="trend-info-icon lowest-icon">
+                                <img src="/images/negative-vote.png" alt="Lowest Score" style="width: 28px; height: 28px;" />
+                            </div>
+                            <div class="trend-info-content">
+                                <div class="trend-info-label">Lowest Score</div>
+                                <div class="trend-info-value">@lowestScore.ToString("F1")</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pro-chart">
+                        <!-- Left Y-axis labels -->
+                        <div class="pro-y-axis">
+                            @for (int i = 10; i >= 0; i -= 2)
+                            {
+                                <div class="pro-y-tick" style="bottom: @(i * 10)%">@i</div>
+                            }
+                        </div>
+
+                        <!-- Chart area grid and bars -->
+                        <div class="pro-chart-area">
+                            @for (int i = 0; i <= 10; i += 2)
+                            {
+                                <div class="pro-grid" style="bottom: @(i * 10)%"></div>
+                            }
+                            <div class="pro-x-baseline"></div>
+
+                            <div class="pro-bars">
+                                @for (int i = 0; i < periodData.Count; i++)
+                                {
+                                    var dp = periodData[i];
+                                    var leftPct = (i * 100.0 / periodsCount) + (100.0 / (periodsCount * 2));
+                                    var heightPct = dp.Score * 10.0;
+                                    var hasData = dp.Score > 0;
+                                    <div class="pro-bar-slot" style="left:@(leftPct.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%">
+                                        @if (hasData)
                                         {
-                                            var monthData = displayData.FirstOrDefault(d => d.Date.Month == month);
-                                            if (monthData != null)
-                                            {
-                                                allMonths.Add(monthData);
-                                            }
-                                            else
-                                            {
-                                                // Add empty month
-                                                allMonths.Add(new TrendDataPoint
-                                                {
-                                                    Score = 0,
-                                                    Period = $"{GetMonthName(month)} {chartYear}",
-                                                    ShortPeriod = $"{GetMonthName(month).Substring(0, 3)} '{chartYear.ToString().Substring(2)}",
-                                                    Date = new DateTime(chartYear, month, 1),
-                                                    ResponseCount = 0
-                                                });
-                                            }
+                                            <div class="pro-bar" style="height:@(heightPct.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%">
+                                                <span class="pro-bar-value">@dp.Score.ToString("F1")</span>
+                                            </div>
                                         }
-                                    }
-                                    else
-                                    {
-                                        // For quarterly/yearly or "all years", just use the filtered data
-                                        allMonths = displayData;
-                                    }
-                                }
-
-                                @if (allMonths.Any())
-                                {
-                                    <div class="new-chart-header">
-                                        <h3><img class="section-icon" src="/images/trend.png" alt="Satisfaction Score Over Time" /> Satisfaction Score Over Time @(trendsView == "yearly" ? "" : $"- {chartYear}")</h3>
-                                        <p>Scale: 0 - 10 | @(trendsView == "monthly" && selectedTrendsYear != "all" ? "All 12 months shown" : trendsView == "quarterly" ? "Quarterly averages" : "Yearly averages")</p>
-
-                                    </div>
-                                    
-                                    <!-- New Simple Chart -->
-                                    <div class="new-chart-container">
-                                        <!-- Y-axis -->
-                                        <div class="new-y-axis">
-                                            @for (int i = 10; i >= 0; i -= 2)
-                                            {
-                                                <div class="y-tick" style="bottom: @(i * 10)%;">@i</div>
-                                            }
-                                        </div>
-                                        
-                                        <!-- Chart area -->
-                                        <div class="new-chart-area">
-                                            <!-- Grid lines -->
-                                            @for (int i = 0; i <= 10; i += 2)
-                                            {
-                                                <div class="grid-line" style="bottom: @(i * 10)%;"></div>
-                                            }
-                                            
-                                            <!-- Data columns (months/quarters/years) -->
-                                            @for (int i = 0; i < allMonths.Count; i++)
-                                            {
-                                                var dataPoint = allMonths[i];
-                                                var hasData = dataPoint.ResponseCount > 0;
-                                                var barHeight = hasData ? (dataPoint.Score / 10.0) * 100 : 0; // Percentage height
-                                                var barColor = hasData ? GetBarColor(dataPoint.Score) : "#f8f9fa";
-                                                
-                                                <div class="month-column">
-                                                    @if (hasData)
-                                                    {
-                                                        <div class="data-bar" style="height: @barHeight%; background-color: @barColor;">
-                                                            <div class="bar-value">@dataPoint.Score.ToString("F1")</div>
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="no-data-indicator">
-                                                            <span>-</span>
-                                                        </div>
-                                                    }
-                                                    <div class="month-label">@dataPoint.ShortPeriod</div>
-                                                </div>
-                                            }
-                                        </div>
-                                        
-
+                                        else
+                                        {
+                                            <div class="no-data-text">No data</div>
+                                        }
                                     </div>
                                 }
                             </div>
-                            
-                            <!-- Trend Insights -->
-                            <div class="trend-insights">
-                                <div class="insight-item">
-                                    <strong>Trend Analysis:</strong>
-                                    @if (isLoadingTrendInsights)
-                                    {
-                                        <span class="loading-text">🤖 AI is analyzing trends...</span>
-                                    }
-                                    else
-                                    {
-                                        <span>@(aiTrendAnalysis ?? "Loading AI analysis...")</span>
-                                    }
+                        </div>
+
+                        <!-- Bottom X-axis labels -->
+                        <div class="pro-x-axis">
+                            @for (int i = 0; i < periodData.Count; i++)
+                            {
+                                var dp = periodData[i];
+                                var leftPct = (i * 100.0 / periodsCount) + (100.0 / (periodsCount * 2));
+                                <div class="pro-x-label" style="left:@(leftPct.ToString("F2", System.Globalization.CultureInfo.InvariantCulture))%">
+                                    @dp.ShortPeriod
                                 </div>
-                                @if (GetRecurringChallenges().Any())
-                                {
-                                    <div class="insight-item">
-                                        <strong>Recurring Challenges:</strong>
-                                        <span>@string.Join(", ", GetRecurringChallenges())</span>
-                                    </div>
-                                }
-                                <div class="insight-item">
-                                    <strong>Service Quality:</strong>
-                                    @if (isLoadingTrendInsights)
-                                    {
-                                        <span class="loading-text">🤖 AI is analyzing service quality...</span>
-                                    }
-                                    else
-                                    {
-                                        <span>@(aiServiceQualityInsight ?? "Loading AI analysis...")</span>
-                                    }
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 }
                 else
                 {
                     <div class="no-trend-data">
-                        <p>📊 No trend data available yet. Complete more surveys to see satisfaction trends over time!</p>
+                        <p><img class="inline-icon" src="/images/graph.png" alt="No data" /> No monthly trend data available for @DateTime.Now.Year.</p>
                     </div>
                 }
             </div>
+
+            
 
             <!-- AI Predictions Section -->
             <div class="chart-container">
@@ -610,44 +666,40 @@
 
             <!-- Question Performance Chart -->
             <div class="chart-container">
-                <h4><img class="section-icon" src="/images/customer-survey.png" alt="Question Performance" /> Question Performance</h4>
-                <div class="question-performance">
-                    <div class="question-bars">
-                        @for (int q = 1; q <= 9; q++)
-                        {
-                            var avg = GetQuestionAverage(q);
-                            var height = avg / 10 * 100;
-                            var questionClass = avg >= 8 ? "excellent" : avg >= 6 ? "good" : avg >= 4 ? "average" : "poor";
+                <div class="chart-header">
+                    <h4><img class="section-icon" src="/images/customer-survey.png" alt=" OverallQuestion Performance" />  Overall Question Performance</h4>
+                </div>
+                <div class="professional-question-performance">
+                    @for (int q = 1; q <= 9; q++)
+                    {
+                        var avg = GetQuestionAverage(q);
+                        var percentage = (avg / 10.0) * 100.0;
+                        var questionClass = avg >= 8 ? "excellent" : avg >= 6 ? "good" : avg >= 4 ? "average" : "poor";
+                        var barColor = avg >= 8 ? "#28a745" : avg >= 6 ? "#17a2b8" : avg >= 4 ? "#ffc107" : "#dc3545";
+                        var isSelected = selectedQuestion == q;
 
-                            <div class="question-bar-item @(selectedQuestion == q ? "selected" : "")"
-                                 @onclick="() => ToggleQuestion(q)">
-                                <div class="question-bar @questionClass" style="height: @(height)%">
-                                    <div class="bar-value">@Math.Round(avg, 1)</div>
-                                </div>
-                                <div class="question-label">Q@(q)</div>
-                                <div class="question-tooltip">
-                                    @GetQuestionText(q)
-                                </div>
-                                @if (selectedQuestion == q)
-                                {
-                                    <div class="question-tooltip" style="top:-80px;">
-                                        <strong>@GetQuestionText(q)</strong>
-                                        <div class="tooltip-stats">
-                                            <span>Average: @Math.Round(avg, 1)/10</span>
-                                            <span>@GetQuestionCategory(avg)</span>
-                                        </div>
-                                    </div>
-                                }
+                        <div class="pro-question-item @(isSelected ? "selected" : "")" @onclick="() => ToggleQuestion(q)">
+                            <div class="pro-question-header">
+                                <div class="pro-question-number">Q@(q)</div>
+                                <div class="pro-question-score" style="color: @barColor;">@avg.ToString("F1")</div>
                             </div>
-                        }
-                    </div>
+                            <div class="pro-question-title">@GetQuestionText(q)</div>
+                            <div class="pro-progress-container">
+                                <div class="pro-progress-bar" style="width: @percentage.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)%; background: @barColor;"></div>
+                            </div>
+                            <div class="pro-question-meta">
+                                <span class="pro-question-category @questionClass">@GetQuestionCategory(avg)</span>
+                                <span class="pro-question-percentage">@percentage.ToString("F0")%</span>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
 
-            <!-- Client Analytics Section -->
+            <!-- Client Insights Section -->
             <div class="chart-container" id="clients">
                 <div class="chart-header">
-                    <h4><img class="section-icon" src="/images/analysis.png" alt="Client Analytics" /> Client Analytics</h4>
+                    <h4><img class="section-icon" src="/images/analysis.png" alt="Client Insights" /> Client Insights</h4>
                     <div style="display: flex; gap: 15px; align-items: center;">
                         <select @bind="selectedClientYear" class="filter-dropdown" style="padding: 6px 10px; border: 1px solid #dee2e6; border-radius: 6px; background: white; font-size: 0.9em;">
                             <option value="all">All Years</option>
@@ -721,7 +773,7 @@
 
                         <!-- Client Details Table -->
                         <div class="client-details-section">
-                            <h5>📋 Client Details</h5>
+                            <h5><img class="inline-icon" src="/images/file.png" alt="Client Details" /> Client Details</h5>
                             <div class="client-filters">
                                 <select @bind="selectedClientFilter" class="filter-dropdown">
                                     <option value="all">All Clients</option>
@@ -734,7 +786,7 @@
                                 <table class="client-table">
                                     <thead>
                                         <tr>
-                                            <th>Client Name</th>
+                                            <th>Client</th>
                                             <th>Type</th>
                                             <th>First Survey</th>
                                             <th>Latest Survey</th>
@@ -791,10 +843,12 @@
                 
                 <style>
                     .ai-chat-section {
-                        background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-                        border: 1px solid #e2e8f0;
+                        background: #ffffff;
+                        border: 2px solid #e5e7eb;
+                        border-radius: 20px;
                         position: relative;
                         overflow: hidden;
+                        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
                     }
 
                     .ai-chat-section::before {
@@ -803,19 +857,20 @@
                         top: 0;
                         left: 0;
                         right: 0;
-                        height: 4px;
-                        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+                        height: 3px;
+                        background: linear-gradient(90deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
                     }
 
                     .chat-header-modern {
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
-                        padding: 20px 24px;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        padding: 24px 28px;
+                        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
                         color: white;
                         margin: -24px -24px 24px -24px;
-                        border-radius: 16px 16px 0 0;
+                        border-radius: 18px 18px 0 0;
+                        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
                     }
 
                     .chat-title-area {
@@ -829,23 +884,24 @@
                     }
 
                     .avatar-circle {
-                        width: 50px;
-                        height: 50px;
-                        background: rgba(255, 255, 255, 0.2);
+                        width: 52px;
+                        height: 52px;
+                        background: rgba(255, 255, 255, 0.25);
                         border-radius: 50%;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        backdrop-filter: blur(10px);
-                        border: 2px solid rgba(255, 255, 255, 0.3);
+                        backdrop-filter: blur(12px);
+                        border: 2.5px solid rgba(255, 255, 255, 0.4);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                     }
 
                     .ai-icon {
-                        font-size: 24px; /* legacy text fallback */
+                        font-size: 26px; /* legacy text fallback */
                     }
                     .ai-icon-img {
-                        width: 24px;
-                        height: 24px;
+                        width: 26px;
+                        height: 26px;
                         object-fit: contain;
                         display: inline-block;
                     }
@@ -854,10 +910,11 @@
                         position: absolute;
                         bottom: 2px;
                         right: 2px;
-                        width: 12px;
-                        height: 12px;
+                        width: 14px;
+                        height: 14px;
                         border-radius: 50%;
-                        border: 2px solid white;
+                        border: 2.5px solid white;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     }
 
                     .status-indicator.online {
@@ -872,35 +929,41 @@
 
                     .chat-title-text h4 {
                         margin: 0;
-                        font-size: 1.2rem;
-                        font-weight: 600;
+                        font-size: 1.3rem;
+                        font-weight: 700;
+                        letter-spacing: -0.02em;
                     }
 
                     .status-text {
                         margin: 0;
-                        font-size: 0.9rem;
-                        opacity: 0.9;
+                        font-size: 0.875rem;
+                        opacity: 0.95;
+                        font-weight: 500;
                     }
 
                     .chat-actions {
                         display: flex;
-                        gap: 12px;
+                        gap: 10px;
                     }
 
                     .clear-chat-btn {
-                        background: rgba(255, 255, 255, 0.2);
+                        background: rgba(255, 255, 255, 0.25);
                         color: white;
-                        border: none;
-                        border-radius: 8px;
-                        padding: 8px 12px;
+                        border: 1.5px solid rgba(255, 255, 255, 0.3);
+                        border-radius: 10px;
+                        padding: 10px 16px;
                         cursor: pointer;
-                        transition: all 0.2s ease;
-                        backdrop-filter: blur(10px);
+                        transition: all 0.25s ease;
+                        backdrop-filter: blur(12px);
+                        font-weight: 600;
+                        font-size: 0.9rem;
                     }
 
                     .clear-chat-btn:hover {
-                        background: rgba(255, 255, 255, 0.3);
-                        transform: translateY(-1px);
+                        background: rgba(255, 255, 255, 0.35);
+                        border-color: rgba(255, 255, 255, 0.5);
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                     }
 
                     .enhanced-chat-container {
@@ -913,10 +976,11 @@
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        padding: 40px 20px;
+                        padding: 48px 24px;
                         text-align: center;
                         flex: 1;
                         justify-content: center;
+                        background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
                     }
 
                     .welcome-avatar {
@@ -924,41 +988,44 @@
                     }
 
                     .welcome-circle {
-                        width: 80px;
-                        height: 80px;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        width: 90px;
+                        height: 90px;
+                        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
                         border-radius: 50%;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         margin: 0 auto;
-                        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+                        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.35);
+                        border: 3px solid rgba(255, 255, 255, 0.9);
                     }
 
                     .welcome-ai-icon {
-                        font-size: 40px; /* legacy text fallback */
+                        font-size: 44px; /* legacy text fallback */
                         color: white;
                     }
                     .welcome-ai-icon-img {
-                        width: 40px;
-                        height: 40px;
+                        width: 44px;
+                        height: 44px;
                         object-fit: contain;
                         display: inline-block;
                     }
 
                     .welcome-content h5 {
-                        margin: 0 0 16px 0;
+                        margin: 0 0 12px 0;
                         color: #1e293b;
-                        font-size: 1.4rem;
-                        font-weight: 600;
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                        letter-spacing: -0.02em;
                     }
 
                     .welcome-content p {
-                        margin: 0 0 32px 0;
+                        margin: 0 0 36px 0;
                         color: #64748b;
-                        font-size: 1rem;
+                        font-size: 1.05rem;
                         line-height: 1.6;
-                        max-width: 500px;
+                        max-width: 520px;
+                        font-weight: 500;
                     }
 
                     .suggestion-chips {
@@ -971,30 +1038,30 @@
 
                     .suggestion-chip {
                         background: white;
-                        border: 2px solid #e2e8f0;
-                        border-radius: 12px;
-                        padding: 16px 20px;
+                        border: 2px solid #e5e7eb;
+                        border-radius: 14px;
+                        padding: 18px 22px;
                         cursor: pointer;
                         transition: all 0.3s ease;
                         display: flex;
                         align-items: center;
-                        gap: 12px;
+                        gap: 14px;
                         text-align: left;
                         font-size: 0.95rem;
-                        font-weight: 500;
+                        font-weight: 600;
                         color: #475569;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
                     }
 
                     .suggestion-chip:hover {
-                        border-color: #667eea;
-                        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-                        transform: translateY(-2px);
-                        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+                        border-color: #8b5cf6;
+                        background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+                        transform: translateY(-3px);
+                        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.2);
                     }
 
                     .chip-icon {
-                        font-size: 18px;
+                        font-size: 20px;
                         flex-shrink: 0;
                     }
 
@@ -1037,20 +1104,22 @@
                     }
 
                     .avatar-small {
-                        width: 36px;
-                        height: 36px;
+                        width: 40px;
+                        height: 40px;
                         border-radius: 50%;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        font-size: 16px;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        font-size: 18px;
+                        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
                         color: white;
-                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+                        box-shadow: 0 3px 12px rgba(139, 92, 246, 0.35);
+                        border: 2px solid rgba(255, 255, 255, 0.8);
                     }
 
                     .avatar-small.user {
-                        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                        box-shadow: 0 3px 12px rgba(59, 130, 246, 0.35);
                     }
 
                     .avatar-small.thinking {
@@ -1071,31 +1140,34 @@
                     }
 
                     .user-bubble {
-                        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
                         color: white;
                         border-bottom-right-radius: 4px;
+                        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
                     }
 
                     .ai-bubble {
                         background: white;
                         color: #1e293b;
-                        border: 1px solid #e2e8f0;
+                        border: 2px solid #e5e7eb;
                         border-bottom-left-radius: 4px;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
                     }
 
                     .typing-bubble {
-                        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                        background: linear-gradient(135deg, #fafbfc 0%, #f3f4f6 100%);
+                        border: 2px solid #e5e7eb;
                     }
 
                     .message-content-enhanced {
-                        padding: 16px 20px;
+                        padding: 18px 22px;
                     }
 
                     .message-text-enhanced {
-                        line-height: 1.5;
+                        line-height: 1.6;
                         margin-bottom: 8px;
-                        font-size: 0.95rem;
+                        font-size: 0.98rem;
+                        font-weight: 500;
                     }
 
                     .message-metadata {
@@ -1150,10 +1222,10 @@
                     }
 
                     .typing-dots span {
-                        width: 8px;
-                        height: 8px;
+                        width: 9px;
+                        height: 9px;
                         border-radius: 50%;
-                        background: #667eea;
+                        background: #8b5cf6;
                         animation: typingDot 1.4s infinite ease-in-out;
                     }
 
@@ -1178,11 +1250,11 @@
                     }
 
                     .chat-input-area {
-                        border-top: 1px solid #e2e8f0;
-                        background: #f8fafc;
-                        padding: 20px;
+                        border-top: 2px solid #e5e7eb;
+                        background: linear-gradient(135deg, #fafbfc 0%, #f8f9fa 100%);
+                        padding: 24px;
                         margin: 0 -24px -24px -24px;
-                        border-radius: 0 0 16px 16px;
+                        border-radius: 0 0 18px 18px;
                     }
 
                     .input-container-enhanced {
@@ -1194,31 +1266,34 @@
                         align-items: flex-end;
                         gap: 12px;
                         background: white;
-                        border: 2px solid #e2e8f0;
-                        border-radius: 24px;
-                        padding: 8px 8px 8px 20px;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                        border: 2px solid #e5e7eb;
+                        border-radius: 28px;
+                        padding: 10px 10px 10px 24px;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
                     }
 
                     .input-wrapper:focus-within {
-                        border-color: #667eea;
-                        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+                        border-color: #8b5cf6;
+                        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.2);
+                        transform: translateY(-1px);
                     }
 
                     .chat-input-enhanced {
                         flex: 1;
                         border: none;
                         outline: none;
-                        padding: 12px 0;
-                        font-size: 0.95rem;
-                        line-height: 1.4;
+                        padding: 14px 0;
+                        font-size: 0.98rem;
+                        line-height: 1.5;
                         background: transparent;
                         resize: none;
-                        min-height: 20px;
+                        min-height: 22px;
                         max-height: 120px;
                         overflow-y: auto;
                         font-family: inherit;
+                        font-weight: 500;
+                        color: #1e293b;
                     }
 
                     .chat-input-enhanced::placeholder {
@@ -1253,23 +1328,25 @@
                     }
 
                     .send-button {
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
                         color: white;
                         border: none;
                         border-radius: 50%;
-                        width: 44px;
-                        height: 44px;
+                        width: 48px;
+                        height: 48px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         cursor: pointer;
                         transition: all 0.3s ease;
-                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+                        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+                        font-size: 18px;
                     }
 
                     .send-button:hover:not(:disabled) {
-                        transform: scale(1.05);
-                        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+                        transform: scale(1.08);
+                        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.45);
+                        background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
                     }
 
                     .send-button:disabled,
@@ -1277,7 +1354,7 @@
                         opacity: 0.5;
                         cursor: not-allowed;
                         transform: none;
-                        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+                        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
                     }
 
                     .send-icon {
@@ -1354,11 +1431,10 @@
                         </div>
                         <div class="chat-title-text">
                             <h4>AI Assistant</h4>
-                            <p class="status-text">Ready to analyze your data</p>
                         </div>
                     </div>
                     <div class="chat-actions">
-                        <button class="clear-chat-btn" @onclick="ClearChatHistory" title="Clear chat history">
+                        <button class="clear-chat-btn" @onclick="ClearChatHistory" title="Clear chat">
                             <span class="icon"><img class="inline-icon" src="/images/trash.png" alt="Delete" /></span>
                         </button>
                     </div>
@@ -1375,7 +1451,7 @@
                                 </div>
                             </div>
                             <div class="welcome-content">
-                                <h5>Hello! I'm your TCH's AI Assistant</h5>
+                                <h5>Hello! I'm TCH's AI Assistant</h5>
                                 <p>I can help you analyze your survey data and provide insights. Here are some things you can ask me:</p>
                                 <div class="suggestion-chips">
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("Which sector has the lowest satisfaction?")'>
@@ -1387,7 +1463,7 @@
                                         Main issues
                                     </button>
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("Give me recommendations to improve satisfaction")'>
-                                        <span class="chip-icon">💡</span>
+                                        <span class="chip-icon"><img class="chip-icon-img" src="/images/lightbulb.png" alt="Recommendations" /></span>
                                         Recommendations
                                     </button>
                                     <button class="suggestion-chip" @onclick='() => SendSuggestionMessage("What trends do you see in my data?")'>
@@ -1421,10 +1497,7 @@
                                             {
                                                 <div class="message-actions">
                                                     <button class="action-btn copy-btn" @onclick="() => CopyMessageToClipboard(message.Text)" title="Copy response">
-                                                        <span>📋</span>
-                                                    </button>
-                                                    <button class="action-btn thumbs-btn" title="Helpful response">
-                                                        <span>👍</span>
+                                                        <img class="inline-icon" src="/images/copy.png" alt="Copy" style="width: 14px; height: 14px;" />
                                                     </button>
                                                 </div>
                                             }
@@ -1476,13 +1549,10 @@
                                          disabled="@isProcessingChat"
                                          rows="1"></textarea>
                                 <div class="input-actions">
-                                    <button class="action-button emoji-btn" title="Add emoji" disabled="@isProcessingChat">
-                                        <span>😊</span>
-                                    </button>
                                     <button class="send-button @(string.IsNullOrWhiteSpace(chatInput) ? "disabled" : "")" 
                                             @onclick="SendChatMessage" 
                                             disabled="@(isProcessingChat || string.IsNullOrWhiteSpace(chatInput))"
-                                            title="Send message">
+                                            title="Ask">
                                         @if (isProcessingChat)
                                         {
                                             <div class="spinner-small"></div>
@@ -1511,19 +1581,19 @@
                     <h3>
                         @if (currentNavigationLevel == "sectors")
                         {
-                            <span><img class="section-icon" src="/images/customer-segment.png" alt="Select Sector" /> Select Sector for Detailed Analysis</span>
+                            <span><img class="section-icon" src="/images/customer-segment.png" alt="Select Sector" /> Select sector to view responses</span>
                         }
                         else if (currentNavigationLevel == "customers")
                         {
-                            <span>🏬 Customers in @selectedSector Sector</span>
+                            <span><img class="inline-icon" src="/images/workplace.png" alt="Clients" /> Clients in @selectedSector sector</span>
                         }
                         else if (currentNavigationLevel == "projects")
                         {
-                            <span>📋 Projects for @selectedCustomer</span>
+                            <span><img class="inline-icon" src="/images/project.png" alt="Projects" /> Projects for @selectedCustomer</span>
                         }
                         else if (currentNavigationLevel == "analysis")
                         {
-                            <span><img class="inline-icon" src="/images/analysis.png" alt="Detailed Analysis" /> Detailed Analysis: @selectedProject</span>
+                            <span><img class="inline-icon" src="/images/analysis.png" alt="Responses" /> Responses: @selectedProject</span>
                         }
                     </h3>
                     
@@ -1584,7 +1654,7 @@
                                 var projectCount = customerResponses.Select(r => r.ProjectName).Distinct().Count();
                                 
                                 <div class="navigation-card customer-card" @onclick="() => NavigateToProjects(customer)">
-                                    <div class="card-icon">🏬</div>
+                                    <div class="card-icon"><img class="card-icon-img" src="/images/workplace.png" alt="Customer" /></div>
                                     <h4>@customer</h4>
                                     <div class="card-stats">
                                         <div class="stat-item">
@@ -1613,7 +1683,7 @@
                             var duration = projectResponses.FirstOrDefault()?.ProjectDuration ?? "N/A";
                             
                             <div class="navigation-card project-card" @onclick="() => NavigateToAnalysis(project)">
-                                <div class="card-icon">📋</div>
+                                <div class="card-icon"><img class="card-icon-img" src="/images/project.png" alt="Project" /></div>
                                 <h4>@project</h4>
                                 <div class="card-stats">
                                     <div class="stat-item">
@@ -1639,7 +1709,7 @@
                         <div class="analysis-header">
                             <div class="project-info">
                                 <h4>@selectedProject</h4>
-                                <p><strong>Customer:</strong> @selectedCustomer</p>
+                                <p><strong>Client:</strong> @selectedCustomer</p>
                                 <p><strong>Sector:</strong> @selectedSector</p>
                                 <p><strong>Total Responses:</strong> @analysisResponses.Count</p>
                                 @if (analysisResponses.Any())
@@ -1656,27 +1726,32 @@
                         <div class="analysis-charts">
                             <div class="chart-container">
                                 <h5><img class="inline-icon" src="/images/customer-survey.png" alt="Question Breakdown" /> Question Breakdown</h5>
-                                <div class="question-analysis-grid">
+                                <div class="professional-question-breakdown">
                                     @for (int q = 1; q <= 9; q++)
                                     {
                                         var scores = analysisResponses.Select(r => GetQuestionScore(r, q)).Where(s => s > 0);
                                         var avg = scores.Any() ? Math.Round(scores.Average(), 1) : 0;
                                         var count = scores.Count();
                                         var questionClass = avg >= 8 ? "excellent" : avg >= 6 ? "good" : avg >= 4 ? "average" : "poor";
+                                        var barColor = avg >= 8 ? "#28a745" : avg >= 6 ? "#17a2b8" : avg >= 4 ? "#ffc107" : "#dc3545";
+                                        var percentage = avg / 10 * 100;
                                         
-                                        <div class="question-analysis-item">
-                                            <div class="question-header">
-                                                <span class="question-number">Q@(q)</span>
-                                                <span class="question-score @questionClass">@avg</span>
+                                        <div class="pro-breakdown-item">
+                                            <div class="breakdown-header">
+                                                <div class="breakdown-left">
+                                                    <span class="breakdown-number">Q@(q)</span>
+                                                    <span class="breakdown-text">@GetQuestionText(q)</span>
+                                                </div>
+                                                <div class="breakdown-score" style="color: @barColor;">@avg.ToString("F1")</div>
                                             </div>
-                                            <div class="question-text">@GetQuestionText(q)</div>
-                                            <div class="question-bar-container">
-                                                <div class="question-bar-bg"></div>
-                                                <div class="question-bar-fill @questionClass" style="width: @(avg * 10)%"></div>
+                                            <div class="breakdown-progress">
+                                                <div class="breakdown-track">
+                                                    <div class="breakdown-fill" style="width: @(percentage)%; background: @barColor;"></div>
+                                                </div>
                                             </div>
-                                            <div class="question-stats">
-                                                <span>@count responses</span>
-                                                <span>@GetQuestionCategory(avg)</span>
+                                            <div class="breakdown-meta">
+                                                <span class="breakdown-badge @questionClass">@GetQuestionCategory(avg)</span>
+                                                <span class="breakdown-count">@count responses</span>
                                             </div>
                                         </div>
                                     }
@@ -1685,7 +1760,7 @@
                             
                             <!-- Individual Response Details -->
                             <div class="chart-container">
-                                <h5>📋 Individual Survey Responses</h5>
+                                <h5><img class="inline-icon" src="/images/checklist.png" alt="Survey Responses" /> Individual Survey Responses</h5>
                                 <div class="responses-table">
                                     <table class="table table-striped">
                                         <thead>
@@ -1743,6 +1818,24 @@
         background: transparent;
     }
 
+    .dashboard-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-export-toolbar {
+        display: flex;
+        gap: 8px;
+    }
+
+    .dashboard-footer {
+        font-size: 0.95rem;
+        color: #888;
+        opacity: 0.7;
+    }
+
     .dashboard-container::before { display: none; }
 
     .dashboard-container h2 {
@@ -1755,48 +1848,47 @@
     }
 
     .dashboard-header {
-        display: flex;
-        align-items: center;
-        gap: 24px;
-        margin-bottom: 32px;
-        padding: 0 0 16px 0;
-        border-bottom: 2px solid #e9ecef;
-        background: none;
+        background: linear-gradient(135deg, #D9D9D9 0%, #D9D9D9 100%) !important;
+        border-radius: 16px !important;
+        padding: 48px 40px !important;
+        margin-bottom: 32px !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
-    .dashboard-logo {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        object-fit: contain;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-        background: #fff;
+    .dashboard-header::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+        opacity: 0.4 !important;
     }
-    .dashboard-title-group {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
+    .header-content {
+        position: relative !important;
+        z-index: 1 !important;
+        text-align: center !important;
+        width: 100% !important;
     }
-    .dashboard-title {
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: #212529;
-        margin: 0;
-        letter-spacing: 1px;
+    .page-title {
+        font-size: 2.8rem !important;
+        font-weight: 600 !important;
+        color: #5c5c5c !important;
+        margin: 0 0 12px 0 !important;
+        letter-spacing: 0.5px !important;
+        text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25) !important;
+        font-family: 'Poppins', sans-serif !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
     }
-    .dashboard-subtitle {
-        font-size: 1.1rem;
-        color: #007bff;
-        font-weight: 500;
-        opacity: 0.8;
-        margin-left: 2px;
-    }
-
-    .dashboard-footer {
-        text-align: right;
-        font-size: 0.95rem;
-        color: #888;
-        margin-top: 24px;
-        opacity: 0.7;
+    .page-subtitle {
+        font-size: 1.15rem !important;
+        color: #5c5c5c !important;
+        margin: 0 !important;
+        font-weight: 400 !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
+        text-align: center !important;
     }
 
     .summary-cards {
@@ -1970,6 +2062,232 @@
         color: #fff;
         border-color: #c82333;
         box-shadow: none;
+    }
+
+    /* Trend Info Boxes */
+    .trend-info-boxes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .trend-info-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+    }
+
+    .trend-info-box:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        transform: translateY(-2px);
+    }
+
+    .trend-info-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .trend-icon {
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    }
+
+    .highest-icon {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    }
+
+    .lowest-icon {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    }
+
+    .trend-info-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .trend-info-label {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .trend-info-value {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .trend-info-value.positive {
+        color: #28a745;
+    }
+
+    .trend-info-value.negative {
+        color: #dc3545;
+    }
+
+    .trend-info-value.neutral {
+        color: #6c757d;
+    }
+
+    /* Professional monthly chart styles */
+    .pro-chart {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        grid-template-rows: 280px 36px;
+        gap: 0;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        padding: 12px 16px 8px 12px;
+    }
+    .pro-y-axis {
+        position: relative;
+        border-right: 1px solid #e9ecef;
+        margin-right: 12px;
+    }
+    .pro-y-tick {
+        position: absolute;
+        right: 8px;
+        transform: translateY(50%);
+        font-size: 12px;
+        color: #6b7280;
+    }
+    .pro-chart-area {
+        position: relative;
+        border-left: 1px solid transparent;
+    }
+    .pro-grid {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: #eef2f7;
+    }
+    .pro-x-baseline {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: #cbd5e1;
+    }
+    .pro-points {
+        position: absolute;
+        inset: 0;
+    }
+    .pro-point { position: absolute; }
+    .pro-dot {
+        width: 10px;
+        height: 10px;
+        background: #0B6BD3;
+        border-radius: 50%;
+        box-shadow: 0 0 0 2px #ffffff, 0 1px 4px rgba(0,0,0,0.12);
+    }
+    .pro-tip {
+        position: absolute;
+        top: -28px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #111827;
+        color: #fff;
+        font-size: 11px;
+        padding: 4px 6px;
+        border-radius: 6px;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        opacity: 0;
+        transition: opacity 0.15s ease;
+    }
+    .pro-point:hover .pro-tip { opacity: 1; }
+    .pro-line {
+        position: absolute;
+        inset: 0;
+    }
+    .pro-bars {
+        position: absolute;
+        inset: 0;
+    }
+    .pro-bar-slot {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        transform: translateX(-50%);
+        width: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .pro-bar {
+        width: 32px;
+        background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
+        border-radius: 4px 4px 0 0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        position: relative;
+        min-height: 4px;
+        transition: all 0.2s ease;
+    }
+    .pro-bar:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+        background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+    }
+    .pro-bar-value {
+        position: absolute;
+        top: -26px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        font-weight: 600;
+        color: #1e40af;
+        background: #ffffff;
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        white-space: nowrap;
+    }
+    .no-data-text {
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #9ca3af;
+        font-style: italic;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+    .pro-x-axis {
+        grid-column: 1 / span 2;
+        position: relative;
+        padding-top: 8px;
+        color: #6b7280;
+        font-size: 12px;
+        height: 24px;
+    }
+    .pro-x-label { 
+        position: absolute;
+        transform: translateX(-50%);
+        text-align: center;
+        font-weight: 500;
+        color: #374151;
     }
 
     .filter-controls {
@@ -2148,7 +2466,7 @@
         display: flex;
         align-items: end;
         justify-content: space-between;
-        padding: 20px 10px 40px 10px;
+        padding: 20px 10px 40px 10px; /* bottom padding reserves space for x-axis labels */
         height: 250px;
     }
 
@@ -2171,16 +2489,7 @@
         position: relative;
     }
 
-    .data-bar {
-        width: 28px;
-        min-height: 5px;
-        border-radius: 6px 6px 0 0;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        position: absolute;
-        bottom: 25px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
+    .data-bar { display: none; } /* switch to line chart presentation */
 
     .data-bar:hover {
         transform: translateY(-2px);
@@ -2197,27 +2506,60 @@
         align-items: center;
         justify-content: center;
         position: absolute;
-        bottom: 25px;
+        bottom: 0; /* align no-data indicator to zero baseline */
         font-size: 12px;
         color: #6c757d;
     }
+    .no-data-indicator.small {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px dashed #dee2e6;
+        background: #fff;
+    }
 
     .bar-value {
+        display: none;
+    }
+
+    /* Line chart styles */
+    .trend-line-svg {
         position: absolute;
-        top: -25px;
+        /* match inner chart-area padding so the path aligns with points and grid */
+        left: 10px;
+        right: 10px;
+        top: 20px;
+        bottom: 40px;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .points-overlay { position: absolute; left: 10px; right: 10px; top: 20px; bottom: 40px; z-index: 2; pointer-events: none; }
+    .line-point {
+        position: absolute;
+        transform: translateX(-50%);
+        pointer-events: auto;
+    }
+    .point-dot {
+        width: 10px;
+        height: 10px;
+        background: #1e88e5;
+        border-radius: 50%;
+        box-shadow: 0 0 0 2px #ffffff;
+    }
+    .line-point:hover .point-dot { box-shadow: 0 0 0 2px #ffffff, 0 0 8px rgba(30,136,229,0.5); }
+    .point-tooltip {
+        position: absolute;
+        top: -20px;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #ffffff;
-        background: #007bff;
-        padding: 3px 7px;
-        border-radius: 6px;
-        border: none;
-        min-width: 24px;
-        text-align: center;
-        box-shadow: 0 2px 6px rgba(0,123,255,0.3);
+        background: #1e88e5;
+        color: #fff;
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        display: none;
     }
+    .line-point:hover .point-tooltip { display: block; }
 
     .month-label {
         position: absolute;
@@ -2231,17 +2573,32 @@
 
     .new-x-axis {
         position: absolute;
-        bottom: -30px;
-        left: 50px;
-        right: 20px;
+        left: 85px; /* container padding (20) + y-axis (40) + gap (15) + chart-area padding-left (10) */
+        right: 30px; /* container padding-right (20) + chart-area padding-right (10) */
+        bottom: 8px; /* inside container, below the x baseline */
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        pointer-events: none; /* labels non-interactive */
     }
 
     .x-tick {
-        position: absolute;
-        transform: translateX(-50%);
+        position: relative;
+        width: 40px; /* match month-column width for alignment */
+        text-align: center;
         font-size: 0.8rem;
         color: #666;
         font-weight: 500;
+        line-height: 1;
+    }
+
+    .x-baseline {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top: 2px solid #333;
+        z-index: 2;
     }
 
     .chart-header {
@@ -2258,6 +2615,10 @@
         margin: 0;
         font-size: 1.25rem;
         font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
     }
 
     .interactive-bar-chart {
@@ -2573,6 +2934,327 @@
         margin-top: 12px;
     }
 
+    /* Professional Satisfaction Card */
+    .professional-satisfaction-card {
+        background: #fff;
+        border: 2px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .professional-satisfaction-card:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-4px);
+    }
+
+    .professional-satisfaction-card.excellent {
+        border-left: 4px solid #28a745;
+    }
+
+    .professional-satisfaction-card.good {
+        border-left: 4px solid #17a2b8;
+    }
+
+    .professional-satisfaction-card.average {
+        border-left: 4px solid #ffc107;
+    }
+
+    .professional-satisfaction-card.poor {
+        border-left: 4px solid #dc3545;
+    }
+
+    .pro-sat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .pro-sat-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .pro-sat-title h5 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .pro-sat-icon {
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: #f8fafc;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    .pro-sat-icon img {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+    }
+
+    .pro-sat-score-badge {
+        font-size: 28px;
+        font-weight: 800;
+        padding: 8px 16px;
+        border-radius: 12px;
+        line-height: 1;
+    }
+
+    .pro-sat-score-badge.excellent {
+        color: #28a745;
+        background: #d1fae5;
+    }
+
+    .pro-sat-score-badge.good {
+        color: #17a2b8;
+        background: #dbeafe;
+    }
+
+    .pro-sat-score-badge.average {
+        color: #f59e0b;
+        background: #fef3c7;
+    }
+
+    .pro-sat-score-badge.poor {
+        color: #dc3545;
+        background: #fee2e2;
+    }
+
+    .pro-sat-progress {
+        margin-bottom: 16px;
+    }
+
+    .pro-sat-track {
+        position: relative;
+        height: 12px;
+        background: #f3f4f6;
+        border-radius: 10px;
+        overflow: visible;
+        margin-bottom: 8px;
+    }
+
+    .pro-sat-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.8s ease;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .pro-sat-fill.excellent {
+        background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+    }
+
+    .pro-sat-fill.good {
+        background: linear-gradient(90deg, #17a2b8 0%, #3b82f6 100%);
+    }
+
+    .pro-sat-fill.average {
+        background: linear-gradient(90deg, #ffc107 0%, #f59e0b 100%);
+    }
+
+    .pro-sat-fill.poor {
+        background: linear-gradient(90deg, #dc3545 0%, #ef4444 100%);
+    }
+
+    .pro-sat-goal-marker {
+        position: absolute;
+        left: 90%;
+        top: -4px;
+        bottom: -4px;
+        width: 3px;
+        background: #28a745;
+        border-radius: 2px;
+        box-shadow: 0 0 8px rgba(40, 167, 69, 0.6);
+        z-index: 10;
+    }
+
+    .pro-sat-scale {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 2px;
+    }
+
+    .scale-tick {
+        font-size: 11px;
+        color: #9ca3af;
+        font-weight: 500;
+    }
+
+    .pro-sat-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        border-top: 1px solid #f3f4f6;
+    }
+
+    .pro-sat-category {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .pro-sat-category.excellent {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .pro-sat-category.good {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .pro-sat-category.average {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .pro-sat-category.poor {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .pro-sat-responses {
+        font-size: 13px;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    /* Professional Question Breakdown */
+    .professional-question-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .pro-breakdown-item {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 16px;
+        transition: all 0.2s ease;
+    }
+
+    .pro-breakdown-item:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transform: translateX(4px);
+    }
+
+    .breakdown-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .breakdown-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .breakdown-number {
+        font-size: 12px;
+        font-weight: 700;
+        color: #6b7280;
+        background: #f3f4f6;
+        padding: 4px 10px;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    .breakdown-text {
+        font-size: 14px;
+        color: #374151;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .breakdown-score {
+        font-size: 22px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .breakdown-progress {
+        margin-bottom: 12px;
+    }
+
+    .breakdown-track {
+        height: 8px;
+        background: #f3f4f6;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .breakdown-fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.6s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .breakdown-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .breakdown-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .breakdown-badge.excellent {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .breakdown-badge.good {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .breakdown-badge.average {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .breakdown-badge.poor {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .breakdown-count {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
     /* Question Performance */
     .question-bars {
         display: flex;
@@ -2580,6 +3262,126 @@
         margin-top: 20px;
         flex-wrap: wrap;
         justify-content: center;
+    }
+
+    /* Professional Question Performance */
+    .professional-question-performance {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .pro-question-item {
+        background: #fff;
+        border: 2px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .pro-question-item:hover {
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transform: translateY(-2px);
+    }
+
+    .pro-question-item.selected {
+        border-color: #3b82f6;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.2);
+        background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+    }
+
+    .pro-question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .pro-question-number {
+        font-size: 14px;
+        font-weight: 700;
+        color: #6b7280;
+        background: #f3f4f6;
+        padding: 4px 12px;
+        border-radius: 6px;
+        letter-spacing: 0.5px;
+    }
+
+    .pro-question-score {
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .pro-question-title {
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 16px;
+        line-height: 1.5;
+        font-weight: 500;
+        min-height: 42px;
+    }
+
+    .pro-progress-container {
+        width: 100%;
+        height: 8px;
+        background: #f3f4f6;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 12px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .pro-progress-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.6s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .pro-question-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+    }
+
+    .pro-question-category {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 10px;
+    }
+
+    .pro-question-category.excellent {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .pro-question-category.good {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .pro-question-category.average {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .pro-question-category.poor {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .pro-question-percentage {
+        font-weight: 600;
+        color: #6b7280;
     }
 
     .question-bar-item {
@@ -3332,7 +4134,7 @@
         background: #f1f3f4;
         padding: 2px 6px;
         border-radius: 4px;
-        font-family: 'Courier New', monospace;
+        font-family: 'Poppins', sans-serif !important;
         font-size: 0.9rem;
     }
 
@@ -4417,6 +5219,11 @@
     .client-table td {
         padding: 12px;
         text-align: left;
+        vertical-align: middle;
+    }
+
+    .client-table thead tr {
+        height: 48px;
         border-bottom: 1px solid #dee2e6;
     }
 
@@ -4430,6 +5237,8 @@
 
     .client-row {
         transition: background-color 0.2s ease;
+        height: 48px;
+        border-bottom: 1px solid #dee2e6;
     }
 
     .client-row:hover {
@@ -4580,6 +5389,8 @@
     
     // Trends
     string trendsView = "monthly";
+    string trendTimeView = "monthly"; // monthly, quarterly, yearly
+    int trendSelectedYear = DateTime.Now.Year;
     string selectedTrendsYear = DateTime.Now.Year.ToString(); // Default to current year
     int? selectedTrendPoint = null;
     
@@ -4977,6 +5788,7 @@
             .Where(r => r.DateCompleted.HasValue)
             .Select(r => r.DateCompleted!.Value.Year)
             .Distinct()
+            .OrderByDescending(y => y)
             .ToList();
         
         if (!years.Any()) years.Add(DateTime.Now.Year);
@@ -5368,14 +6180,14 @@
     {
         return satisfaction switch
         {
-            >= 9 => "🤩",
-            >= 8 => "😍",
-            >= 7 => "😊",
-            >= 6 => "🙂",
-            >= 5 => "😐",
-            >= 4 => "😕",
-            >= 3 => "😞",
-            _ => "😢"
+            >= 9 => "",
+            >= 8 => "",
+            >= 7 => "",
+            >= 6 => "",
+            >= 5 => "",
+            >= 4 => "",
+            >= 3 => "",
+            _ => ""
         };
     }
 

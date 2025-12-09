@@ -5,7 +5,7 @@
 
 <style>
     body {
-        background: url('/images/BackgroundBachelor.avif') center/cover no-repeat fixed !important;
+        background: #f8f9fa !important;
     }
     .login-outer {
         min-height: 100vh;
@@ -13,116 +13,138 @@
         align-items: center;
         justify-content: center;
         background: transparent;
+        padding: 2rem;
     }
     .login-card {
         width: 100%;
-        max-width: 400px;
-        padding: 32px 28px 28px 28px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-        border-radius: 18px;
-        background: rgba(255,255,255,0.97);
+        max-width: 420px;
+        padding: 3rem 2rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-radius: 16px;
+        background: #d9d9d9;
         display: flex;
         flex-direction: column;
         align-items: center;
-        animation: fadeIn 0.7s;
-        position: relative;
+        animation: fadeIn 0.5s;
+        border: 1px solid #e5e7eb;
     }
     @@keyframes fadeIn {
-        from { opacity: 0; transform: translateY(30px);}
+        from { opacity: 0; transform: translateY(20px);}
         to { opacity: 1; transform: translateY(0);}
     }
     .login-logo {
-        width: 70px;
-        height: 70px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         background: #fff;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        margin-bottom: 1.2em;
+        margin-bottom: 1.5rem;
     }
     .login-logo img {
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         object-fit: contain;
-        border-radius: 50%;
     }
     .login-card h3 {
         text-align: center;
-        color: #c82333;
-        font-size: 2em;
-        font-weight: 800;
-        margin-bottom: 0.5em;
-        letter-spacing: 1px;
+        color: #5c5c5c;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.5px;
+        font-family: 'Poppins', sans-serif !important;
+    }
+    .login-subtitle {
+        text-align: center;
+        color: #5c5c5c;
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+        font-family: 'Poppins', sans-serif !important;
     }
     .login-field {
-        margin-bottom: 18px;
+        margin-bottom: 20px;
         width: 100%;
     }
     .login-field label {
         display: block;
-        margin-bottom: 6px;
-        color: #fff;
-        font-weight: 600;
-        font-size: 1.05em;
+        margin-bottom: 8px;
+        color: #5c5c5c;
+        font-weight: 500;
+        font-size: 0.95rem;
+        font-family: 'Poppins', sans-serif !important;
     }
     .login-field input {
         width: 100%;
-        padding: 12px;
-        border: 1px solid #bdc3c7;
-        border-radius: 7px;
-        font-size: 1.08em;
-        background: #f8f9fa;
-        transition: border 0.2s;
+        padding: 12px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 1rem;
+        background: #ffffff;
+        transition: border 0.2s, box-shadow 0.2s;
+        font-family: 'Poppins', sans-serif !important;
     }
     .login-field input:focus {
-        border: 1.5px solid #c82333;
+        border: 1px solid #9ca3af;
         outline: none;
-        background: #fff;
+        box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.1);
     }
     .login-error {
-        color: #c82333;
+        color: #dc2626;
         text-align: center;
-        margin-bottom: 15px;
-        font-weight: 600;
-        background: #ffeaea;
-        border-radius: 7px;
-        padding: 8px 0;
+        margin-bottom: 16px;
+        font-weight: 500;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 0.9rem;
+        font-family: 'Poppins', sans-serif !important;
     }
     .login-btn {
         width: 100%;
         padding: 12px;
-        background: linear-gradient(90deg, #c82333 70%, #007bff 100%);
-        color: #fff !important;
-        border: none;
-        border-radius: 8px;
-        font-size: 1.15em;
-        font-weight: 700;
+        background: #ffffff;
+        color: #5c5c5c !important;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
         cursor: pointer;
-        box-shadow: 0 2px 8px rgba(200,35,51,0.08);
-        transition: background 0.2s, transform 0.2s;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+        font-family: 'Poppins', sans-serif !important;
     }
     .login-btn:hover {
-        background: linear-gradient(90deg, #a71d2a 70%, #0056b3 100%);
-        transform: translateY(-2px) scale(1.04);
-        color: #fff !important;
-        opacity: 0.85;
+        background: #f9fafb;
+        border-color: #9ca3af;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     .login-footer {
-        margin-top: 1.2em;
-        font-size: 0.98em;
-        color: #495057;
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        color: #5c5c5c;
         text-align: center;
-        opacity: 0.8;
+        font-family: 'Poppins', sans-serif !important;
+    }
+    .login-footer a {
+        color: #5c5c5c;
+        text-decoration: underline;
+        font-weight: 500;
+    }
+    .login-footer a:hover {
+        text-decoration: underline;
     }
     @@media (max-width: 500px) {
         .login-card {
-            padding: 18px 8px 18px 8px;
+            padding: 2rem 1.5rem;
         }
         .login-card h3 {
-            font-size: 1.3em;
+            font-size: 1.6rem;
         }
     }
 </style>
@@ -165,7 +187,7 @@
                 <h3>Hello, @context.User.Claims.FirstOrDefault(claim => claim.Type.Equals("FullName"))?.Value ?? "User"</h3>
                 <div class="login-footer">
                     You are already logged in.<br />
-                    <a href="/" style="color:#c82333;text-decoration:underline;">Go to Home</a>
+                    <a href="/">Go to Home</a>
                 </div>
             </div>
         </Authorized>

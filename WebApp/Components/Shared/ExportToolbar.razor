@@ -4,14 +4,14 @@
 
 <div class="export-toolbar">
     <div class="btn-group" role="group" aria-label="Export options">
-        <button type="button" class="btn btn-primary btn-sm" @onclick="() => ExportToExcel()" disabled="@isExporting">
-            <i class="fa fa-file-excel-o"></i> Excel
+        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="() => ExportToExcel()" disabled="@isExporting" style="background: transparent; border-color: #dee2e6;">
+            <img src="/images/logo.png" alt="Excel" style="width: 30px; height: 30px;" />
         </button>
-        <button type="button" class="btn btn-success btn-sm" @onclick="() => ExportToPdf()" disabled="@isExporting">
-            <i class="fa fa-file-pdf-o"></i> PDF
+        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="() => ExportToPdf()" disabled="@isExporting" style="background: transparent; border-color: #dee2e6;">
+            <img src="/images/pdf.png" alt="PDF" style="width: 30px; height: 30px;" />
         </button>
-        <button type="button" class="btn btn-info btn-sm" @onclick="() => ExportToCsv()" disabled="@isExporting">
-            <i class="fa fa-file-text-o"></i> CSV
+        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="() => ExportToCsv()" disabled="@isExporting" style="background: transparent; border-color: #dee2e6;">
+            <img src="/images/csv-file.png" alt="CSV" style="width: 30px; height: 30px;" />
         </button>
     </div>
     

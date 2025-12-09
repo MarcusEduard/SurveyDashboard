@@ -133,7 +133,6 @@
                                 {
                                     <select @bind="editValue" @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
                                             class="edit-select">
-                                        <option value="">Select Size</option>
                                         <option value="Micro">Micro (1-9 employees)</option>
                                         <option value="SME">SME (10-249 employees)</option>
                                         <option value="Large">Large (250+ employees)</option>
@@ -152,8 +151,8 @@
                             <td>
                                 @if (editingId == response.SurveyResponseId && editingField == "duration")
                                 {
-                                    <input type="text" @bind="editValue" @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
-                                           class="edit-input" />
+                                    <input type="number" @bind="editValue" @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
+                                           class="edit-input" min="1" max="999" />
                                 }
                                 else
                                 {
@@ -167,12 +166,9 @@
                             <td>
                                 @if (editingId == response.SurveyResponseId && editingField == "datesent")
                                 {
-                                    <div class="date-edit-container">
-                                        <input type="datetime-local" value="@editValue" @onchange="@((e) => editValue = e.Value?.ToString() ?? "")" 
-                                               @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
-                                               class="edit-input date-input" />
-                                        <button type="button" @onclick="() => ClearDate(DATE_SENT_FIELD)" class="btn-clear-date" title="Clear date">✕</button>
-                                    </div>
+                                    <input type="datetime-local" value="@editValue" @onchange="@((e) => editValue = e.Value?.ToString() ?? "")" 
+                                           @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
+                                           class="edit-input date-input" required />
                                 }
                                 else
                                 {
@@ -186,12 +182,9 @@
                             <td>
                                 @if (editingId == response.SurveyResponseId && editingField == "datecompleted")
                                 {
-                                    <div class="date-edit-container">
-                                        <input type="datetime-local" value="@editValue" @onchange="@((e) => editValue = e.Value?.ToString() ?? "")" 
-                                               @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
-                                               class="edit-input date-input" />
-                                        <button type="button" @onclick="() => ClearDate(DATE_COMPLETED_FIELD)" class="btn-clear-date" title="Clear date">✕</button>
-                                    </div>
+                                    <input type="datetime-local" value="@editValue" @onchange="@((e) => editValue = e.Value?.ToString() ?? "")" 
+                                           @onkeypress="@(async (e) => await HandleKeyPress(e, response))" 
+                                           class="edit-input date-input" required />
                                 }
                                 else
                                 {
@@ -295,11 +288,10 @@
     }
 
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #D9D9D9 0%, #D9D9D9 100%);
         border-radius: 16px;
         padding: 48px 40px;
         margin-bottom: 32px;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.25);
         position: relative;
         overflow: hidden;
     }
@@ -321,7 +313,7 @@
     .page-title {
         font-size: 2.8rem;
         font-weight: 600;
-        color: #ffffff;
+        color: #5c5c5c;
         margin: 0 0 12px 0;
         letter-spacing: 0.5px;
         text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
@@ -330,7 +322,7 @@
     }
     .page-subtitle {
         font-size: 1.15rem;
-        color: rgba(255, 255, 255, 0.95);
+        color: #5c5c5c;
         margin: 0;
         font-weight: 400;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -936,6 +928,36 @@
     {
         try
         {
+            // Validate that required fields are not empty
+            if (editingField == "customer" || editingField == "project" || editingField == "duration" || editingField == "companysize")
+            {
+                if (string.IsNullOrWhiteSpace(editValue))
+                {
+                    Console.WriteLine("Cannot save empty value");
+                    return;
+                }
+                
+                // Additional validation for duration - must be a valid number and max 3 digits
+                if (editingField == "duration")
+                {
+                    if (!int.TryParse(editValue, out int duration) || duration < 1 || duration > 999)
+                    {
+                        Console.WriteLine("Duration must be a number between 1 and 999");
+                        return;
+                    }
+                }
+            }
+            
+            // Validate dates are not empty when editing
+            if (editingField == "datesent" || editingField == "datecompleted")
+            {
+                if (string.IsNullOrWhiteSpace(editValue))
+                {
+                    Console.WriteLine("Cannot save empty date");
+                    return;
+                }
+            }
+
             // Update the response object
             switch (editingField)
             {

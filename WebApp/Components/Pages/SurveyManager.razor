@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Project Duration *</label>
-                    <input type="text" class="form-control" @bind="newSurvey.ProjectDuration" placeholder="Duration in hours: e.g. 50" />
+                    <input type="number" class="form-control" @bind="newSurvey.ProjectDuration" placeholder="Duration in hours: e.g. 50" min="1" max="999" />
                 </div>
             </div>
             
@@ -96,8 +96,8 @@
                                     <td><code>@GetShortSurveyId(survey.SurveyId)</code></td>
                                     <td>@survey.CustomerName</td>
                                     <td>@survey.ProjectName</td>
-                                    <td><span class="badge bg-info">@((MarkupString)GetSectorIcon(survey.Sector))@survey.Sector</span></td>
-                                    <td><span class="badge bg-secondary">@((MarkupString)GetCompanySizeIcon(survey.CompanySize))@(survey.CompanySize ?? "N/A")</span></td>
+                                    <td><span class="sector-badge @GetSectorClass(survey.Sector)">@((MarkupString)GetSectorIcon(survey.Sector))@survey.Sector</span></td>
+                                    <td><span class="company-size-badge @GetCompanySizeClass(survey.CompanySize ?? "N/A")">@((MarkupString)GetCompanySizeIcon(survey.CompanySize))@(survey.CompanySize ?? "N/A")</span></td>
                                     <td>
                                         @if (editingId == survey.SurveyResponseId && editingField == "datesent")
                                         {
@@ -327,11 +327,10 @@
     }
 
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #D9D9D9 0%, #D9D9D9 100%);
         border-radius: 16px;
         padding: 48px 40px;
         margin-bottom: 32px;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.25);
         position: relative;
         overflow: hidden;
     }
@@ -353,7 +352,7 @@
     .page-title {
         font-size: 2.8rem;
         font-weight: 600;
-        color: #ffffff;
+        color: #5c5c5c;
         margin: 0 0 12px 0;
         letter-spacing: 0.5px;
         text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
@@ -362,7 +361,7 @@
     }
     .page-subtitle {
         font-size: 1.15rem;
-        color: rgba(255, 255, 255, 0.95);
+        color: #5c5c5c;
         margin: 0;
         font-weight: 400;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -406,6 +405,38 @@
     .badge {
         font-size: 0.75rem;
     }
+
+    /* Sector Badges */
+    .sector-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .sector-badge.health { background: #ffe6e6; color: #c03; }
+    .sector-badge.tech { background: #e6f7f7; color: #167; }
+    .sector-badge.energy { background: #e6f3ff; color: #059; }
+    .sector-badge.other { background: #f0f0f0; color: #666; }
+
+    /* Company Size Badges */
+    .company-size-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .company-size-badge.micro { background: #fff3cd; color: #856404; }
+    .company-size-badge.sme { background: #cce5ff; color: #0066cc; }
+    .company-size-badge.large { background: #e6ccff; color: #6f42c1; }
+    .company-size-badge.not-set { background: #e2e3e5; color: #6c757d; }
 
     .bg-success { background-color: #28a745 !important; }
     .bg-info { background-color: #17a2b8 !important; }
@@ -766,11 +797,23 @@
 
     bool IsNewSurveyValid()
     {
-        return !string.IsNullOrWhiteSpace(newSurvey.CustomerName) &&
-               !string.IsNullOrWhiteSpace(newSurvey.Sector) &&
-               !string.IsNullOrWhiteSpace(newSurvey.CompanySize) &&
-               !string.IsNullOrWhiteSpace(newSurvey.ProjectName) &&
-               !string.IsNullOrWhiteSpace(newSurvey.ProjectDuration);
+        // Check if all required fields are filled
+        if (string.IsNullOrWhiteSpace(newSurvey.CustomerName) ||
+            string.IsNullOrWhiteSpace(newSurvey.Sector) ||
+            string.IsNullOrWhiteSpace(newSurvey.CompanySize) ||
+            string.IsNullOrWhiteSpace(newSurvey.ProjectName) ||
+            string.IsNullOrWhiteSpace(newSurvey.ProjectDuration))
+        {
+            return false;
+        }
+        
+        // Validate Project Duration is a number between 1-999
+        if (!int.TryParse(newSurvey.ProjectDuration, out int duration) || duration < 1 || duration > 999)
+        {
+            return false;
+        }
+        
+        return true;
     }
 
     async Task CreateSurvey()
@@ -949,9 +992,31 @@
         return companySize switch
         {
             "Micro" => "<img src='/images/building.png' alt='Micro' style='width: 16px; height: 16px; margin-right: 4px;' />",
-            "SME" => "<img src='/images/building(1).png' alt='SME' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "SME" => "<img src='/images/building (1).png' alt='SME' style='width: 16px; height: 16px; margin-right: 4px;' />",
             "Large" => "<img src='/images/skyline.png' alt='Large' style='width: 16px; height: 16px; margin-right: 4px;' />",
             _ => ""
+        };
+    }
+
+    string GetSectorClass(string sector)
+    {
+        return sector switch
+        {
+            "Health" => "health",
+            "Tech & Digitalization" => "tech",
+            "Energy" => "energy",
+            _ => "other"
+        };
+    }
+
+    string GetCompanySizeClass(string? companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "micro",
+            "SME" => "sme",
+            "Large" => "large",
+            _ => "not-set"
         };
     }
 }

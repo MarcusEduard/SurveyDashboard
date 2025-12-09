@@ -1,24 +1,30 @@
 @page "/survey-manager"
 @attribute [Authorize(Policy = "MustBeAdmin")]
 @using WebAPI.Models
+@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Authorization
+@using WebApp.Components.Shared
 @inject HttpClient httpClient
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 
 <div class="survey-manager-container">
-    <h2>📋 Survey Management</h2>
-    <p>Create and send surveys to customers, and track their responses.</p>
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">Generate Survey</h1>
+            <p class="page-subtitle">Create and send surveys to customers, and track their responses.</p>
+        </div>
+    </div>
 
     <!-- Create New Survey -->
     <div class="card mb-4">
         <div class="card-header">
-            <h4>🆕 Create New Survey</h4>
+            <h4>Create New Survey</h4>
         </div>
         <div class="card-body">
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label">Customer Name *</label>
+                    <label class="form-label">Client Name *</label>
                     <input type="text" class="form-control" @bind="newSurvey.CustomerName" placeholder="Company Name" />
                 </div>
                 <div class="col-md-6">
@@ -27,7 +33,7 @@
                         <option value="">Select Sector</option>
                         <option value="Energy">Energy</option>
                         <option value="Health">Health</option>
-                        <option value="Tech">Tech</option>
+                        <option value="Tech & Digitalization">Tech & Digitalization</option>
                     </select>
                 </div>
                 <div class="col-md-6">
@@ -45,13 +51,17 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Project Duration *</label>
-                    <input type="text" class="form-control" @bind="newSurvey.ProjectDuration" placeholder="Duration in hours: e.g. 50" />
+                    <input type="number" class="form-control" @bind="newSurvey.ProjectDuration" placeholder="Duration in hours: e.g. 50" min="1" max="999" />
                 </div>
             </div>
             
-            <div class="mt-3">
-                <button class="btn btn-primary" @onclick="CreateSurvey" disabled="@(!IsNewSurveyValid())">
-                    <i class="fas fa-plus"></i> Create Survey & Generate Link
+            <div class="mt-3 text-center">
+                <button class="btn @(IsNewSurveyValid() ? "btn-primary" : "btn-outline-secondary")" 
+                        @onclick="CreateSurvey" 
+                        disabled="@(!IsNewSurveyValid())"
+                        style="min-width: 250px; padding: 12px 24px; font-weight: 600;">
+                    <img class="icon" src="/images/add.png" alt="Create" style="width: 20px; height: 20px; margin-right: 8px;" />
+                    <span>Create Survey & Generate Link</span>
                 </button>
             </div>
         </div>
@@ -60,7 +70,7 @@
     <!-- Pending Surveys -->
     <div class="card mb-4">
         <div class="card-header">
-            <h4>⏳ Pending Surveys</h4>
+            <h4>Pending Surveys</h4>
         </div>
         <div class="card-body">
             @if (pendingSurveys.Any())
@@ -70,7 +80,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Survey ID</th>
-                                <th>Customer</th>
+                                <th>Client</th>
                                 <th>Project</th>
                                 <th>Sector</th>
                                 <th>Company Size</th>
@@ -86,8 +96,8 @@
                                     <td><code>@GetShortSurveyId(survey.SurveyId)</code></td>
                                     <td>@survey.CustomerName</td>
                                     <td>@survey.ProjectName</td>
-                                    <td><span class="badge bg-info">@survey.Sector</span></td>
-                                    <td><span class="badge bg-secondary">@(survey.CompanySize ?? "N/A")</span></td>
+                                    <td><span class="sector-badge @GetSectorClass(survey.Sector)">@((MarkupString)GetSectorIcon(survey.Sector))@survey.Sector</span></td>
+                                    <td><span class="company-size-badge @GetCompanySizeClass(survey.CompanySize ?? "N/A")">@((MarkupString)GetCompanySizeIcon(survey.CompanySize))@(survey.CompanySize ?? "N/A")</span></td>
                                     <td>
                                         @if (editingId == survey.SurveyResponseId && editingField == "datesent")
                                         {
@@ -107,7 +117,8 @@
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-primary" @onclick="() => CopyLink(survey.SurveyId)">
-                                            <i class="fas fa-copy"></i> Copy Link
+                                            <img class="icon" src="/images/send.png" alt="Copy" />
+                                            <span>Copy Link</span>
                                         </button>
                                     </td>
                                     <td>
@@ -115,16 +126,16 @@
                                             @if (editingId == survey.SurveyResponseId)
                                             {
                                                 <button class="btn-save" @onclick="() => SaveEdit(survey)" title="Save changes">
-                                                    💾
+                                                    <img class="icon" src="/images/checklist.png" alt="Save" style="width: 18px; height: 18px;" />
                                                 </button>
                                                 <button class="btn-cancel" @onclick="CancelEdit" title="Cancel editing">
-                                                    ❌
+                                                    <img class="icon" src="/images/trash.png" alt="Cancel" style="width: 18px; height: 18px;" />
                                                 </button>
                                             }
                                             else
                                             {
-                                                <button class="btn btn-sm btn-danger" title="Delete Survey" @onclick="() => ShowDeleteModal(survey)">
-                                                    🗑️
+                                                <button class="btn btn-sm btn-outline-danger" title="Delete Survey" @onclick="() => ShowDeleteModal(survey)">
+                                                    <img class="icon" src="/images/trash.png" alt="Delete" style="width: 18px; height: 18px;" />
                                                 </button>
                                             }
                                         </div>
@@ -157,7 +168,7 @@
             else
             {
                 <div class="text-muted text-center py-4">
-                    <i class="fas fa-inbox fa-3x mb-3"></i>
+                    <img class="empty-icon" src="/images/graph.png" alt="Empty" />
                     <p>No pending surveys found.</p>
                 </div>
             }
@@ -167,7 +178,7 @@
     <!-- Recently Completed Surveys -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4>✅ Completed Surveys</h4>
+            <h4>Completed Surveys</h4>
             @if (completedSurveys.Any())
             {
                 <ExportToolbar Data="@completedSurveys" 
@@ -183,7 +194,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Survey ID</th>
-                                <th>Customer</th>
+                                <th>Client</th>
                                 <th>Project</th>
                                 <th>Completed</th>
                                 <th>Overall Score</th>
@@ -239,7 +250,7 @@
             else
             {
                 <div class="text-muted text-center py-4">
-                    <i class="fas fa-chart-bar fa-3x mb-3"></i>
+                    <img class="empty-icon" src="/images/graph.png" alt="Empty" />
                     <p>No completed surveys found.</p>
                 </div>
             }
@@ -250,18 +261,18 @@
 @if (showLinkModal)
 {
     <div class="modal fade show" style="display: block;" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">📋 Survey Link Created</h5>
+                    <h5 class="modal-title">Survey Link Created</h5>
                     <button type="button" class="btn-close" @onclick="() => showLinkModal = false"></button>
                 </div>
                 <div class="modal-body">
                     <p><strong>Survey created successfully!</strong></p>
-                    <p>Customer: <strong>@newSurvey.CustomerName</strong></p>
-                    <p>Project: <strong>@newSurvey.ProjectName</strong></p>
-                    <p>Sector: <strong>@newSurvey.Sector</strong></p>
-                    <p>Company Size: <strong>@newSurvey.CompanySize</strong></p>
+                    <p>Customer: <strong>@createdSurveyCustomer</strong></p>
+                    <p>Project: <strong>@createdSurveyProject</strong></p>
+                    <p>Sector: <strong>@createdSurveySector</strong></p>
+                    <p>Company Size: <strong>@createdSurveyCompanySize</strong></p>
                     
                     <div class="alert alert-info">
                         <strong>Survey Link:</strong>
@@ -288,7 +299,7 @@
 {
     <div class="modal-overlay" @onclick="CancelDelete">
         <div class="modal-content" @onclick:stopPropagation="true">
-            <h3>⚠️ Confirm Deletion</h3>
+            <h3>Confirm Deletion</h3>
             <p>Are you sure you want to delete this survey?</p>
             <div class="modal-details">
                 <p><strong>Customer:</strong> @surveyToDelete.CustomerName</p>
@@ -297,7 +308,8 @@
             </div>
             <div class="modal-actions">
                 <button class="btn-confirm-delete" @onclick="DeleteSurveyConfirmed">
-                    🗑️ Delete Survey
+                    <img class="icon" src="/images/trash.png" alt="Delete" style="width: 18px; height: 18px;" />
+                    <span>Delete Survey</span>
                 </button>
                 <button class="btn-cancel-modal" @onclick="CancelDelete">
                     Cancel
@@ -312,6 +324,47 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 20px;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #D9D9D9 0%, #D9D9D9 100%);
+        border-radius: 16px;
+        padding: 48px 40px;
+        margin-bottom: 32px;
+        position: relative;
+        overflow: hidden;
+    }
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.4;
+    }
+    .header-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+    .page-title {
+        font-size: 2.8rem;
+        font-weight: 600;
+        color: #5c5c5c;
+        margin: 0 0 12px 0;
+        letter-spacing: 0.5px;
+        text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.3;
+    }
+    .page-subtitle {
+        font-size: 1.15rem;
+        color: #5c5c5c;
+        margin: 0;
+        font-weight: 400;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     }
 
     .card {
@@ -346,12 +399,44 @@
         background: #f1f3f4;
         padding: 2px 6px;
         border-radius: 4px;
-        font-family: 'Courier New', monospace;
+        font-family: 'Poppins', sans-serif !important;
     }
 
     .badge {
         font-size: 0.75rem;
     }
+
+    /* Sector Badges */
+    .sector-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .sector-badge.health { background: #ffe6e6; color: #c03; }
+    .sector-badge.tech { background: #e6f7f7; color: #167; }
+    .sector-badge.energy { background: #e6f3ff; color: #059; }
+    .sector-badge.other { background: #f0f0f0; color: #666; }
+
+    /* Company Size Badges */
+    .company-size-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .company-size-badge.micro { background: #fff3cd; color: #856404; }
+    .company-size-badge.sme { background: #cce5ff; color: #0066cc; }
+    .company-size-badge.large { background: #e6ccff; color: #6f42c1; }
+    .company-size-badge.not-set { background: #e2e3e5; color: #6c757d; }
 
     .bg-success { background-color: #28a745 !important; }
     .bg-info { background-color: #17a2b8 !important; }
@@ -572,6 +657,30 @@
     }
 </style>
 
+<style>
+    /* Professional neutral overrides */
+    .survey-manager-container .card { border: 1px solid #e5e7eb; box-shadow: none; background: #fff; }
+    .survey-manager-container .card-header { background: #f9fafb; color: #111827; border-bottom: 1px solid #e5e7eb; }
+    .survey-manager-container .table thead.table-light th { background: #f9fafb; color: #374151; }
+    .survey-manager-container .btn-outline-danger { border-color: #ef4444 !important; color: #ef4444 !important; background: transparent !important; }
+    .survey-manager-container .modal-content { border: 1px solid #e5e7eb; box-shadow: none; }
+    .survey-manager-container .editable:hover { background-color: #f3f4f6; border: 1px dashed #cbd5e1; }
+    .survey-manager-container .edit-input, .survey-manager-container .edit-select { border: 1px solid #cbd5e1; border-radius: 6px; }
+    .survey-manager-container .edit-input:focus, .survey-manager-container .edit-select:focus { box-shadow: 0 0 0 3px rgba(203,213,225,0.6); outline: none; }
+    .survey-manager-container .btn-clear-date { background: #fff; color: #ef4444; border: 1px solid #ef4444; }
+    .survey-manager-container .btn-clear-date:hover { background: #fef2f2; }
+    .survey-manager-container .btn-save { background: #fff; color: #16a34a; border: 1px solid #16a34a; }
+    .survey-manager-container .btn-save:hover { background: #f0fdf4; }
+    .survey-manager-container .btn-cancel { background: #fff; color: #374151; border: 1px solid #e5e7eb; }
+    .survey-manager-container .btn-cancel:hover { background: #f9fafb; }
+    .survey-manager-container .icon { width: 16px; height: 16px; object-fit: contain; }
+    .survey-manager-container .empty-icon { width: 32px; height: 32px; opacity: 0.5; }
+    .survey-manager-container .bg-success { background-color: #22c55e !important; }
+    .survey-manager-container .bg-info { background-color: #06b6d4 !important; }
+    .survey-manager-container .bg-warning { background-color: #f59e0b !important; color: #111827 !important; }
+    .survey-manager-container .bg-danger { background-color: #ef4444 !important; }
+</style>
+
 @code {
     SurveyResponse newSurvey = new SurveyResponse();
     List<SurveyResponse> pendingSurveys = new List<SurveyResponse>();
@@ -580,6 +689,10 @@
     bool showLinkModal = false;
     string currentSurveyLink = "";
     string createdSurveyId = "";
+    string createdSurveyCustomer = "";
+    string createdSurveyProject = "";
+    string createdSurveySector = "";
+    string createdSurveyCompanySize = "";
 
     bool showDeleteModal = false;
     SurveyResponse? surveyToDelete = null;
@@ -684,11 +797,23 @@
 
     bool IsNewSurveyValid()
     {
-        return !string.IsNullOrWhiteSpace(newSurvey.CustomerName) &&
-               !string.IsNullOrWhiteSpace(newSurvey.Sector) &&
-               !string.IsNullOrWhiteSpace(newSurvey.CompanySize) &&
-               !string.IsNullOrWhiteSpace(newSurvey.ProjectName) &&
-               !string.IsNullOrWhiteSpace(newSurvey.ProjectDuration);
+        // Check if all required fields are filled
+        if (string.IsNullOrWhiteSpace(newSurvey.CustomerName) ||
+            string.IsNullOrWhiteSpace(newSurvey.Sector) ||
+            string.IsNullOrWhiteSpace(newSurvey.CompanySize) ||
+            string.IsNullOrWhiteSpace(newSurvey.ProjectName) ||
+            string.IsNullOrWhiteSpace(newSurvey.ProjectDuration))
+        {
+            return false;
+        }
+        
+        // Validate Project Duration is a number between 1-999
+        if (!int.TryParse(newSurvey.ProjectDuration, out int duration) || duration < 1 || duration > 999)
+        {
+            return false;
+        }
+        
+        return true;
     }
 
     async Task CreateSurvey()
@@ -717,6 +842,12 @@
                 // Generate the survey link
                 createdSurveyId = newSurvey.SurveyId;
                 currentSurveyLink = $"{Navigation.BaseUri}survey/{createdSurveyId}";
+                
+                // Store survey info before resetting
+                createdSurveyCustomer = newSurvey.CustomerName;
+                createdSurveyProject = newSurvey.ProjectName;
+                createdSurveySector = newSurvey.Sector;
+                createdSurveyCompanySize = newSurvey.CompanySize ?? "";
                 
                 showLinkModal = true;
                 
@@ -843,5 +974,49 @@
         {
             CancelEdit();
         }
+    }
+
+    string GetSectorIcon(string sector)
+    {
+        return sector switch
+        {
+            "Health" => "<img src='/images/healthcare.png' alt='Health' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "Tech & Digitalization" => "<img src='/images/technology.png' alt='Tech' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "Energy" => "<img src='/images/power.png' alt='Energy' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            _ => "<img src='/images/customer-segment.png' alt='Sector' style='width: 16px; height: 16px; margin-right: 4px;' />"
+        };
+    }
+
+    string GetCompanySizeIcon(string? companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "<img src='/images/building.png' alt='Micro' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "SME" => "<img src='/images/building (1).png' alt='SME' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            "Large" => "<img src='/images/skyline.png' alt='Large' style='width: 16px; height: 16px; margin-right: 4px;' />",
+            _ => ""
+        };
+    }
+
+    string GetSectorClass(string sector)
+    {
+        return sector switch
+        {
+            "Health" => "health",
+            "Tech & Digitalization" => "tech",
+            "Energy" => "energy",
+            _ => "other"
+        };
+    }
+
+    string GetCompanySizeClass(string? companySize)
+    {
+        return companySize switch
+        {
+            "Micro" => "micro",
+            "SME" => "sme",
+            "Large" => "large",
+            _ => "not-set"
+        };
     }
 }

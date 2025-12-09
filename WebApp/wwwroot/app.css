@@ -1,5 +1,13 @@
+* {
+    font-family: 'Poppins', sans-serif !important;
+}
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, select, textarea, label {
+    font-family: 'Poppins', sans-serif !important;
 }
 
 a, .btn-link {

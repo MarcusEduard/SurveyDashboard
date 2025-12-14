@@ -1581,7 +1581,14 @@
                     <h3>
                         @if (currentNavigationLevel == "sectors")
                         {
-                            <span><img class="section-icon" src="/images/customer-segment.png" alt="Select Sector" /> Select sector to view responses</span>
+                            @if (userRole == "Admin")
+                            {
+                                <span><img class="section-icon" src="/images/customer-segment.png" alt="Select Sector" /> Select sector to view responses</span>
+                            }
+                            else
+                            {
+                                <span><img class="section-icon" src="/images/customer-segment.png" alt="Your Sector" /> Your sector responses</span>
+                            }
                         }
                         else if (currentNavigationLevel == "customers")
                         {
@@ -1597,7 +1604,7 @@
                         }
                     </h3>
                     
-                    @if (currentNavigationLevel != "sectors")
+                    @if (ShouldShowBackButton())
                     {
                         <button class="toggle-btn" @onclick="NavigateBack">← Back</button>
                     }
@@ -1605,40 +1612,43 @@
 
                 @if (currentNavigationLevel == "sectors")
                 {
-                    <!-- Sector Selection - Show all sectors for all roles in main overview -->
-                    <div class="navigation-grid">
-                        @foreach (var sectorKvp in sectorCounts)
-                        {
-                            var sector = sectorKvp.Key;
-                            var count = sectorKvp.Value;
-                            var sectorResponses = surveyResponses.Where(r => r.Sector == sector).ToList();
-                            var avgSat = sectorResponses.Count > 0 ? Math.Round(sectorResponses.Average(r => r.Question1), 1) : 0;
-                            var completedCount = sectorResponses.Count(r => r.DateCompleted.HasValue);
-                            var completionRate = count > 0 ? (double)completedCount / count * 100 : 0;
-                            
-                            <div class="navigation-card sector-card" @onclick="() => NavigateToCustomers(sector)">
-                                <div class="card-icon">@GetSectorIcon(sector)</div>
-                                <h4>@sector</h4>
-                                <div class="card-stats">
-                                    <div class="stat-item">
-                                        <span class="stat-number">@count</span>
-                                        <span class="stat-label">Total Surveys</span>
+                    @if (userRole == "Admin")
+                    {
+                        <!-- Sector Selection - Show all sectors for Admin -->
+                        <div class="navigation-grid">
+                            @foreach (var sectorKvp in sectorCounts)
+                            {
+                                var sector = sectorKvp.Key;
+                                var count = sectorKvp.Value;
+                                var sectorResponses = surveyResponses.Where(r => r.Sector == sector).ToList();
+                                var avgSat = sectorResponses.Count > 0 ? Math.Round(sectorResponses.Average(r => r.Question1), 1) : 0;
+                                var completedCount = sectorResponses.Count(r => r.DateCompleted.HasValue);
+                                var completionRate = count > 0 ? (double)completedCount / count * 100 : 0;
+                                
+                                <div class="navigation-card sector-card" @onclick="() => NavigateToCustomers(sector)">
+                                    <div class="card-icon">@GetSectorIcon(sector)</div>
+                                    <h4>@sector</h4>
+                                    <div class="card-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-number">@count</span>
+                                            <span class="stat-label">Total Surveys</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-number">@avgSat</span>
+                                            <span class="stat-label">Avg. Score</span>
+                                        </div>
                                     </div>
-                                    <div class="stat-item">
-                                        <span class="stat-number">@avgSat</span>
-                                        <span class="stat-label">Avg. Score</span>
+                                    <div class="completion-stats">
+                                        <div class="completion-bar">
+                                            <div class="completion-fill" style="width: @(completionRate)%"></div>
+                                        </div>
+                                        <span class="completion-text">@completedCount/@count completed (@(completionRate.ToString("F0"))%)</span>
                                     </div>
+                                    <div class="card-arrow">→</div>
                                 </div>
-                                <div class="completion-stats">
-                                    <div class="completion-bar">
-                                        <div class="completion-fill" style="width: @(completionRate)%"></div>
-                                    </div>
-                                    <span class="completion-text">@completedCount/@count completed (@(completionRate.ToString("F0"))%)</span>
-                                </div>
-                                <div class="card-arrow">→</div>
-                            </div>
-                        }
-                    </div>
+                            }
+                        </div>
+                    }
                 }
                 else if (currentNavigationLevel == "customers")
                 {
@@ -1702,8 +1712,9 @@
                 }
                 else if (currentNavigationLevel == "analysis")
                 {
-                    <!-- Detailed Analysis -->
                     var analysisResponses = GetProjectResponses(selectedSector!, selectedCustomer!, selectedProject!);
+                    
+                    <!-- Detailed Analysis -->
                     
                     <div class="detailed-analysis-container">
                         <div class="analysis-header">
@@ -5431,6 +5442,13 @@
         {
             var roleClaim = authState.User.FindFirst("Role");
             userRole = roleClaim?.Value ?? "";
+            
+            // Auto-navigate non-admin users to their sector
+            if (userRole != "Admin" && (userRole == "Health" || userRole == "Tech" || userRole == "Energy"))
+            {
+                selectedSector = userRole;
+                currentNavigationLevel = "customers";
+            }
         }
         
         await LoadSurveyData();
@@ -5875,10 +5893,28 @@
         }
         else if (currentNavigationLevel == "customers")
         {
-            currentNavigationLevel = "sectors";
-            selectedSector = null;
+            // Only allow admin to go back to sectors
+            if (userRole == "Admin")
+            {
+                currentNavigationLevel = "sectors";
+                selectedSector = null;
+            }
         }
         StateHasChanged();
+    }
+
+    bool ShouldShowBackButton()
+    {
+        // Never show back button on sectors level
+        if (currentNavigationLevel == "sectors")
+            return false;
+        
+        // Don't show back button on customers level for non-admin users
+        if (currentNavigationLevel == "customers" && userRole != "Admin")
+            return false;
+        
+        // Show back button for all other cases
+        return true;
     }
 
     void ToggleQuestion(int question)

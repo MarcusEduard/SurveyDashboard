@@ -35,7 +35,7 @@ public class AuthService : IAuthService
             FullName = "Tech User",
             Domain = "Tech.com",
             Password = "Tech1234",
-            Role = "Tech",
+            Role = "Tech & Digitalization",
             SecurityLevel = 2,
             Birthday = new DateTime(1988, 3, 14)
         },

@@ -146,7 +146,7 @@ namespace WebAPI.Services
                 Data context:
                 {dataContext}
                 
-                Provide a clear, conversational answer based on the data. If the data doesn't contain enough information to answer, say so clearly.";
+                Provide a clear, concise answer in 2-3 sentences maximum. Be direct and to the point. If the data doesn't contain enough information to answer, say so briefly.";
 
                 var response = await _chatClient.CompleteChatAsync(prompt);
                 return response.Value.Content[0].Text;
@@ -517,7 +517,7 @@ Provide a comprehensive strategic analysis including:
 3. Company size preferences and patterns
 4. Critical areas for improvement
 5. Strategic recommendations for business growth
-Be detailed, actionable, and data-driven.";
+Be detailed, actionable, and data-driven. Maximum 3 sentences per point.";
 
                 var completion = await _chatClient.CompleteChatAsync(new[]
                 {

@@ -10,11 +10,6 @@
 
 <div class="dashboard-container">
     <div class="dashboard-top-bar">
-        <div class="dashboard-export-toolbar">
-            <ExportToolbar Data="@surveyResponses" 
-                          FileName="survey-dashboard-data" 
-                          Title="Survey Analytics Dashboard Export" />
-        </div>
         <div class="dashboard-footer">
             <span>
                 Last updated: @(GetLastUpdatedDate()?.ToString("MM/dd/yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture) ?? "No data")
@@ -1836,9 +1831,12 @@
         margin-bottom: 20px;
     }
 
-    .dashboard-export-toolbar {
+    .dashboard-top-bar {
         display: flex;
-        gap: 8px;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 24px;
+        padding: 0 8px;
     }
 
     .dashboard-footer {

@@ -179,12 +179,6 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4>Completed Surveys</h4>
-            @if (completedSurveys.Any())
-            {
-                <ExportToolbar Data="@completedSurveys" 
-                              FileName="completed-surveys" 
-                              Title="Completed Surveys Report" />
-            }
         </div>
         <div class="card-body">
             @if (completedSurveys.Any())

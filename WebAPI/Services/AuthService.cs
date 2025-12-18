@@ -19,9 +19,9 @@ public class AuthService : IAuthService
         },
         new()
         {
-            Username = "Marcus",
-            Email = "marcus@gmail.com",
-            FullName = "Marcus Eduard",
+            Username = "Michael Laudrup",
+            Email = "michael.laudrup@gmail.com",
+            FullName = "Michael Laudrup",
             Domain = "via.dk",
             Password = "Energy1234",
             Role = "Energy",
@@ -30,9 +30,9 @@ public class AuthService : IAuthService
         },
         new()
         {
-            Username = "Tech",
-            Email = "tech@gmail.com",
-            FullName = "Tech User",
+            Username = "Marcus",
+            Email = "marcus@gmail.com",
+            FullName = "Marcus Eduard",
             Domain = "Tech.com",
             Password = "Tech1234",
             Role = "Tech & Digitalization",

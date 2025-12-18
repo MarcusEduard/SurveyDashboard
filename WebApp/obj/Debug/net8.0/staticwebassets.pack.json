@@ -1,0 +1,269 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\WebApp.bundle.scp.css",
+      "PackagePath": "staticwebassets\\WebApp.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\bootstrap-icons.svg",
+      "PackagePath": "staticwebassets\\bootstrap-icons.svg"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\css\\animations.css",
+      "PackagePath": "staticwebassets\\css\\animations.css"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\css\\export-toolbar.css",
+      "PackagePath": "staticwebassets\\css\\export-toolbar.css"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\Background.jpg",
+      "PackagePath": "staticwebassets\\images\\Background.jpg"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\BackgroundBachelor.avif",
+      "PackagePath": "staticwebassets\\images\\BackgroundBachelor.avif"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\BackgroundBachelor.jpg",
+      "PackagePath": "staticwebassets\\images\\BackgroundBachelor.jpg"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\add.png",
+      "PackagePath": "staticwebassets\\images\\add.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\analysis.png",
+      "PackagePath": "staticwebassets\\images\\analysis.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\best-seller.png",
+      "PackagePath": "staticwebassets\\images\\best-seller.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\building (1).png",
+      "PackagePath": "staticwebassets\\images\\building (1).png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\building.png",
+      "PackagePath": "staticwebassets\\images\\building.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\chat-bot.png",
+      "PackagePath": "staticwebassets\\images\\chat-bot.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\checklist.png",
+      "PackagePath": "staticwebassets\\images\\checklist.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\copy.png",
+      "PackagePath": "staticwebassets\\images\\copy.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\csv-file.png",
+      "PackagePath": "staticwebassets\\images\\csv-file.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\customer-segment.png",
+      "PackagePath": "staticwebassets\\images\\customer-segment.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\customer-survey.png",
+      "PackagePath": "staticwebassets\\images\\customer-survey.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\customers.png",
+      "PackagePath": "staticwebassets\\images\\customers.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\dashboard.png",
+      "PackagePath": "staticwebassets\\images\\dashboard.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\dk_logo.png",
+      "PackagePath": "staticwebassets\\images\\dk_logo.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\dk_nd.png",
+      "PackagePath": "staticwebassets\\images\\dk_nd.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\edit.png",
+      "PackagePath": "staticwebassets\\images\\edit.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\enter.png",
+      "PackagePath": "staticwebassets\\images\\enter.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\excellence.png",
+      "PackagePath": "staticwebassets\\images\\excellence.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\file.png",
+      "PackagePath": "staticwebassets\\images\\file.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\good-feedback.png",
+      "PackagePath": "staticwebassets\\images\\good-feedback.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\graph.png",
+      "PackagePath": "staticwebassets\\images\\graph.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\healthcare.png",
+      "PackagePath": "staticwebassets\\images\\healthcare.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\home.png",
+      "PackagePath": "staticwebassets\\images\\home.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\lightbulb.png",
+      "PackagePath": "staticwebassets\\images\\lightbulb.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\like (1).png",
+      "PackagePath": "staticwebassets\\images\\like (1).png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\like.png",
+      "PackagePath": "staticwebassets\\images\\like.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\logout.png",
+      "PackagePath": "staticwebassets\\images\\logout.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\margin.png",
+      "PackagePath": "staticwebassets\\images\\margin.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\negative-vote.png",
+      "PackagePath": "staticwebassets\\images\\negative-vote.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\new.png",
+      "PackagePath": "staticwebassets\\images\\new.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\pdf.png",
+      "PackagePath": "staticwebassets\\images\\pdf.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\power.png",
+      "PackagePath": "staticwebassets\\images\\power.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\predictive-analysis.png",
+      "PackagePath": "staticwebassets\\images\\predictive-analysis.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\project.png",
+      "PackagePath": "staticwebassets\\images\\project.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\public-relation.png",
+      "PackagePath": "staticwebassets\\images\\public-relation.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\rating (1).png",
+      "PackagePath": "staticwebassets\\images\\rating (1).png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\rating.png",
+      "PackagePath": "staticwebassets\\images\\rating.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\repeat.png",
+      "PackagePath": "staticwebassets\\images\\repeat.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\retention-rate.png",
+      "PackagePath": "staticwebassets\\images\\retention-rate.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\satisfaction.png",
+      "PackagePath": "staticwebassets\\images\\satisfaction.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\send.png",
+      "PackagePath": "staticwebassets\\images\\send.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\skyline.png",
+      "PackagePath": "staticwebassets\\images\\skyline.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\statistic-business.png",
+      "PackagePath": "staticwebassets\\images\\statistic-business.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\technology.png",
+      "PackagePath": "staticwebassets\\images\\technology.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\trash.png",
+      "PackagePath": "staticwebassets\\images\\trash.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\trend.png",
+      "PackagePath": "staticwebassets\\images\\trend.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\vote.png",
+      "PackagePath": "staticwebassets\\images\\vote.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\images\\workplace.png",
+      "PackagePath": "staticwebassets\\images\\workplace.png"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\js\\chat.js",
+      "PackagePath": "staticwebassets\\js\\chat.js"
+    },
+    {
+      "Id": "C:\\Users\\marcu\\OneDrive\\Skrivebord\\SurveyDashboard\\WebApp\\wwwroot\\js\\exportHelpers.js",
+      "PackagePath": "staticwebassets\\js\\exportHelpers.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.WebApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.WebApp.props",
+      "PackagePath": "build\\WebApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.WebApp.props",
+      "PackagePath": "buildMultiTargeting\\WebApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.WebApp.props",
+      "PackagePath": "buildTransitive\\WebApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

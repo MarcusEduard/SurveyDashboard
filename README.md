@@ -17,3 +17,4 @@ To run the project locally, follow the steps below:
 6. For Sector-based login: 
     Username: Marcus, 
     Password: Tech1234
+7. To activate the AI, go inte **WebAPI** and go into **application.json** and insert the api key from the document **APIKEY**, where it says "ApiKey-Here"

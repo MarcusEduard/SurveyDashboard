@@ -1,0 +1,6737 @@
+/* _content/WebApp/Components/Layout/MainLayout.razor.rz.scp.css */
+.page[b-pui3qmsk44] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-header[b-pui3qmsk44] {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.main-content[b-pui3qmsk44] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content:not(.full-width)[b-pui3qmsk44] {
+    padding-top: 0;
+}
+
+.main-content.full-width[b-pui3qmsk44] {
+    padding: 0;
+    margin-left: 0 !important;
+}
+
+.top-row[b-pui3qmsk44] {
+    position: sticky;
+    top: 0;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: white;
+    border-bottom: 1px solid #d6d5d5;
+    z-index: 999;
+    padding: 0 2rem;
+}
+
+.top-row[b-pui3qmsk44]  a {
+    color: #c82333 !important;
+    text-decoration: none;
+}
+
+.top-row[b-pui3qmsk44]  .btn-link {
+    color: #c82333 !important;
+    border: 1px solid rgba(200, 35, 51, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.top-row[b-pui3qmsk44]  .btn-link:hover {
+    background-color: rgba(200, 35, 51, 0.1);
+    border-color: rgba(200, 35, 51, 0.5);
+}
+
+.content[b-pui3qmsk44] {
+    flex: 1;
+    padding-top: 1rem;
+}
+
+.content.survey-content[b-pui3qmsk44] {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+#blazor-error-ui[b-pui3qmsk44] {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#blazor-error-ui .dismiss[b-pui3qmsk44] {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .top-row[b-pui3qmsk44] {
+        height: auto;
+        padding: 0.5rem 1rem;
+        justify-content: space-between;
+    }
+    
+    .content:not(.survey-content)[b-pui3qmsk44] {
+        padding: 1rem;
+    }
+}
+
+body[b-pui3qmsk44] {
+    background: #fff !important;
+}
+/* _content/WebApp/Components/Pages/Error.razor.rz.scp.css */
+.error-container[b-st4zonajmk] {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 20px;
+}
+
+.error-card[b-st4zonajmk] {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    padding: 40px 32px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.error-card[b-st4zonajmk]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #dc3545, #ffc107, #007bff);
+}
+
+.error-icon[b-st4zonajmk] {
+    margin-bottom: 24px;
+}
+
+.error-emoji[b-st4zonajmk] {
+    font-size: 5rem;
+    animation: bounce-b-st4zonajmk 2s infinite;
+}
+
+@keyframes bounce-b-st4zonajmk {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+.error-title[b-st4zonajmk] {
+    color: #dc3545;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+}
+
+.error-subtitle[b-st4zonajmk] {
+    color: #6c757d;
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin: 0 0 24px 0;
+}
+
+.error-description[b-st4zonajmk] {
+    color: #495057;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+.error-details[b-st4zonajmk] {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+    border-left: 4px solid #dc3545;
+}
+
+.error-details code[b-st4zonajmk] {
+    background: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #dc3545;
+}
+
+.error-help-text[b-st4zonajmk] {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin: 8px 0 0 0;
+}
+
+.error-actions[b-st4zonajmk] {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+}
+
+.btn[b-st4zonajmk] {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary[b-st4zonajmk] {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+
+.btn-primary:hover[b-st4zonajmk] {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+}
+
+.btn-secondary[b-st4zonajmk] {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    color: white;
+    box-shadow: 0 4px 15px rgba(108,117,125,0.3);
+}
+
+.btn-secondary:hover[b-st4zonajmk] {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108,117,125,0.4);
+}
+
+.btn-outline[b-st4zonajmk] {
+    background: transparent;
+    color: #007bff;
+    border: 2px solid #007bff;
+}
+
+.btn-outline:hover[b-st4zonajmk] {
+    background: #007bff;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.error-support[b-st4zonajmk] {
+    border-top: 1px solid #e9ecef;
+    padding-top: 24px;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.support-link[b-st4zonajmk] {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.support-link:hover[b-st4zonajmk] {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .error-card[b-st4zonajmk] {
+        padding: 24px 20px;
+    }
+    
+    .error-title[b-st4zonajmk] {
+        font-size: 2rem;
+    }
+    
+    .error-actions[b-st4zonajmk] {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn[b-st4zonajmk] {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+}
+/* _content/WebApp/Components/Pages/Login.razor.rz.scp.css */
+@page "/survey-dashboard"
+@attribute [Authorize(Policy = "NotGuest")]
+@using WebAPI.Models
+@using Microsoft.AspNetCore.Components.Authorization
+@inject HttpClient httpClient
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="dashboard-container">
+    <h2>Survey Analytics Dashboard</h2>
+    
+    @if (isLoading)[b-iq1362wwd4]
+    {
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading survey data...</p>
+        </div>
+    }
+    else if (surveyResponses.Count == 0)[b-iq1362wwd4]
+    {
+        <div class="no-data">
+            <p>No survey responses available yet.</p>
+        </div>
+    }
+    else[b-iq1362wwd4]
+    {
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <div class="card clickable" @onclick='() => ScrollToSection("responses")'>
+                <div class="card-icon">📊</div>
+                <h3 class="counter" data-target="@surveyResponses.Count">@surveyResponses.Count</h3>
+                <p>Total Responses</p>
+                <div class="card-arrow">→</div>
+            </div>
+            <div class="card clickable" @onclick='() => ScrollToSection("satisfaction")'>
+                <div class="card-icon">⭐</div>
+                <h3 class="counter satisfaction-score" data-target="@Math.Round(avgSatisfaction, 1)">@Math.Round(avgSatisfaction, 1)</h3>
+                <p>Avg Overall Satisfaction</p>
+                <div class="satisfaction-bar" style="position: relative;">
+                    <div class="satisfaction-fill" style="width: @(avgSatisfaction * 10)%"></div>
+                    <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: 0; bottom: 0; width: 2px; background: #28a745; opacity: 0.7;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sector Overview Charts -->
+        <div class="charts-section">
+            <div class="section-header">
+                <h3>📈 Analytics</h3>
+            </div>
+            
+            <!-- Bar Chart: Responses per Sector -->
+            <div class="chart-container" id="responses">
+                <div class="chart-header">
+                    <h4>🔍 Survey Responses by Sector</h4>
+                    <div class="chart-controls">
+                        <button class="view-btn @(chartView == "count" ? "active" : "")" @onclick='() => SetChartView("count")'>Count</button>
+                        <button class="view-btn @(chartView == "percentage" ? "active" : "")" @onclick='() => SetChartView("percentage")'>%</button>
+                        <button class="view-btn @(chartView == "completion" ? "active" : "")" @onclick='() => SetChartView("completion")'>Completion Rate</button>
+                    </div>
+                </div>
+                <div class="interactive-bar-chart">
+                    @foreach (var sector in sectorCounts.OrderByDescending(x => x.Value))
+                    {
+                        var totalCount = sector.Value;
+                        var completedCount = GetCompletedCountForSector(sector.Key);
+                        var completionRate = totalCount > 0 ? (double)completedCount / totalCount * 100 : 0;
+                        
+                        var displayValue = chartView switch
+                        {
+                            "percentage" => $"{((double)sector.Value / surveyResponses.Count * 100):F1}%",
+                            "completion" => $"{completionRate.ToString("F0")}% ({completedCount}/{totalCount})",
+                            _ => sector.Value.ToString()
+                        };
+                        
+                        var barWidth = chartView switch[b-iq1362wwd4]
+                        {
+                            "percentage" => (double)sector.Value / surveyResponses.Count * 100,
+                            "completion" => completionRate,
+                            _ => totalCount > 0 ? Math.Max(((double)totalCount / surveyResponses.Count * 100), 5) : 0
+                        };
+                        
+                        <div class="interactive-bar-item @(hoveredSector == sector.Key ? "hovered" : "")" 
+                             @onclick="() => ToggleSectorDetails(sector.Key)"
+                             @onmouseover="() => hoveredSector = sector.Key"
+                             @onmouseleave="() => hoveredSector = null">
+                            <div class="bar-header">
+                                <div class="bar-label">
+                                    <span class="sector-icon">@GetSectorIcon(sector.Key)</span>
+                                    @sector.Key
+                                </div>
+                                <div class="bar-value-display">@displayValue</div>
+                            </div>
+                            <div class="bar-wrapper">
+                                <div class="interactive-bar" 
+                                     style="width: @(barWidth)%; background: linear-gradient(135deg, @GetSectorColor(sector.Key), @GetSectorColorDark(sector.Key)); animation-delay: @(Array.IndexOf(sectorCounts.Keys.ToArray(), sector.Key) * 0.1)s">
+                                    <div class="bar-shine"></div>
+                                </div>
+                                @if (chartView == "completion")[b-iq1362wwd4]
+                                {
+                                    <div class="completion-progress-bg">
+                                        <div class="completion-progress-fill" style="width: @(completionRate)%"></div>
+                                    </div>
+                                }
+                            </div>
+                            @if (expandedSectors.Contains(sector.Key))[b-iq1362wwd4]
+                            {
+                                <div class="sector-dropdown">
+                                    <div class="dropdown-stats">
+                                        <div class="mini-stat">
+                                            <span class="mini-stat-value">@Math.Round(GetSectorAverage(sector.Key, "satisfaction"), 1)</span>
+                                            <span class="mini-stat-label">Avg Satisfaction</span>
+                                        </div>
+                                        <div class="mini-stat">
+                                            <span class="mini-stat-value">@completedCount</span>
+                                            <span class="mini-stat-label">Completed</span>
+                                        </div>
+                                        <div class="mini-stat">
+                                            <span class="mini-stat-value">@(totalCount - completedCount)</span>
+                                            <span class="mini-stat-label">Pending</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div[b-iq1362wwd4]>
+                    }
+                </div>
+            </div>
+
+            <!-- Average Satisfaction by Sector -->
+            <div class="chart-container" id="satisfaction">
+                <div class="chart-header">
+                    <h4>⭐ Satisfaction Ratings</h4>
+                    <div class="filter-controls">
+                        <div class="filter-section">
+                            <label class="filter-label">Filter by Sector</label>
+                            <select @bind="selectedSectorFilter" class="filter-dropdown">
+                                <option value="all">All Sectors</option>
+                                @foreach (var sector in GetUniqueSectors())[b-iq1362wwd4]
+                                {
+                                    <option value="@sector">@sector</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <label class="filter-label">Filter by Company Size</label>
+                            <select @bind="selectedCompanySizeFilter" class="filter-dropdown">
+                                <option value="all">All Company Sizes</option>
+                                @foreach (var companySize in GetUniqueCompanySizes())[b-iq1362wwd4]
+                                {
+                                    <option value="@companySize">@companySize</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        @if (selectedSectorFilter != "all" || selectedCompanySizeFilter != "all")[b-iq1362wwd4]
+                        {
+                            <div class="filter-section">
+                                <button class="clear-filters-btn" @onclick="ClearAllFilters">
+                                    🗑️ Clear Filters
+                                </button>
+                            </div>
+                        }
+                        
+                        @if (selectedSectorFilter != "all" || selectedCompanySizeFilter != "all")
+                        {
+                            <div class="active-filters">
+                                <span class="filter-indicator">Active Filters:</span>
+                                @if (selectedSectorFilter != "all")[b-iq1362wwd4]
+                                {
+                                    <span class="filter-badge sector">@selectedSectorFilter</span>
+                                }
+                                @if (selectedCompanySizeFilter != "all")
+                                {
+                                    <span class="filter-badge company-size">@selectedCompanySizeFilter</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="satisfaction-grid">
+                    @[b-iq1362wwd4]{
+                        var filteredSatisfactionData = GetCombinedFilteredSatisfactionData();
+                    }
+                    
+                    @foreach (var item in filteredSatisfactionData.OrderByDescending(x => x.Value))
+                    {
+                        var percentage = item.Value / 10 * 100;
+                        var satisfaction = item.Value;
+                        var satisfactionClass = satisfaction >= 8 ? "excellent" : satisfaction >= 6 ? "good" : satisfaction >= 4 ? "average" : "poor";
+                        
+                        <div class="satisfaction-card @satisfactionClass" @onclick="() => SelectItem(item.Key)">
+                            <div class="satisfaction-header">
+                                <span class="sector-icon">@GetItemIcon(item.Key)</span>
+                                <h5>@item.Key</h5>
+                                <div class="satisfaction-score-big">@Math.Round(item.Value, 1)</div>
+                            </div>
+                            <div class="satisfaction-meter">
+                                <div class="meter-track" style="position: relative;">
+                                    <div class="goal-line" title="Goal: 9" style="position: absolute; left: 90%; top: 0; bottom: 0; width: 2px; background: #28a745; opacity: 0.7;"></div>
+                                </div>
+                                <div class="meter-fill" style="width: @(percentage)%; background: @GetItemColor(item.Key);"></div>
+                                <div class="meter-labels">
+                                    @for (int i = 0; i <= 10; i += 2)
+                                    {
+                                        <span class="meter-label">@i</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="satisfaction-emotion">@GetSatisfactionEmoji(satisfaction)</div>
+                            <div class="satisfaction-details">
+                                <small>@GetFilteredResponseCount(item.Key) responses</small>
+                            </div>
+                        </div[b-iq1362wwd4]>
+                    }
+                    
+                    @if (!filteredSatisfactionData.Any())
+                    {
+                        <div class="no-data-message">
+                            <div class="no-data-icon">📊</div>
+                            <h4>No Data Available</h4>
+                            <p>No survey responses found for the selected filters.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Satisfaction Trends Over Time -->
+            <div class="chart-container" id="trends">
+                <div class="chart-header">
+                    <h4>📈 Satisfaction Trends Over Time</h4>
+                    <div class="chart-controls">
+                        <button class="view-btn @(trendsView == "monthly" ? "active" : "")" @onclick='() => SetTrendsView("monthly")'>Monthly</button>
+                        <button class="view-btn @(trendsView == "quarterly" ? "active" : "")" @onclick='() => SetTrendsView("quarterly")'>Quarterly</button>
+                        <button class="view-btn @(trendsView == "yearly" ? "active" : "")" @onclick='() => SetTrendsView("yearly")'>Yearly</button>
+                    </div>
+                </div>
+                
+                @if (GetTrendData().Any())[b-iq1362wwd4]
+                {
+                    <div class="trends-container">
+                        <!-- Trend Summary Cards -->
+                        <div class="trend-summary-cards">
+                            <div class="trend-card">
+                                <div class="trend-icon">📈</div>
+                                <div class="trend-value @(GetTrendDirection() == "up" ? "positive" : GetTrendDirection() == "down" ? "negative" : "neutral")">
+                                    @GetTrendPercentage()%
+                                </div>
+                                <div class="trend-label">@GetTrendDirection().ToUpper() trend</div>
+                                <div class="trend-period">Last @trendsView</div>
+                            </div>
+                            
+                            <div class="trend-card">
+                                <div class="trend-icon">🎯</div>
+                                <div class="trend-value">@GetHighestPeriod().Score.ToString("F1")</div>
+                                <div class="trend-label">Highest Score</div>
+                                <div class="trend-period">@GetHighestPeriod().Period</div>
+                            </div>
+                            
+                            <div class="trend-card">
+                                <div class="trend-icon">⚠️</div>
+                                <div class="trend-value">@GetLowestPeriod().Score.ToString("F1")</div>
+                                <div class="trend-label">Lowest Score</div>
+                                <div class="trend-period">@GetLowestPeriod().Period</div>
+                            </div>
+                            
+                            <div class="trend-card">
+                                <div class="trend-icon">📊</div>
+                                <div class="trend-value">@GetTrendData().Count()</div>
+                                <div class="trend-label">Data Points</div>
+                                <div class="trend-period">@trendsView periods</div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Trend Chart -->
+                        <div class="trend-chart-container">
+                            <div class="visual-trend-chart">
+                                @{
+                                    var trendData = GetTrendData().ToList();
+                                }
+                                
+                                @if (trendData.Any())
+                                {
+                                    <div class="trend-chart-header">
+                                        <span class="chart-title">📈 Satisfaction Score Over Time</span>
+                                        <span class="chart-range">Scale: 0 - 10</span>
+                                    </div>
+                                    
+                                    <!-- Visual Line Chart -->
+                                    <div class="line-chart-container">
+                                        <div class="chart-grid">
+                                            <!-- Y-axis scale -->
+                                            <div class="y-axis">
+                                                @for (int i = 10; i >= 0; i -= 2)
+                                                {
+                                                    <div class="y-label" style="bottom: @(i * 10)%;">@i</div>
+                                                }
+                                            </div>
+                                            
+                                            <!-- Chart area -->
+                                            <div class="chart-area">
+                                                <!-- Grid lines -->
+                                                <div class="grid-lines">
+                                                    @for (int i = 0; i <= 10; i += 2)[b-iq1362wwd4]
+                                                    {
+                                                        <div class="grid-line-horizontal" style="bottom: @(i * 10)%;"></div>
+                                                    }
+                                                </div>
+                                                
+                                                <!-- Line chart content -->
+                                                <div class="line-chart-content">
+                                                    @if (trendData.Count > 1)[b-iq1362wwd4]
+                                                    {
+                                                        <!-- Background area -->
+                                                        <div class="trend-area" style="@GetTrendAreaPath(trendData)"></div>
+                                                        
+                                                        <!-- Main trend line -->
+                                                        <div class="trend-line" style="@GetTrendLinePath(trendData)"></div>
+                                                    }
+                                                    
+                                                    <!-- Data points -->
+                                                    @foreach (var (point, index) in trendData.Select((p, i) => (p, i)))[b-iq1362wwd4]
+                                                    {
+                                                        var leftPosition = trendData.Count > 1 ? (index * 100.0 / (trendData.Count - 1)) : 50;
+                                                        var bottomPosition = (point.Score / 10.0) * 100;
+                                                        var isRecent = index >= Math.Max(0, trendData.Count - 3);
+                                                        var pointClass = point.Score >= 8 ? "excellent" : point.Score >= 6 ? "good" : point.Score >= 4 ? "average" : "poor";
+                                                        
+                                                        <div class="data-point @pointClass @(isRecent ? "recent" : "") @(selectedTrendPoint == index ? "selected" : "")"
+                                                             style="left: @(leftPosition)%; bottom: @(bottomPosition)%;"
+                                                             @onclick="() => SelectTrendPoint(index)"
+                                                             @onmouseover="() => selectedTrendPoint = index"
+                                                             @onmouseleave="() => selectedTrendPoint = null">
+                                                            
+                                                            <div class="point-circle">
+                                                                <div class="point-value">@point.Score.ToString("F1")</div>
+                                                            </div>
+                                                            
+                                                            @if (selectedTrendPoint == index)
+                                                            {
+                                                                <div class="point-tooltip">
+                                                                    <div class="tooltip-header">
+                                                                        <strong>@point.Score.ToString("F1") / 10</strong>
+                                                                        <span class="score-badge @pointClass">@GetScoreCategory(point.Score)</span>
+                                                                    </div>
+                                                                    <div class="tooltip-period">@point.Period</div>
+                                                                    <div class="tooltip-details">
+                                                                        <span>📊 @GetPeriodResponseCount(point.Period) responses</span>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div[b-iq1362wwd4]>
+                                                    }
+                                                </div>
+                                                
+                                                <!-- X-axis labels -->
+                                                <div class="x-axis">
+                                                    @foreach (var (point, index) in trendData.Select((p, i) => (p, i)))[b-iq1362wwd4]
+                                                    {
+                                                        var leftPosition = trendData.Count > 1 ? (index * 100.0 / (trendData.Count - 1)) : 50;
+                                                        var showLabel = trendData.Count <= 8 || index % Math.Max(1, trendData.Count / 6) == 0;
+                                                        
+                                                        @if (showLabel)
+                                                        {
+                                                            <div class="x-label" style="left: @(leftPosition)%;">
+                                                                @point.ShortPeriod
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Chart Legend -->
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <div class="legend-dot excellent"></div>
+                                                <span>Excellent (8-10)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-dot good"></div>
+                                                <span>Good (6-7.9)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-dot average"></div>
+                                                <span>Average (4-5.9)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="legend-dot poor"></div>
+                                                <span>Needs Improvement (0-3.9)</span>
+                                            </div>
+                                            <div class="legend-item recent-legend">
+                                                <div class="legend-dot recent"></div>
+                                                <span>Recent Data</span>
+                                            </div>
+                                        </div>
+                                    </div[b-iq1362wwd4]>
+                                }
+                            </div>
+                            
+                            <!-- Trend Insights -->
+                            <div class="trend-insights">
+                                <div class="insight-item">
+                                    <strong>Trend Analysis:</strong>
+                                    <span>@GetTrendAnalysis()</span>
+                                </div>
+                                @if (GetRecurringChallenges().Any())[b-iq1362wwd4]
+                                {
+                                    <div class="insight-item">
+                                        <strong>Recurring Challenges:</strong>
+                                        <span>@string.Join(", ", GetRecurringChallenges())</span>
+                                    </div>
+                                }
+                                <div class="insight-item">
+                                    <strong>Service Quality:</strong>
+                                    <span>@GetServiceQualityInsight()</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div[b-iq1362wwd4]>
+                }
+                else[b-iq1362wwd4]
+                {
+                    <div class="no-trend-data">
+                        <p>📊 No trend data available yet. Complete more surveys to see satisfaction trends over time!</p>
+                    </div>
+                }
+            </div>
+
+            <!-- Question Performance Chart -->
+            <div class="chart-container">
+                <h4>📊 Question Performance</h4>
+                <div class="question-performance">
+                    <div class="question-bars">
+                        @for (int q = 1; q <= 9; q++)[b-iq1362wwd4]
+                        {
+                            var avg = GetQuestionAverage(q);
+                            var height = avg / 10 * 100;
+                            var questionClass = avg >= 8 ? "excellent" : avg >= 6 ? "good" : avg >= 4 ? "average" : "poor";
+
+                            <div class="question-bar-item @(selectedQuestion == q ? "selected" : "")"
+                                 @onclick="() => ToggleQuestion(q)">
+                                <div class="question-bar @questionClass" style="height: @(height)%">
+                                    <div class="bar-value">@Math.Round(avg, 1)</div>
+                                </div>
+                                <div class="question-label">Q@(q)</div>
+                                <div class="question-tooltip">
+                                    @GetQuestionText(q)
+                                </div>
+                                @if (selectedQuestion == q)
+                                {
+                                    <div class="question-tooltip" style="top:-80px;">
+                                        <strong>@GetQuestionText(q)</strong>
+                                        <div class="tooltip-stats">
+                                            <span>Average: @Math.Round(avg, 1)/10</span>
+                                            <span>@GetQuestionCategory(avg)</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div[b-iq1362wwd4]>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hierarchical Navigation Section -->
+            <div class="sector-details" id="sectors">
+                <div class="section-header">
+                    <h3>
+                        @if (currentNavigationLevel == "sectors")[b-iq1362wwd4]
+                        {
+                            <span>🏢 Select Sector for Detailed Analysis</span>
+                        }
+                        else if (currentNavigationLevel == "customers")[b-iq1362wwd4]
+                        {
+                            <span>🏬 Customers in @selectedSector Sector</span>
+                        }
+                        else if (currentNavigationLevel == "projects")[b-iq1362wwd4]
+                        {
+                            <span>📋 Projects for @selectedCustomer</span>
+                        }
+                        else if (currentNavigationLevel == "analysis")[b-iq1362wwd4]
+                        {
+                            <span>📊 Detailed Analysis: @selectedProject</span>
+                        }
+                    </h3>
+                    
+                    @if (currentNavigationLevel != "sectors")[b-iq1362wwd4]
+                    {
+                        <button class="toggle-btn" @onclick="NavigateBack">← Back</button>
+                    }
+                </div>
+
+                @if (currentNavigationLevel == "sectors")[b-iq1362wwd4]
+                {
+                    <!-- Sector Selection - Show all sectors for all roles in main overview -->
+                    <div class="navigation-grid">
+                        @foreach (var sectorKvp in sectorCounts)
+                        {
+                            var sector = sectorKvp.Key;
+                            var count = sectorKvp.Value;
+                            var sectorResponses = surveyResponses.Where(r => r.Sector == sector).ToList();
+                            var avgSat = sectorResponses.Count > 0 ? Math.Round(sectorResponses.Average(r => r.Question1), 1) : 0;
+                            var completedCount = sectorResponses.Count(r => r.DateCompleted.HasValue);
+                            var completionRate = count > 0 ? (double)completedCount / count * 100 : 0;
+                            
+                            <div class="navigation-card sector-card" @onclick="() => NavigateToCustomers(sector)">
+                                <div class="card-icon">@GetSectorIcon(sector)</div>
+                                <h4>@sector</h4>
+                                <div class="card-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number">@count</span>
+                                        <span class="stat-label">Total Surveys</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">@avgSat</span>
+                                        <span class="stat-label">Avg. Score</span>
+                                    </div>
+                                </div>
+                                <div class="completion-stats">
+                                    <div class="completion-bar">
+                                        <div class="completion-fill" style="width: @(completionRate)%"></div>
+                                    </div>
+                                    <span class="completion-text">@completedCount/@count completed (@(completionRate.ToString("F0"))%)</span>
+                                </div>
+                                <div class="card-arrow">→</div>
+                            </div>
+                        }
+                    </div[b-iq1362wwd4]>
+                }
+                else if (currentNavigationLevel == "customers")[b-iq1362wwd4]
+                {
+                    <!-- Customer Selection - Now role-filtered for detailed analysis -->
+                    <div class="navigation-grid">
+                        @foreach (var customer in GetCustomersForSector(selectedSector!))
+                        {
+                            var customerResponses = GetRoleBasedResponses().Where(r => r.Sector == selectedSector && r.CustomerName == customer).ToList();
+                            
+                            @if (customerResponses.Any()) // Only show if user has access to this data
+                            {
+                                var avgSat = customerResponses.Count > 0 ? Math.Round(customerResponses.Average(r => r.Question1), 1) : 0;
+                                var projectCount = customerResponses.Select(r => r.ProjectName).Distinct().Count();
+                                
+                                <div class="navigation-card customer-card" @onclick="() => NavigateToProjects(customer)">
+                                    <div class="card-icon">🏬</div>
+                                    <h4>@customer</h4>
+                                    <div class="card-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-number">@projectCount</span>
+                                            <span class="stat-label">Projects</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-number">@avgSat</span>
+                                            <span class="stat-label">Avg. Score</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-arrow">→</div>
+                                </div>
+                            }
+                        }
+                    </div[b-iq1362wwd4]>
+                }
+                else if (currentNavigationLevel == "projects")[b-iq1362wwd4]
+                {
+                    <!-- Project Selection -->
+                    <div class="navigation-grid">
+                        @foreach (var project in GetProjectsForCustomer(selectedSector!, selectedCustomer!))
+                        {
+                            var projectResponses = GetProjectResponses(selectedSector!, selectedCustomer!, project);
+                            var avgSat = projectResponses.Count > 0 ? Math.Round(projectResponses.Average(r => r.Question1), 1) : 0;
+                            var duration = projectResponses.FirstOrDefault()?.ProjectDuration ?? "N/A";
+                            
+                            <div class="navigation-card project-card" @onclick="() => NavigateToAnalysis(project)">
+                                <div class="card-icon">📋</div>
+                                <h4>@project</h4>
+                                <div class="card-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number">@projectResponses.Count</span>
+                                        <span class="stat-label">Responses</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number">@avgSat</span>
+                                        <span class="stat-label">Score</span>
+                                    </div>
+                                </div>
+                                <div class="card-arrow">→</div>
+                            </div>
+                        }
+                    </div[b-iq1362wwd4]>
+                }
+                else if (currentNavigationLevel == "analysis")[b-iq1362wwd4]
+                {
+                    <!-- Detailed Analysis -->
+                    var analysisResponses = GetProjectResponses(selectedSector!, selectedCustomer!, selectedProject!);
+                    
+                    <div class="detailed-analysis-container">
+                        <div class="analysis-header">
+                            <div class="project-info">
+                                <h4>@selectedProject</h4>
+                                <p><strong>Customer:</strong> @selectedCustomer</p>
+                                <p><strong>Sector:</strong> @selectedSector</p>
+                                <p><strong>Total Responses:</strong> @analysisResponses.Count</p>
+                                @if (analysisResponses.Any())
+                                {
+                                    <p><strong>Response Period:</strong> 
+                                       @analysisResponses.Min(r => r.DateCompleted?.ToString("dd/MM/yyyy") ?? "N/A") - 
+                                       @analysisResponses.Max(r => r.DateCompleted?.ToString("dd/MM/yyyy") ?? "N/A")
+                                    </p>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Question Breakdown for this specific project -->
+                        <div class="analysis-charts">
+                            <div class="chart-container">
+                                <h5>📊 Question Breakdown</h5>
+                                <div class="question-analysis-grid">
+                                    @for (int q = 1; q <= 9; q++)[b-iq1362wwd4]
+                                    {
+                                        var scores = analysisResponses.Select(r => GetQuestionScore(r, q)).Where(s => s > 0);
+                                        var avg = scores.Any() ? Math.Round(scores.Average(), 1) : 0;
+                                        var count = scores.Count();
+                                        var questionClass = avg >= 8 ? "excellent" : avg >= 6 ? "good" : avg >= 4 ? "average" : "poor";
+                                        
+                                        <div class="question-analysis-item">
+                                            <div class="question-header">
+                                                <span class="question-number">Q@(q)</span>
+                                                <span class="question-score @questionClass">@avg</span>
+                                            </div>
+                                            <div class="question-text">@GetQuestionText(q)</div>
+                                            <div class="question-bar-container">
+                                                <div class="question-bar-bg"></div>
+                                                <div class="question-bar-fill @questionClass" style="width: @(avg * 10)%"></div>
+                                            </div>
+                                            <div class="question-stats">
+                                                <span>@count responses</span>
+                                                <span>@GetQuestionCategory(avg)</span>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <!-- Individual Response Details -->
+                            <div class="chart-container">
+                                <h5>📋 Individual Survey Responses</h5>
+                                <div class="responses-table">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Survey ID</th>
+                                                <th>Date Sent</th>
+                                                <th>Date Completed</th>
+                                                <th>Project Duration</th>
+                                                <th>Overall Score</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var response in analysisResponses.OrderByDescending(r => r.DateCompleted))[b-iq1362wwd4]
+                                            {
+                                                <tr>
+                                                    <td><code>@response.SurveyId.Substring(0, 8)...</code></td>
+                                                    <td>@(response.DateSent?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</td>
+                                                    <td>@(response.DateCompleted?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")</td>
+                                                    <td>@(response.ProjectDuration ?? "N/A")</td>
+                                                    <td>
+                                                        <span class="badge @(response.Question1 >= 8 ? "bg-success" : response.Question1 >= 6 ? "bg-info" : response.Question1 >= 4 ? "bg-warning" : "bg-danger")">
+                                                            @response.Question1/10
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @if (response.DateCompleted.HasValue)
+                                                        {
+                                                            <span class="badge bg-success">✓ Completed</span>
+                                                        }
+                                                        else[b-iq1362wwd4]
+                                                        {
+                                                            <span class="badge bg-warning">⏳ Pending</span>
+                                                        }
+                                                    </td>
+                                                </tr[b-iq1362wwd4]>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div[b-iq1362wwd4]>
+                }
+            </div>
+        </div[b-iq1362wwd4]>
+    }
+</div>
+
+<style>
+    .dashboard-container[b-iq1362wwd4] {
+        max-width: 1400px;
+        margin: 20px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dashboard-container[b-iq1362wwd4]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #007bff, #28a745, #ffc107, #dc3545);
+        z-index: 1;
+    }
+
+    .dashboard-container h2[b-iq1362wwd4] {
+        text-align: center;
+        color: #0056b3;
+        font-weight: 700;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+        font-size: 2.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .summary-cards[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .card[b-iq1362wwd4] {
+        background: white;
+        padding: 32px 24px;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        text-align: center;
+        border-left: 4px solid #007bff;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card[b-iq1362wwd4]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent 0%, rgba(0,123,255,0.02) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .card.clickable[b-iq1362wwd4] {
+        cursor: pointer;
+    }
+
+    .card.clickable:hover[b-iq1362wwd4] {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        border-left-color: #28a745;
+    }
+
+    .card.clickable:hover[b-iq1362wwd4]::before {
+        opacity: 1;
+    }
+
+    .card-icon[b-iq1362wwd4] {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .card h3[b-iq1362wwd4] {
+        font-size: 3rem;
+        color: #007bff;
+        margin: 0 0 8px 0;
+        font-weight: 700;
+        transition: all 0.3s ease;
+    }
+
+    .card.clickable:hover h3[b-iq1362wwd4] {
+        color: #28a745;
+        transform: scale(1.1);
+    }
+
+    .card p[b-iq1362wwd4] {
+        color: #666;
+        margin: 0 0 16px 0;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .card-arrow[b-iq1362wwd4] {
+        font-size: 1.5rem;
+        color: #007bff;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .card.clickable:hover .card-arrow[b-iq1362wwd4] {
+        opacity: 1;
+        transform: translateX(8px);
+        color: #28a745;
+    }
+
+    .satisfaction-bar[b-iq1362wwd4] {
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        margin-top: 12px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .satisfaction-fill[b-iq1362wwd4] {
+        height: 100%;
+        background: linear-gradient(90deg, #dc3545 0%, #ffc107 50%, #28a745 100%);
+        border-radius: 4px;
+        transition: width 1s ease;
+    }
+
+    /* Section Headers */
+    .section-header[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .section-header h3[b-iq1362wwd4] {
+        color: #333;
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .filter-buttons[b-iq1362wwd4], .chart-controls[b-iq1362wwd4], .view-toggles[b-iq1362wwd4], .performance-controls[b-iq1362wwd4] {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn[b-iq1362wwd4], .view-btn[b-iq1362wwd4], .toggle-btn[b-iq1362wwd4], .perf-btn[b-iq1362wwd4] {
+        padding: 8px 16px;
+        border: 2px solid #dee2e6;
+        background: white;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        color: #6c757d;
+    }
+
+    .filter-btn:hover[b-iq1362wwd4], .view-btn:hover[b-iq1362wwd4], .toggle-btn:hover[b-iq1362wwd4], .perf-btn:hover[b-iq1362wwd4] {
+        border-color: #007bff;
+        color: #007bff;
+        transform: translateY(-2px);
+    }
+
+    .filter-btn.active[b-iq1362wwd4], .view-btn.active[b-iq1362wwd4], .toggle-btn.active[b-iq1362wwd4], .perf-btn.active[b-iq1362wwd4] {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    }
+
+    .filter-controls[b-iq1362wwd4] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: flex-end;
+    }
+
+    .filter-section[b-iq1362wwd4] {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 180px;
+    }
+
+    .filter-label[b-iq1362wwd4] {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.85rem;
+        margin: 0;
+    }
+
+    .filter-dropdown[b-iq1362wwd4] {
+        padding: 8px 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        background: white;
+        color: #495057;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .filter-dropdown:hover[b-iq1362wwd4] {
+        border-color: #007bff;
+    }
+
+    .filter-dropdown:focus[b-iq1362wwd4] {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+
+    .clear-filters-btn[b-iq1362wwd4] {
+        padding: 8px 16px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .clear-filters-btn:hover[b-iq1362wwd4] {
+        background: #c82333;
+        transform: translateY(-1px);
+    }
+
+    .active-filters[b-iq1362wwd4] {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #007bff;
+    }
+
+    .filter-indicator[b-iq1362wwd4] {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.85rem;
+    }
+
+    .filter-badge[b-iq1362wwd4] {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .filter-badge.sector[b-iq1362wwd4] {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+    }
+
+    .filter-badge.company-size[b-iq1362wwd4] {
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+    }
+
+    .satisfaction-details[b-iq1362wwd4] {
+        margin-top: 8px;
+        text-align: center;
+    }
+
+    .satisfaction-details small[b-iq1362wwd4] {
+        color: #6c757d;
+        font-size: 0.75rem;
+    }
+
+    .chart-container[b-iq1362wwd4] {
+        background: white;
+        padding: 32px;
+        margin-bottom: 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        border-top: 4px solid #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .chart-container:hover[b-iq1362wwd4] {
+        box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+        transform: translateY(-4px);
+    }
+
+    .chart-header[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .chart-header h4[b-iq1362wwd4] {
+        color: #333;
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .interactive-bar-chart[b-iq1362wwd4] {
+        margin-top: 20px;
+    }
+
+    .interactive-bar-item[b-iq1362wwd4] {
+        margin-bottom: 20px;
+        padding: 16px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+
+    .interactive-bar-item:hover[b-iq1362wwd4], .interactive-bar-item.hovered[b-iq1362wwd4] {
+        background: rgba(0,123,255,0.05);
+        border-color: #007bff;
+        transform: translateX(8px);
+    }
+
+    .bar-header[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .bar-label[b-iq1362wwd4] {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 1rem;
+    }
+
+    .sector-icon[b-iq1362wwd4] {
+        font-size: 1.2rem;
+    }
+
+    .bar-value-display[b-iq1362wwd4] {
+        font-weight: 700;
+        color: #007bff;
+        font-size: 1.1rem;
+    }
+
+    .bar-wrapper[b-iq1362wwd4] {
+        position: relative;
+        height: 12px;
+        background: #e9ecef;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .completion-progress-bg[b-iq1362wwd4] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: rgba(0,0,0,0.1);
+        border-radius: 6px;
+    }
+
+    .completion-progress-fill[b-iq1362wwd4] {
+        height: 100%;
+        background: linear-gradient(90deg, #28a745, #20c997);
+        border-radius: 6px;
+        transition: width 0.8s ease;
+    }
+
+    .completion-bar[b-iq1362wwd4] {
+        height: 6px;
+        background: #e9ecef;
+        border-radius: 3px;
+        margin: 8px 0 4px 0;
+        overflow: hidden;
+    }
+
+    .completion-fill[b-iq1362wwd4] {
+        height: 100%;
+        background: linear-gradient(90deg, #28a745, #20c997);
+        border-radius: 3px;
+        transition: width 0.8s ease;
+    }
+
+    .completion-stats[b-iq1362wwd4] {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .completion-text[b-iq1362wwd4] {
+        font-size: 0.85rem;
+        color: #666;
+        font-weight: 500;
+        text-align: center;
+        display: block;
+        margin-top: 4px;
+    }
+
+    .interactive-bar[b-iq1362wwd4] {
+        height: 100%;
+        border-radius: 6px;
+        position: relative;
+        animation: slideIn 0.8s ease;
+        transition: all 0.3s ease;
+    }
+
+    .interactive-bar-item:hover .interactive-bar[b-iq1362wwd4] {
+        transform: scaleY(1.2);
+    }
+
+    .bar-shine[b-iq1362wwd4] {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: shine 2s ease-in-out infinite;
+    }
+
+    .slideIn[b-iq1362wwd4] {
+        animation: slideIn 0.8s ease;
+    }
+
+    .shine[b-iq1362wwd4] {
+        animation: shine 2s ease-in-out infinite;
+    }
+
+    .sector-dropdown[b-iq1362wwd4] {
+        margin-top: 16px;
+        padding: 16px;
+        background: rgba(0,123,255,0.05);
+        border-radius: 8px;
+        animation: slideDown 0.3s ease;
+    }
+
+    .dropdown-stats[b-iq1362wwd4] {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .mini-stat[b-iq1362wwd4] {
+        text-align: center;
+    }
+
+    .mini-stat-value[b-iq1362wwd4] {
+        display: block;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #007bff;
+    }
+
+    .mini-stat-label[b-iq1362wwd4] {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .satisfaction-grid[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+    }
+
+    .satisfaction-card[b-iq1362wwd4] {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border-left: 4px solid #007bff;
+        transition: all 0.4s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .satisfaction-card[b-iq1362wwd4]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(0,123,255,0.05) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .satisfaction-card:hover[b-iq1362wwd4]::before, .satisfaction-card.selected[b-iq1362wwd4]::before {
+        opacity: 1;
+    }
+
+    .satisfaction-card:hover[b-iq1362wwd4], .satisfaction-card.selected[b-iq1362wwd4] {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    }
+
+    .satisfaction-card.excellent[b-iq1362wwd4] { border-left-color: #28a745; }
+    .satisfaction-card.good[b-iq1362wwd4] { border-left-color: #17a2b8; }
+    .satisfaction-card.average[b-iq1362wwd4] { border-left-color: #ffc107; }
+    .satisfaction-card.poor[b-iq1362wwd4] { border-left-color: #dc3545; }
+
+    .satisfaction-header[b-iq1362wwd4] {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .satisfaction-header h5[b-iq1362wwd4] {
+        margin: 0;
+        color: #333;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .satisfaction-score-big[b-iq1362wwd4] {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #007bff;
+    }
+
+    .satisfaction-meter[b-iq1362wwd4] {
+        position: relative;
+        margin-bottom: 16px;
+    }
+
+    .meter-track[b-iq1362wwd4] {
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+    }
+
+    .meter-fill[b-iq1362wwd4] {
+        height: 8px;
+        background: linear-gradient(90deg, #dc3545, #ffc107, #28a745);
+        border-radius: 4px;
+        transition: width 1s ease;
+        position: absolute;
+        top: 0;
+    }
+
+    .meter-labels[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4px;
+    }
+
+    .meter-label[b-iq1362wwd4] {
+        font-size: 0.7rem;
+        color: #999;
+    }
+
+    .satisfaction-emotion[b-iq1362wwd4] {
+        text-align: center;
+        font-size: 2rem;
+        margin-top: 12px;
+    }
+
+    /* Question Performance */
+    .question-bars[b-iq1362wwd4] {
+        display: flex;
+        gap: 16px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .question-bar-item[b-iq1362wwd4] {
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .question-bar[b-iq1362wwd4] {
+        width: 60px;
+        max-height: 200px;
+        min-height: 20px;
+        border-radius: 30px 30px 4px 4px;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        transition: all 0.4s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .question-bar.excellent[b-iq1362wwd4] { background: linear-gradient(180deg, #28a745, #20c997); }
+    .question-bar.good[b-iq1362wwd4] { background: linear-gradient(180deg, #17a2b8, #20c997); }
+    .question-bar.average[b-iq1362wwd4] { background: linear-gradient(180deg, #ffc107, #ffcd39); }
+    .question-bar.poor[b-iq1362wwd4] { background: linear-gradient(180deg, #dc3545, #e55a5a); }
+
+    .question-bar-item:hover .question-bar[b-iq1362wwd4], .question-bar-item.selected .question-bar[b-iq1362wwd4] {
+        transform: scale(1.1);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .bar-value[b-iq1362wwd4] {
+        color: white;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 4px;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .question-label[b-iq1362wwd4] {
+        text-align: center;
+        margin-top: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+    }
+
+    .question-tooltip[b-iq1362wwd4] {
+        position: absolute;
+        top: -48px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.92);
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        white-space: nowrap;
+        z-index: 10;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    .question-bar-item:hover .question-tooltip[b-iq1362wwd4] {
+        opacity: 1;
+    }
+
+    .tooltip-stats[b-iq1362wwd4] {
+        margin-top: 4px;
+        font-size: 0.7rem;
+        opacity: 0.8;
+    }
+
+    .interactive-line-chart[b-iq1362wwd4] {
+        position: relative;
+        height: 350px;
+        margin: 20px 0;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 12px;
+        padding: 24px;
+        overflow: hidden;
+    }
+
+    .chart-point[b-iq1362wwd4] {
+        position: absolute;
+        transform: translateX(-50%);
+        cursor: pointer;
+        z-index: 5;
+    }
+
+    .point[b-iq1362wwd4] {
+        width: 14px;
+        height: 14px;
+        background: #007bff;
+        border: 3px solid white;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    .point:hover[b-iq1362wwd4], .point.selected[b-iq1362wwd4] {
+        transform: scale(1.4);
+        background: #28a745;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    }
+
+    .chart-point.hovered .point[b-iq1362wwd4] {
+        transform: scale(1.2);
+        transition: transform 0.3s ease;
+    }
+
+    .point-tooltip[b-iq1362wwd4] {
+        position: absolute;
+        bottom: 130%;
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        background: linear-gradient(135deg, #007bff 60%, #28a745 100%);
+        color: #fff;
+        padding: 16px 22px;
+        border-radius: 14px;
+        font-size: 1rem;
+        font-weight: 500;
+        white-space: nowrap;
+        z-index: 20;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        border: 2px solid #fff;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s, transform 0.25s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .data-point:hover .point-tooltip[b-iq1362wwd4],
+    .data-point.selected .point-tooltip[b-iq1362wwd4] {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.05);
+    }
+
+    .point-tooltip[b-iq1362wwd4]::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 10px solid transparent;
+        border-top-color: #007bff;
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    }
+
+    .point-tooltip .tooltip-header[b-iq1362wwd4] {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .point-tooltip .score-badge[b-iq1362wwd4] {
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-left: 6px;
+    }
+
+    .point-tooltip .tooltip-period[b-iq1362wwd4] {
+        color: #e0e0e0;
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .point-tooltip .tooltip-details[b-iq1362wwd4] {
+        font-size: 0.9rem;
+        color: #f8f9fa;
+        margin-top: 2px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        align-items: center;
+    }
+
+    .point-tooltip .recent-indicator[b-iq1362wwd4] {
+        color: #ffc107 !important;
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-top: 2px;
+    }
+
+    /* Sector Cards Grid */
+    .sector-cards-grid[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+    }
+
+    .enhanced-sector-card[b-iq1362wwd4] {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        border-left: 4px solid #007bff;
+        transition: all 0.4s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .enhanced-sector-card[b-iq1362wwd4]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent, rgba(0,123,255,0.03));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .enhanced-sector-card:hover[b-iq1362wwd4]::before, .enhanced-sector-card.selected[b-iq1362wwd4]::before {
+        opacity: 1;
+    }
+
+    .enhanced-sector-card:hover[b-iq1362wwd4], .enhanced-sector-card.selected[b-iq1362wwd4] {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+    }
+
+    .sector-card-header[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .sector-title[b-iq1362wwd4] {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .sector-icon-large[b-iq1362wwd4] {
+        font-size: 1.8rem;
+    }
+
+    .sector-title h4[b-iq1362wwd4] {
+        margin: 0;
+        color: #333;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .expand-icon[b-iq1362wwd4] {
+        font-size: 1.5rem;
+        color: #999;
+        transition: transform 0.3s ease;
+    }
+
+    .expand-icon.expanded[b-iq1362wwd4] {
+        transform: rotate(180deg);
+    }
+
+    .sector-quick-stats[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+
+    .quick-stat[b-iq1362wwd4] {
+        text-align: center;
+    }
+
+    .stat-circle[b-iq1362wwd4] {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px;
+        background: conic-gradient(var(--color) var(--fill), #e9ecef var(--fill));
+        position: relative;
+    }
+
+    .stat-circle[b-iq1362wwd4]::before {
+        content: '';
+        position: absolute;
+        inset: 6px;
+        border-radius: 50%;
+        background: white;
+    }
+
+    .stat-circle span[b-iq1362wwd4] {
+        font-weight: 700;
+        color: #333;
+        font-size: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-number[b-iq1362wwd4] {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .quick-stat label[b-iq1362wwd4] {
+        font-size: 0.8rem;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .sector-expanded-content[b-iq1362wwd4] {
+        opacity: 1;
+        max-height: 500px;
+        transition: opacity 0.4s ease, max-height 0.4s ease;
+        border-top: 1px solid #e9ecef;
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+
+    .trend-indicators[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .trend-item[b-iq1362wwd4] {
+        padding: 12px;
+        background: rgba(0,123,255,0.05);
+        border-radius: 8px;
+        border-left: 3px solid #007bff;
+    }
+
+    .trend-label[b-iq1362wwd4] {
+        font-size: 0.8rem;
+        color: #666;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .trend-value[b-iq1362wwd4] {
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+    }
+
+    .mini-bars-interactive[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+    }
+
+    .mini-bar-interactive[b-iq1362wwd4] {
+        position: relative;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .mini-bar-interactive:hover[b-iq1362wwd4] {
+        transform: translateY(-2px);
+    }
+
+    .mini-bar-container[b-iq1362wwd4] {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mini-bar-bg[b-iq1362wwd4] {
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        flex: 1;
+    }
+
+    .mini-bar-fill[b-iq1362wwd4] {
+        position: absolute;
+        height: 8px;
+        border-radius: 4px;
+        transition: width 0.8s ease;
+        left: 20px;
+        right: 0;
+    }
+
+    .mini-bar-fill.excellent[b-iq1362wwd4] { background: #28a745; }
+    .mini-bar-fill.good[b-iq1362wwd4] { background: #17a2b8; }
+    .mini-bar-fill.average[b-iq1362wwd4] { background: #ffc107; }
+    .mini-bar-fill.poor[b-iq1362wwd4] { background: #dc3545; }
+
+    .mini-bar-label[b-iq1362wwd4] {
+        font-size: 0.8rem;
+        color: #666;
+        min-width: 20px;
+        font-weight: 500;
+    }
+
+    .mini-bar-tooltip[b-iq1362wwd4] {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        white-space: nowrap;
+        z-index: 10;
+    }
+
+    .sector-table[b-iq1362wwd4] {
+        margin-top: 20px;
+        overflow-x: auto;
+    }
+
+    .interactive-table[b-iq1362wwd4] {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .interactive-table th[b-iq1362wwd4] {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        padding: 16px 12px;
+        text-align: left;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+        position: relative;
+    }
+
+    .interactive-table th:hover[b-iq1362wwd4] {
+        background: linear-gradient(135deg, #0056b3, #004085);
+    }
+
+    .table-row[b-iq1362wwd4] {
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .table-row:hover[b-iq1362wwd4], .table-row.selected[b-iq1362wwd4] {
+        background: rgba(0,123,255,0.05);
+        transform: scale(1.01);
+    }
+
+    .table-row td[b-iq1362wwd4] {
+        padding: 16px 12px;
+        color: #333;
+    }
+
+    .table-sector[b-iq1362wwd4] {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+    }
+
+    .table-sector-icon[b-iq1362wwd4] {
+        font-size: 1.1rem;
+    }
+
+    .response-count[b-iq1362wwd4] {
+        background: #007bff;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .score-cell[b-iq1362wwd4] {
+        font-weight: 600;
+        color: #333;
+        padding: 6px 12px;
+        border-radius: 8px;
+        background: rgba(0,123,255,0.1);
+    }
+
+    .loading-spinner[b-iq1362wwd4] {
+        text-align: center;
+        padding: 80px;
+    }
+
+    .spinner[b-iq1362wwd4] {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    .no-data[b-iq1362wwd4] {
+        text-align: center;
+        padding: 80px;
+        color: #666;
+        font-size: 1.2rem;
+    }
+
+    .dashboard-responsive[b-iq1362wwd4] {
+        
+    }
+
+    .summary-cards[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .sector-cards-grid[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    html[b-iq1362wwd4] {
+        scroll-behavior: smooth;
+    }
+
+    .navigation-grid[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-top: 20px;
+    }
+
+    .navigation-card[b-iq1362wwd4] {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .navigation-card[b-iq1362wwd4]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, transparent, rgba(0,123,255,0.02) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .navigation-card:hover[b-iq1362wwd4] {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        border-color: #007bff;
+    }
+
+    .navigation-card:hover[b-iq1362wwd4]::before {
+        opacity: 1;
+    }
+
+    .navigation-card .card-icon[b-iq1362wwd4] {
+        font-size: 3rem;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    .navigation-card h4[b-iq1362wwd4] {
+        text-align: center;
+        margin: 0 0 16px 0;
+        color: #333;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .navigation-card .card-stats[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 16px;
+    }
+
+    .navigation-card .stat-item[b-iq1362wwd4] {
+        text-align: center;
+    }
+
+    .navigation-card .stat-number[b-iq1362wwd4] {
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #007bff;
+        margin-bottom: 4px;
+    }
+
+    .navigation-card .stat-label[b-iq1362wwd4] {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .navigation-card .card-meta[b-iq1362wwd4] {
+        text-align: center;
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    .navigation-card .card-arrow[b-iq1362wwd4] {
+        text-align: center;
+        font-size: 2rem;
+        color: #007bff;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .navigation-card:hover .card-arrow[b-iq1362wwd4] {
+        opacity: 1;
+        transform: translateX(8px);
+        color: #28a745;
+    }
+
+    /* Detailed Analysis */
+    .detailed-analysis-container[b-iq1362wwd4] {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        margin-top: 20px;
+    }
+
+    .analysis-header[b-iq1362wwd4] {
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .project-info h4[b-iq1362wwd4] {
+        color: #007bff;
+        margin: 0 0 12px 0;
+        font-size: 1.6rem;
+    }
+
+    .project-info p[b-iq1362wwd4] {
+        margin: 4px 0;
+        color: #666;
+    }
+
+    .question-analysis-grid[b-iq1362wwd4] {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .question-analysis-item[b-iq1362wwd4] {
+        background: #f8f9fa;
+        padding: 16px;
+        border-radius: 12px;
+        border-left: 4px solid #007bff;
+    }
+
+    .question-header[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .question-number[b-iq1362wwd4] {
+        font-weight: 600;
+        color: #007bff;
+        font-size: 1.1rem;
+    }
+
+    .question-score[b-iq1362wwd4] {
+        font-weight: 700;
+        font-size: 1.2rem;
+        padding: 4px 8px;
+        border-radius: 6px;
+        color: white;
+    }
+
+    .question-score.excellent[b-iq1362wwd4] { background: #28a745; }
+    .question-score.good[b-iq1362wwd4] { background: #17a2b8; }
+    .question-score.average[b-iq1362wwd4] { background: #ffc107; color: #333; }
+    .question-score.poor[b-iq1362wwd4] { background: #dc3545; }
+
+    .question-text[b-iq1362wwd4] {
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+        color: #555;
+        font-weight: 500;
+    }
+
+    .question-bar-container[b-iq1362wwd4] {
+        position: relative;
+        height: 8px;
+        background: #dee2e6;
+        border-radius: 4px;
+        margin-bottom: 8px;
+        overflow: hidden;
+    }
+
+    .question-bar-fill[b-iq1362wwd4] {
+        height: 100%;
+        border-radius: 4px;
+        transition: width 0.8s ease;
+    }
+
+    .question-bar-fill.excellent[b-iq1362wwd4] { background: #28a745; }
+    .question-bar-fill.good[b-iq1362wwd4] { background: #17a2b8; }
+    .question-bar-fill.average[b-iq1362wwd4] { background: #ffc107; }
+    .question-bar-fill.poor[b-iq1362wwd4] { background: #dc3545; }
+
+    .question-stats[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .responses-table[b-iq1362wwd4] {
+        margin-top: 16px;
+    }
+
+    .responses-table table[b-iq1362wwd4] {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .responses-table th[b-iq1362wwd4],
+    .responses-table td[b-iq1362wwd4] {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .responses-table th[b-iq1362wwd4] {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .responses-table tr:hover[b-iq1362wwd4] {
+        background-color: #f8f9fa;
+    }
+
+    .responses-table code[b-iq1362wwd4] {
+        background: #f1f3f4;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+    }
+
+    .responses-table .badge[b-iq1362wwd4] {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .bg-success[b-iq1362wwd4] { background-color: #28a745 !important; color: white; }
+    .bg-info[b-iq1362wwd4] { background-color: #17a2b8 !important; color: white; }
+    .bg-warning[b-iq1362wwd4] { background-color: #ffc107 !important; color: #333; }
+    .bg-danger[b-iq1362wwd4] { background-color: #dc3545 !important; color: white; }
+
+    .trends-container[b-iq1362wwd4] {
+        margin-top: 20px;
+    }
+
+    .trend-summary-cards[b-iq1362wwd4] {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 30px;
+    }
+
+    .trend-card[b-iq1362wwd4] {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        text-align: center;
+        transition: all 0.3s ease;
+        border-left: 4px solid #007bff;
+    }
+
+    .trend-card:hover[b-iq1362wwd4] {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .trend-icon[b-iq1362wwd4] {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+
+    .trend-value[b-iq1362wwd4] {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+        color: #007bff;
+    }
+
+    .trend-value.positive[b-iq1362wwd4] {
+        color: #28a745;
+    }
+
+    .trend-value.negative[b-iq1362wwd4] {
+        color: #dc3545;
+    }
+
+    .trend-value.neutral[b-iq1362wwd4] {
+        color: #6c757d;
+    }
+
+    .trend-label[b-iq1362wwd4] {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 4px;
+    }
+
+    .trend-period[b-iq1362wwd4] {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .simple-trend-chart[b-iq1362wwd4] {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 20px;
+    }
+
+    .visual-trend-chart[b-iq1362wwd4] {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border: 1px solid #e9ecef;
+    }
+
+    .line-chart-container[b-iq1362wwd4] {
+        margin-top: 20px;
+        position: relative;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #dee2e6;
+    }
+
+    .chart-grid[b-iq1362wwd4] {
+        display: flex;
+        height: 300px;
+        position: relative;
+    }
+
+    .y-axis[b-iq1362wwd4] {
+        width: 40px;
+        position: relative;
+        border-right: 2px solid #333;
+        margin-right: 10px;
+    }
+
+    .y-label[b-iq1362wwd4] {
+        position: absolute;
+        right: 50px;
+        transform: translateY(50%);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #666;
+        background: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+    }
+
+    .chart-area[b-iq1362wwd4] {
+        flex: 1;
+        position: relative;
+        border-bottom: 2px solid #333;
+        margin-left: 10px;
+    }
+
+    .grid-lines[b-iq1362wwd4] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .grid-line-horizontal[b-iq1362wwd4] {
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: #e9ecef;
+        opacity: 0.7;
+    }
+
+    .line-chart-content[b-iq1362wwd4] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .trend-area[b-iq1362wwd4] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.2;
+        background: linear-gradient(to bottom, #007bff, transparent);
+        border-radius: 4px 4px 0 0;
+    }
+
+    .trend-line[b-iq1362wwd4] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, #007bff, #28a745, #007bff);
+        height: 3px;
+        border-radius: 2px;
+        box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+        z-index: 1;
+    }
+
+    .data-point[b-iq1362wwd4] {
+        position: absolute;
+        transform: translate(-50%, 50%);
+        z-index: 2;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .data-point:hover[b-iq1362wwd4] {
+        transform: translate(-50%, 50%) scale(1.2);
+        z-index: 10;
+    }
+
+    .data-point.selected[b-iq1362wwd4] {
+        transform: translate(-50%, 50%) scale(1.3);
+        z-index: 10;
+    }
+
+    .point-circle[b-iq1362wwd4] {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 3px solid white;
+        position: relative;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .data-point.excellent .point-circle[b-iq1362wwd4] {
+        background: #28a745;
+        border-color: #1e7e34;
+    }
+
+    .data-point.good .point-circle[b-iq1362wwd4] {
+        background: #17a2b8;
+        border-color: #117a8b;
+    }
+
+    .data-point.average .point-circle[b-iq1362wwd4] {
+        background: #ffc107;
+        border-color: #d39e00;
+    }
+
+    .data-point.poor .point-circle[b-iq1362wwd4] {
+        background: #dc3545;
+        border-color: #bd2130;
+    }
+
+    .data-point.recent .point-circle[b-iq1362wwd4] {
+        border-width: 4px;
+        border-color: #007bff;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.2), 0 0 0 4px rgba(0,123,255,0.3);
+    }
+
+    .point-value[b-iq1362wwd4] {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        position: absolute;
+        white-space: nowrap;
+    }
+
+    .point-tooltip[b-iq1362wwd4] {
+        position: absolute;
+        bottom: 120%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.95);
+        color: white;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        z-index: 20;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .point-tooltip[b-iq1362wwd4]::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0,0,0,0.9);
+    }
+
+    .tooltip-header[b-iq1362wwd4] {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .tooltip-header strong[b-iq1362wwd4] {
+        font-size: 1.1rem;
+        color: #fff;
+    }
+
+    .score-badge[b-iq1362wwd4] {
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .score-badge.excellent[b-iq1362wwd4] {
+        background: #28a745;
+        color: white;
+    }
+
+    .score-badge.good[b-iq1362wwd4] {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .score-badge.average[b-iq1362wwd4] {
+        background: #ffc107;
+        color: #333;
+    }
+
+    .score-badge.poor[b-iq1362wwd4] {
+        background: #dc3545;
+        color: white;
+    }
+
+    .tooltip-period[b-iq1362wwd4] {
+        color: #ccc;
+        margin-bottom: 6px;
+        font-size: 0.8rem;
+    }
+
+    .tooltip-details[b-iq1362wwd4] {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.75rem;
+        color: #ddd;
+    }
+
+    .recent-indicator[b-iq1362wwd4] {
+        color: #ffc107 !important;
+        font-weight: 600;
+    }
+
+    .x-axis[b-iq1362wwd4] {
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        right: 0;
+        height: 20px;
+    }
+
+    .x-label[b-iq1362wwd4] {
+        position: absolute;
+        transform: translateX(-50%);
+        font-size: 0.8rem;
+        color: #666;
+        font-weight: 500;
+        background: white;
+        padding: 2px 4px;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+    }
+
+    .chart-legend[b-iq1362wwd4] {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e9ecef;
+        flex-wrap: wrap;
+    }
+
+    .legend-item[b-iq1362wwd4] {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .legend-dot[b-iq1362wwd4] {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .legend-dot.excellent[b-iq1362wwd4] {
+        background: #28a745;
+    }
+
+    .legend-dot.good[b-iq1362wwd4] {
+        background: #17a2b8;
+    }
+
+    .legend-dot.average[b-iq1362wwd4] {
+        background: #ffc107;
+    }
+
+    .legend-dot.poor[b-iq1362wwd4] {
+        background: #dc3545;
+    }
+
+    .legend-dot.recent[b-iq1362wwd4] {
+        background: #007bff;
+        border-color: #0056b3;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.3);
+    }
+
+    .recent-legend[b-iq1362wwd4] {
+        font-weight: 600;
+        color: #007bff;
+    }
+
+    .trend-chart-header[b-iq1362wwd4] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .chart-title[b-iq1362wwd4] {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .chart-range[b-iq1362wwd4] {
+        font-size: 0.9rem;
+        color: #666;
+        background: #e9ecef;
+        padding: 4px 8px;
+        border-radius: 8px;
+    }
+
+    .trend-bars-container[b-iq1362wwd4] {
+        display: flex;
+        gap: 8px;
+        align-items: end;
+        min-height: 200px;
+        padding: 20px 0;
+        overflow-x: auto;
+    }
+
+    .trend-bar-item[b-iq1362wwd4] {
+        flex: 1;
+        min-width: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .trend-bar-item:hover[b-iq1362wwd4], .trend-bar-item.selected[b-iq1362wwd4] {
+        transform: scale(1.05);
+    }
+
+    .trend-bar[b-iq1362wwd4] {
+        width: 100%;
+        max-width: 40px;
+        min-height: 20px;
+        border-radius: 8px 8px 4px 4px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 4px;
+        position: relative;
+        transition: all 0.4s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .trend-bar.excellent[b-iq1362wwd4] {
+        background: linear-gradient(180deg, #28a745, #20c997);
+        border-left: 3px solid #1e7e34;
+    }
+
+    .trend-bar.good[b-iq1362wwd4] {
+        background: linear-gradient(180deg, #17a2b8, #20c997);
+        border-left: 3px solid #117a8b;
+    }
+
+    .trend-bar.average[b-iq1362wwd4] {
+        background: linear-gradient(180deg, #ffc107, #ffcd39);
+        border-left: 3px solid #d39e00;
+    }
+
+    .trend-bar.poor[b-iq1362wwd4] {
+        background: linear-gradient(180deg, #dc3545, #e55a5a);
+        border-left: 3px solid #bd2130;
+    }
+
+    .trend-bar.recent[b-iq1362wwd4] {
+        border: 2px solid #007bff;
+        box-shadow: 0 4px 16px rgba(0,123,255,0.3);
+    }
+
+    .trend-bar-value[b-iq1362wwd4] {
+        color: white;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        margin-bottom: 2px;
+    }
+
+    .trend-bar-label[b-iq1362wwd4] {
+        font-size: 0.75rem;
+        color: #666;
+        font-weight: 500;
+        margin-top: 8px;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin: center;
+        white-space: nowrap;
+    }
+
+    .trend-tooltip-simple[b-iq1362wwd4] {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        z-index: 10;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .trend-tooltip-simple[b-iq1362wwd4]::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: rgba(0,0,0,0.9);
+    }
+
+    .trend-insights[b-iq1362wwd4] {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid #17a2b8;
+        margin-bottom: 20px;
+    }
+
+    .insight-item[b-iq1362wwd4] {
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .insight-item:last-child[b-iq1362wwd4] {
+        margin-bottom: 0;
+    }
+
+    .insight-item strong[b-iq1362wwd4] {
+        color: #333;
+        margin-right: 8px;
+    }
+
+    .insight-item span[b-iq1362wwd4] {
+        color: #666;
+    }
+
+    .no-trend-data[b-iq1362wwd4] {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+        font-size: 1.1rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+    }
+</style>
+
+<!--
+.goal-line[b-iq1362wwd4] {
+    z-index: 3;
+    border-radius: 3px;
+    width: 4px !important;
+    background: #00e676 !important;
+    box-shadow: 0 0 10px 2px #00e676, 0 0 2px 1px #fff;
+    opacity: 1 !important;
+} -->
+
+@code {
+    List<SurveyResponse> surveyResponses = new List<SurveyResponse>();
+    bool isLoading = true;
+    Dictionary<string, int> sectorCounts = new Dictionary<string, int>();
+    Dictionary<string, int> companySizeCounts = new Dictionary<string, int>();
+    Dictionary<string, double> sectorAverages = new Dictionary<string, double>();
+    Dictionary<string, double> companySizeAverages = new Dictionary<string, double>();
+    double avgSatisfaction = 0;
+
+    // Interactive states
+    string selectedSectorFilter = "all";
+    string selectedCompanySizeFilter = "all";
+    string chartView = "count";
+    string detailView = "cards";
+    string? selectedSector = null;
+    string? selectedTableRow = null;
+    string? hoveredSector = null;
+    string? hoveredMiniBar = null;
+    int? selectedQuestion = null;
+    int? hoveredPoint = null;
+    
+    // Trends states
+    string trendsView = "monthly";
+    int? selectedTrendPoint = null;
+    
+    // Hierarchical navigation states
+    string? selectedCustomer = null;
+    string? selectedProject = null;
+    string currentNavigationLevel = "sectors"; // sectors, customers, projects, analysis
+    
+    // Expansion states
+    HashSet<string> expandedSectors = new HashSet<string>();
+    HashSet<string> expandedSectorCards = new HashSet<string>();
+    
+    // Table sorting
+    string sortColumn = "sector";
+    bool sortAscending = true;
+    
+    // User role for filtering
+    string userRole = "";
+
+    protected override async Task OnInitializedAsync()[b-iq1362wwd4]
+    {
+        // Get user role for filtering
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            var roleClaim = authState.User.FindFirst("Role");
+            userRole = roleClaim?.Value ?? "";
+        }
+        
+        await LoadSurveyData();[b-iq1362wwd4]
+    }
+
+    async Task LoadSurveyData()[b-iq1362wwd4]
+    {
+        isLoading = true;
+        try
+        {
+            var response = await httpClient.GetFromJsonAsync<List<SurveyResponse>>("api/survey/responses");
+            surveyResponses = response ?? new List<SurveyResponse>();
+            
+            CalculateStatistics();
+        }
+        catch (Exception ex)[b-iq1362wwd4]
+        {
+            Console.WriteLine($"Error loading survey data: {ex.Message}");
+        }
+        finally[b-iq1362wwd4]
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    void CalculateStatistics()[b-iq1362wwd4]
+    {
+        if (!surveyResponses.Any()) return;
+
+        // Calculate sector counts
+        sectorCounts = surveyResponses
+            .GroupBy(r => r.Sector)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        // Calculate company size counts
+        companySizeCounts = surveyResponses
+            .Where(r => !string.IsNullOrEmpty(r.CompanySize))
+            .GroupBy(r => r.CompanySize)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        // Calculate sector averages for overall satisfaction
+        sectorAverages = surveyResponses
+            .GroupBy(r => r.Sector)
+            .ToDictionary(g => g.Key, g => g.Average(r => r.Question1));
+
+        // Calculate company size averages for overall satisfaction
+        companySizeAverages = surveyResponses
+            .Where(r => !string.IsNullOrEmpty(r.CompanySize))
+            .GroupBy(r => r.CompanySize)
+            .ToDictionary(g => g.Key, g => g.Average(r => r.Question1));
+
+        // Calculate overall average satisfaction
+        avgSatisfaction = surveyResponses.Average(r => r.Question1);
+    }
+
+    // Interactive Functions
+    List<string> GetUniqueSectors()[b-iq1362wwd4]
+    {
+        return surveyResponses
+            .Select(r => r.Sector)
+            .Where(s => !string.IsNullOrEmpty(s))
+            .Distinct()
+            .OrderBy(s => s)
+            .ToList();
+    }
+
+    List<string> GetUniqueCompanySizes()[b-iq1362wwd4]
+    {
+        return surveyResponses
+            .Select(r => r.CompanySize)
+            .Where(s => !string.IsNullOrEmpty(s))
+            .Distinct()
+            .OrderBy(s => s)
+            .ToList();
+    }
+
+    void SetFilter(string filter)[b-iq1362wwd4]
+    {
+        // This method is kept for backward compatibility but may need updates
+        // for dual filtering system if used elsewhere
+        StateHasChanged();
+    }
+
+    void SetChartView(string view)[b-iq1362wwd4]
+    {
+        chartView = view;
+        StateHasChanged();
+    }
+
+    void SetDetailView(string view)[b-iq1362wwd4]
+    {
+        detailView = view;
+        StateHasChanged();
+    }
+
+    void SetTrendsView(string view)[b-iq1362wwd4]
+    {
+        trendsView = view;
+        selectedTrendPoint = null; // Reset selection when changing view
+        StateHasChanged();
+    }
+
+    void SelectSector(string sector)[b-iq1362wwd4]
+    {
+        selectedSector = selectedSector == sector ? null : sector;
+        StateHasChanged();
+    }
+
+    void SelectTableRow(string sector)[b-iq1362wwd4]
+    {
+        selectedTableRow = selectedTableRow == sector ? null : sector;
+        StateHasChanged();
+    }
+
+    void ToggleSectorDetails(string sector)[b-iq1362wwd4]
+    {
+        if (expandedSectors.Contains(sector))
+            expandedSectors.Remove(sector);
+        else
+            expandedSectors.Add(sector);
+        StateHasChanged();
+    }
+
+    void ToggleSectorCard(string sector)[b-iq1362wwd4]
+    {
+        if (expandedSectorCards.Contains(sector))
+            expandedSectorCards.Remove(sector);
+        else
+            expandedSectorCards.Add(sector);
+        StateHasChanged();
+    }
+
+    // Hierarchical navigation methods
+    void NavigateToCustomers(string sector)[b-iq1362wwd4]
+    {
+        // Check if user has access to this sector in detailed analysis
+        if (userRole != "Admin")
+        {
+            var allowedSectors = GetRoleBasedSectors().Keys;
+            if (!allowedSectors.Contains(sector))
+            {
+                // User doesn't have access to this sector in detailed analysis
+                return; // Do nothing, don't navigate
+            }
+        }
+        
+        selectedSector = sector;
+        currentNavigationLevel = "customers";
+        selectedCustomer = null;
+        selectedProject = null;
+        StateHasChanged();[b-iq1362wwd4]
+    }
+
+    void NavigateToProjects(string customer)[b-iq1362wwd4]
+    {
+        selectedCustomer = customer;
+        currentNavigationLevel = "projects";
+        selectedProject = null;
+        StateHasChanged();
+    }
+
+    void NavigateToAnalysis(string project)[b-iq1362wwd4]
+    {
+        selectedProject = project;
+        currentNavigationLevel = "analysis";
+        StateHasChanged();
+    }
+
+    void NavigateBack()[b-iq1362wwd4]
+    {
+        if (currentNavigationLevel == "analysis")
+        {
+            currentNavigationLevel = "projects";
+            selectedProject = null;
+        }
+        else if (currentNavigationLevel == "projects")[b-iq1362wwd4]
+        {
+            currentNavigationLevel = "customers";
+            selectedCustomer = null;
+        }
+        else if (currentNavigationLevel == "customers")[b-iq1362wwd4]
+        {
+            currentNavigationLevel = "sectors";
+            selectedSector = null;
+        }
+        StateHasChanged();[b-iq1362wwd4]
+    }
+
+    void ToggleQuestion(int question)[b-iq1362wwd4]
+    {
+        selectedQuestion = selectedQuestion == question ? null : question;
+        StateHasChanged();
+    }
+
+    void SelectQuestionPoint(int question)[b-iq1362wwd4]
+    {
+        selectedQuestion = selectedQuestion == question ? null : question;
+        StateHasChanged();
+    }
+
+    void SelectTrendPoint(int index)[b-iq1362wwd4]
+    {
+        selectedTrendPoint = selectedTrendPoint == index ? null : index;
+        StateHasChanged();
+    }
+
+    void HandleLineChartClick()[b-iq1362wwd4]
+    {
+        // Handle line chart clicks if needed
+    }
+
+    void ScrollToSection(string sectionId)[b-iq1362wwd4]
+    {
+        // This would need JavaScript interop to work properly
+        // For now, we'll just do a simple state change
+        StateHasChanged();
+    }
+
+    void SortTable(string column)[b-iq1362wwd4]
+    {
+        if (sortColumn == column)
+            sortAscending = !sortAscending;
+        else
+        {
+            sortColumn = column;
+            sortAscending = true;
+        }
+        StateHasChanged();[b-iq1362wwd4]
+    }
+
+    // Helper Functions
+    Dictionary<string[b-iq1362wwd4], int> GetFilteredSectors()[b-iq1362wwd4]
+    {
+        // Show all sectors in main overview (updated for dual filtering)
+        return sectorCounts;
+    }
+
+    Dictionary<string[b-iq1362wwd4], int> GetRoleBasedSectors()[b-iq1362wwd4]
+    {
+        // Admin can see all sectors
+        if (userRole == "Admin")
+            return sectorCounts;
+        
+        // Role-based filtering for other users
+        if (userRole == "Health")
+            return sectorCounts.Where(kvp => kvp.Key == "Health").ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        else if (userRole == "Tech")
+            return sectorCounts.Where(kvp => kvp.Key == "Tech").ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        else if (userRole == "Energy")
+            return sectorCounts.Where(kvp => kvp.Key == "Energy").ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        
+        // Default: return all (for edge cases)
+        return sectorCounts;
+    }
+
+    int GetCompletedCountForSector(string sector)[b-iq1362wwd4]
+    {
+        return surveyResponses.Count(r => r.Sector == sector && r.DateCompleted.HasValue);
+    }
+
+    int GetCompletedCountForCompanySize(string companySize)[b-iq1362wwd4]
+    {
+        return surveyResponses.Count(r => r.CompanySize == companySize && r.DateCompleted.HasValue);
+    }
+
+    Dictionary<string[b-iq1362wwd4], int> GetFilteredCompanySizes()[b-iq1362wwd4]
+    {
+        // Show all company sizes (updated for dual filtering)
+        return companySizeCounts;
+    }
+
+    double GetCompanySizeAverage(string companySize)[b-iq1362wwd4]
+    {
+        var responses = surveyResponses.Where(r => r.CompanySize == companySize).ToList();
+        if (!responses.Any()) return 0;
+        return responses.Average(r => r.Question1);
+    }
+
+    Dictionary<string[b-iq1362wwd4], double> GetCombinedFilteredSatisfactionData()[b-iq1362wwd4]
+    {
+        var filteredResponses = GetCombinedFilteredResponses();
+        
+        // Group by a combination key that represents the current view
+        var groupedData = new Dictionary<string, List<SurveyResponse>>();
+        
+        if (selectedSectorFilter != "all" && selectedCompanySizeFilter != "all")
+        {
+            // Both filters applied - show individual survey responses or aggregated data
+            var key = $"{selectedSectorFilter} - {selectedCompanySizeFilter}";
+            groupedData[key] = filteredResponses.ToList();
+        }
+        else if (selectedSectorFilter != "all")[b-iq1362wwd4]
+        {
+            // Only sector filter applied - group by company size within that sector
+            groupedData = filteredResponses
+                .Where(r => !string.IsNullOrEmpty(r.CompanySize))
+                .GroupBy(r => $"{selectedSectorFilter} - {r.CompanySize}")
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+        else if (selectedCompanySizeFilter != "all")[b-iq1362wwd4]
+        {
+            // Only company size filter applied - group by sector within that company size
+            groupedData = filteredResponses
+                .Where(r => !string.IsNullOrEmpty(r.Sector))
+                .GroupBy(r => $"{r.Sector} - {selectedCompanySizeFilter}")
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+        else[b-iq1362wwd4]
+        {
+            // No filters applied - group by sector
+            groupedData = filteredResponses
+                .Where(r => !string.IsNullOrEmpty(r.Sector))
+                .GroupBy(r => r.Sector)
+                .ToDictionary(g => g.Key, g => g.ToList());
+        }
+        
+        return groupedData
+            .Where(kvp => kvp.Value.Any())
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Average(r => r.Question1));[b-iq1362wwd4]
+    }
+
+    List<SurveyResponse> GetCombinedFilteredResponses()[b-iq1362wwd4]
+    {
+        var responses = GetRoleBasedResponses();
+
+        // Apply sector filter
+        if (selectedSectorFilter != "all")
+        {
+            responses = responses.Where(r => r.Sector == selectedSectorFilter).ToList();
+        }
+
+        // Apply company size filter
+        if (selectedCompanySizeFilter != "all")[b-iq1362wwd4]
+        {
+            responses = responses.Where(r => r.CompanySize == selectedCompanySizeFilter).ToList();
+        }
+
+        return responses;[b-iq1362wwd4]
+    }
+
+    List<SurveyResponse> GetRoleBasedResponses()[b-iq1362wwd4]
+    {
+        // Admin can see all responses
+        if (userRole == "Admin")
+            return surveyResponses;
+        
+        // Filter responses by user's role
+        if (userRole == "Health" || userRole == "Tech" || userRole == "Energy")
+            return surveyResponses.Where(r => r.Sector == userRole).ToList();
+        
+        // Default: return all (for edge cases)
+        return surveyResponses;
+    }
+
+    List<string> GetCustomersForSector(string sector)[b-iq1362wwd4]
+    {
+        return GetRoleBasedResponses()
+            .Where(r => r.Sector == sector)
+            .Select(r => r.CustomerName)
+            .Distinct()
+            .OrderBy(c => c)
+            .ToList();
+    }
+
+    List<string> GetProjectsForCustomer(string sector, string customer)[b-iq1362wwd4]
+    {
+        return GetRoleBasedResponses()
+            .Where(r => r.Sector == sector && r.CustomerName == customer)
+            .Select(r => r.ProjectName)
+            .Distinct()
+            .OrderBy(p => p)
+            .ToList();
+    }
+
+    List<SurveyResponse> GetProjectResponses(string sector, string customer, string project)[b-iq1362wwd4]
+    {
+        return GetRoleBasedResponses()
+            .Where(r => r.Sector == sector && r.CustomerName == customer && r.ProjectName == project)
+            .ToList();
+    }
+
+    int GetQuestionScore(SurveyResponse response, int questionNumber)[b-iq1362wwd4]
+    {
+        return questionNumber switch
+        {
+            1 => response.Question1,
+            2 => response.Question2,
+            3 => response.Question3,
+            4 => response.Question4,
+            5 => response.Question5,
+            6 => response.Question6,
+            7 => response.Question7,
+            8 => response.Question8,
+            9 => response.Question9,
+            _ => 0
+        };[b-iq1362wwd4]
+    }
+
+    IEnumerable<string> GetSortedSectors()[b-iq1362wwd4]
+    {
+        var sectors = sectorCounts.Keys.AsEnumerable();
+        
+        sectors = sortColumn switch
+        {
+            "sector" => sortAscending ? sectors.OrderBy(s => s) : sectors.OrderByDescending(s => s),
+            "responses" => sortAscending ? sectors.OrderBy(s => sectorCounts[s]) : sectors.OrderByDescending(s => sectorCounts[s]),
+            "satisfaction" => sortAscending ? sectors.OrderBy(s => GetSectorAverage(s, "satisfaction")) : sectors.OrderByDescending(s => GetSectorAverage(s, "satisfaction")),
+            "professionalism" => sortAscending ? sectors.OrderBy(s => GetSectorAverage(s, "professionalism")) : sectors.OrderByDescending(s => GetSectorAverage(s, "professionalism")),
+            "growth" => sortAscending ? sectors.OrderBy(s => GetSectorAverage(s, "growth")) : sectors.OrderByDescending(s => GetSectorAverage(s, "growth")),
+            "value" => sortAscending ? sectors.OrderBy(s => GetSectorAverage(s, "value")) : sectors.OrderByDescending(s => GetSectorAverage(s, "value")),
+            "likelihood" => sortAscending ? sectors.OrderBy(s => GetSectorAverage(s, "likelihood")) : sectors.OrderByDescending(s => GetSectorAverage(s, "likelihood")),
+            _ => sectors
+        };
+        
+        return sectors;[b-iq1362wwd4]
+    }
+
+    string GetSortIcon(string column)[b-iq1362wwd4]
+    {
+        if (sortColumn != column) return "↕️";
+        return sortAscending ? "⬆️" : "⬇️";
+    }
+
+    double GetSectorAverage(string sector, string type)[b-iq1362wwd4]
+    {
+        var sectorResponses = surveyResponses.Where(r => r.Sector == sector);
+        if (!sectorResponses.Any()) return 0;
+        
+        return type switch
+        {
+            "satisfaction" => sectorResponses.Average(r => r.Question1),
+            "professionalism" => sectorResponses.Average(r => r.Question2),
+            "growth" => sectorResponses.Average(r => r.Question3),
+            "value" => sectorResponses.Average(r => r.Question4),
+            "likelihood" => sectorResponses.Average(r => r.Question9),
+            _ => 0
+        };[b-iq1362wwd4]
+    }
+
+    int GetBestQuestion(string sector)[b-iq1362wwd4]
+    {
+        var sectorResponses = surveyResponses.Where(r => r.Sector == sector).ToList();
+        if (!sectorResponses.Any()) return 1;
+        
+        var averages = new Dictionary<int, double>();
+        for (int q = 1; q <= 9; q++)
+        {
+            averages[q] = GetSectorQuestionAverage(sector, q);
+        }
+        
+        return averages.OrderByDescending(kvp => kvp.Value).First().Key;[b-iq1362wwd4]
+    }
+
+    double GetBestQuestionScore(string sector)[b-iq1362wwd4]
+    {
+        return GetSectorQuestionAverage(sector, GetBestQuestion(sector));
+    }
+
+    int GetWorstQuestion(string sector)[b-iq1362wwd4]
+    {
+        var sectorResponses = surveyResponses.Where(r => r.Sector == sector).ToList();
+        if (!sectorResponses.Any()) return 1;
+        
+        var averages = new Dictionary<int, double>();
+        for (int q = 1; q <= 9; q++)
+        {
+            averages[q] = GetSectorQuestionAverage(sector, q);
+        }
+        
+        return averages.OrderBy(kvp => kvp.Value).First().Key;[b-iq1362wwd4]
+    }
+
+    double GetWorstQuestionScore(string sector)[b-iq1362wwd4]
+    {
+        return GetSectorQuestionAverage(sector, GetWorstQuestion(sector));
+    }
+
+    string GetSectorShortName(string sector)[b-iq1362wwd4]
+    {
+        return sector switch
+        {
+            "Tech & Digitalization" => "Tech",
+            "Health" => "Health",
+            "Energy" => "Energy",
+            _ => sector
+        };[b-iq1362wwd4]
+    }
+
+    string GetSectorIcon(string sector)[b-iq1362wwd4]
+    {
+        return sector switch
+        {
+            "Health" => "🏥",
+            "Tech & Digitalization" => "💻",
+            "Energy" => "⚡",
+            _ => "🏢"
+        };[b-iq1362wwd4]
+    }
+
+    string GetSatisfactionEmoji(double satisfaction)[b-iq1362wwd4]
+    {
+        return satisfaction switch
+        {
+            >= 9 => "🤩",
+            >= 8 => "😍",
+            >= 7 => "😊",
+            >= 6 => "🙂",
+            >= 5 => "😐",
+            >= 4 => "😕",
+            >= 3 => "😞",
+            _ => "😢"
+        };[b-iq1362wwd4]
+    }
+
+    string GetQuestionText(int question)[b-iq1362wwd4]
+    {
+        return question switch
+        {
+            1 => "Overall Satisfaction",
+            2 => "Professionalism",
+            3 => "Growth Impact",
+            4 => "Value for Money",
+            5 => "Solution Fit",
+            6 => "Communication",
+            7 => "Timeliness",
+            8 => "Advisor Expertise",
+            9 => "Future Use Likelihood",
+            _ => $"Question {question}"
+        };[b-iq1362wwd4]
+    }
+
+    string GetQuestionCategory(double avg)[b-iq1362wwd4]
+    {
+        return avg switch
+        {
+            >= 8 => "Excellent",
+            >= 6 => "Good",
+            >= 4 => "Average",
+            _ => "Needs Improvement"
+        };[b-iq1362wwd4]
+    }
+
+    string GetSectorColor(string sector)[b-iq1362wwd4]
+    {
+        return sector switch
+        {
+            "Health" => "#ff6b6b",
+            "Tech & Digitalization" => "#4ecdc4",
+            "Energy" => "#45b7d1",
+            _ => "#95a5a6"
+        };[b-iq1362wwd4]
+    }
+
+    string GetSectorColorDark(string sector)[b-iq1362wwd4]
+    {
+        return sector switch
+        {
+            "Health" => "#e74c3c",
+            "Tech & Digitalization" => "#16a085",
+            "Energy" => "#2980b9",
+            _ => "#7f8c8d"
+        };[b-iq1362wwd4]
+    }
+
+    string GetCompanySizeIcon(string companySize)[b-iq1362wwd4]
+    {
+        return companySize switch
+        {
+            "Micro" => "🏪",
+            "SME" => "🏢",
+            "Large" => "🏭",
+            _ => "👥"
+        };[b-iq1362wwd4]
+    }
+
+    string GetCompanySizeColor(string companySize)[b-iq1362wwd4]
+    {
+        return companySize switch
+        {
+            "Micro" => "#f39c12",
+            "SME" => "#3498db", 
+            "Large" => "#9b59b6",
+            _ => "#95a5a6"
+        };[b-iq1362wwd4]
+    }
+
+    string GetCompanySizeColorDark(string companySize)[b-iq1362wwd4]
+    {
+        return companySize switch
+        {
+            "Micro" => "#e67e22",
+            "SME" => "#2980b9",
+            "Large" => "#8e44ad",
+            _ => "#7f8c8d"
+        };[b-iq1362wwd4]
+    }
+
+    double GetQuestionAverage(int questionNumber)[b-iq1362wwd4]
+    {
+        if (!surveyResponses.Any()) return 0;
+        
+        return questionNumber switch
+        {
+            1 => surveyResponses.Average(r => r.Question1),
+            2 => surveyResponses.Average(r => r.Question2),
+            3 => surveyResponses.Average(r => r.Question3),
+            4 => surveyResponses.Average(r => r.Question4),
+            5 => surveyResponses.Average(r => r.Question5),
+            6 => surveyResponses.Average(r => r.Question6),
+            7 => surveyResponses.Average(r => r.Question7),
+            8 => surveyResponses.Average(r => r.Question8),
+            9 => surveyResponses.Average(r => r.Question9),
+            _ => 0
+        };[b-iq1362wwd4]
+    }
+
+    double GetSectorQuestionAverage(string sector, int questionNumber)[b-iq1362wwd4]
+    {
+        var sectorResponses = surveyResponses.Where(r => r.Sector == sector);
+        if (!sectorResponses.Any()) return 0;
+        
+        return questionNumber switch
+        {
+            1 => sectorResponses.Average(r => r.Question1),
+            2 => sectorResponses.Average(r => r.Question2),
+            3 => sectorResponses.Average(r => r.Question3),
+            4 => sectorResponses.Average(r => r.Question4),
+            5 => sectorResponses.Average(r => r.Question5),
+            6 => sectorResponses.Average(r => r.Question6),
+            7 => sectorResponses.Average(r => r.Question7),
+            8 => sectorResponses.Average(r => r.Question8),
+            9 => sectorResponses.Average(r => r.Question9),
+            _ => 0
+        };[b-iq1362wwd4]
+    }
+
+    string GetLinePoints()[b-iq1362wwd4]
+    {
+        var points = new List<string>();
+        for (int q = 1; q <= 9; q++)
+        {
+            var x = (q - 1) * 12.5;
+            var y = 100 - (GetQuestionAverage(q) / 10 * 100);
+            points.Add($"{x},{y}");
+        }
+        return string.Join(" ", points);[b-iq1362wwd4]
+    }
+
+    // Trend Analysis Methods
+    public class TrendDataPoint[b-iq1362wwd4]
+    {
+        public double Score { get; set; }
+        public string Period[b-iq1362wwd4] { get; set; } = "";
+        public string ShortPeriod[b-iq1362wwd4] { get; set; } = "";
+        public DateTime Date[b-iq1362wwd4] { get; set; }
+        public int ResponseCount[b-iq1362wwd4] { get; set; }
+    }
+
+    IEnumerable<TrendDataPoint> GetTrendData()[b-iq1362wwd4]
+    {
+        var completedResponses = surveyResponses.Where(r => r.DateCompleted.HasValue).ToList();
+        
+        if (!completedResponses.Any()) return new List<TrendDataPoint>();
+
+        var groupedData = trendsView switch
+        {
+            "quarterly" => GroupByQuarters(completedResponses),
+            "yearly" => GroupByYears(completedResponses),
+            _ => GroupByMonths(completedResponses) // default to monthly
+        };
+
+        return groupedData.OrderBy(t => t.Date);[b-iq1362wwd4]
+    }
+
+    IEnumerable<TrendDataPoint> GroupByMonths(List<SurveyResponse> responses)[b-iq1362wwd4]
+    {
+        return responses
+            .GroupBy(r => new { r.DateCompleted!.Value.Year, r.DateCompleted!.Value.Month })
+            .Select(g => new TrendDataPoint
+            {
+                Score = Math.Round(g.Average(r => r.Question1), 1),
+                Period = $"{GetMonthName(g.Key.Month)} {g.Key.Year}",
+                ShortPeriod = $"{GetMonthName(g.Key.Month).Substring(0, 3)} '{g.Key.Year.ToString().Substring(2)}",
+                Date = new DateTime(g.Key.Year, g.Key.Month, 1),
+                ResponseCount = g.Count()
+            })
+            .OrderBy(t => t.Date);
+    }
+
+    IEnumerable<TrendDataPoint> GroupByQuarters(List<SurveyResponse> responses)[b-iq1362wwd4]
+    {
+        return responses
+            .GroupBy(r => new { r.DateCompleted!.Value.Year, Quarter = (r.DateCompleted!.Value.Month - 1) / 3 + 1 })
+            .Select(g => new TrendDataPoint
+            {
+                Score = Math.Round(g.Average(r => r.Question1), 1),
+                Period = $"Q{g.Key.Quarter} {g.Key.Year}",
+                ShortPeriod = $"Q{g.Key.Quarter} '{g.Key.Year.ToString().Substring(2)}",
+                Date = new DateTime(g.Key.Year, (g.Key.Quarter - 1) * 3 + 1, 1),
+                ResponseCount = g.Count()
+            })
+            .OrderBy(t => t.Date);
+    }
+
+    IEnumerable<TrendDataPoint> GroupByYears(List<SurveyResponse> responses)[b-iq1362wwd4]
+    {
+        return responses
+            .GroupBy(r => r.DateCompleted!.Value.Year)
+            .Select(g => new TrendDataPoint
+            {
+                Score = Math.Round(g.Average(r => r.Question1), 1),
+                Period = g.Key.ToString(),
+                ShortPeriod = g.Key.ToString(),
+                Date = new DateTime(g.Key, 1, 1),
+                ResponseCount = g.Count()
+            })
+            .OrderBy(t => t.Date);
+    }
+
+    IEnumerable<TrendDataPoint> GetSectorTrendData(string sector)[b-iq1362wwd4]
+    {
+        var sectorResponses = surveyResponses.Where(r => r.Sector == sector && r.DateCompleted.HasValue).ToList();
+        
+        if (!sectorResponses.Any()) return new List<TrendDataPoint>();
+
+        var groupedData = trendsView switch
+        {
+            "quarterly" => GroupByQuarters(sectorResponses),
+            "yearly" => GroupByYears(sectorResponses),
+            _ => GroupByMonths(sectorResponses)
+        };
+
+        return groupedData.OrderBy(t => t.Date);[b-iq1362wwd4]
+    }
+
+    string GetTrendDirection()[b-iq1362wwd4]
+    {
+        var data = GetTrendData().ToList();
+        if (data.Count < 2) return "stable";
+
+        // Compare latest with previous data point
+        var latestScore = data.Last().Score;
+        var previousScore = data[data.Count - 2].Score;
+
+        var diff = latestScore - previousScore;
+        return diff > 0.2 ? "up" : diff < -0.2 ? "down" : "stable";
+    }
+
+    double GetTrendPercentage()[b-iq1362wwd4]
+    {
+        var data = GetTrendData().ToList();
+        if (data.Count < 2) return 0;
+
+        // Get the latest and previous data points
+        var latestScore = data.Last().Score;
+        var previousScore = data[data.Count - 2].Score;
+
+        if (previousScore == 0) return 0;
+        return Math.Round(((latestScore - previousScore) / previousScore) * 100, 1);
+    }
+
+    TrendDataPoint GetHighestPeriod()[b-iq1362wwd4]
+    {
+        var data = GetTrendData().ToList();
+        return data.Any() ? data.OrderByDescending(t => t.Score).First() : new TrendDataPoint();
+    }
+
+    TrendDataPoint GetLowestPeriod()[b-iq1362wwd4]
+    {
+        var data = GetTrendData().ToList();
+        return data.Any() ? data.OrderBy(t => t.Score).First() : new TrendDataPoint();
+    }
+
+    string GetTrendAnalysis()[b-iq1362wwd4]
+    {
+        var data = GetTrendData().ToList();
+        if (data.Count < 2) return "Insufficient data for trend analysis.";
+
+        var direction = GetTrendDirection();
+        var percentage = Math.Abs(GetTrendPercentage());
+
+        return direction switch
+        {
+            "up" => $"Your satisfaction scores are trending upward by {percentage}%, indicating improving service quality and customer relationships.",
+            "down" => $"Your satisfaction scores are declining by {percentage}%. Consider reviewing recent service delivery and customer feedback.",
+            _ => "Your satisfaction scores remain stable. Maintain current service standards to ensure continued customer satisfaction."
+        };[b-iq1362wwd4]
+    }
+
+    List<string> GetRecurringChallenges()[b-iq1362wwd4]
+    {
+        var challenges = new List<string>();
+        var data = GetTrendData().ToList();
+        
+        if (data.Count < 3) return challenges;
+
+        // Check for consistently low periods
+        var lowPeriods = data.Where(t => t.Score < 6).Count();
+        if (lowPeriods > data.Count * 0.3)
+        {
+            challenges.Add("Recurring low satisfaction periods");
+        }
+
+        // Check for declining trend in recent periods
+        var recentData = data.TakeLast(5).ToList();
+        if (recentData.Count >= 3)[b-iq1362wwd4]
+        {
+            var isDeclinig = true;
+            for (int i = 1; i < recentData.Count; i++)
+            {
+                if (recentData[i].Score >= recentData[i - 1].Score)
+                {
+                    isDeclinig = false;
+                    break;
+                }
+            }
+            if (isDeclinig) challenges.Add("Recent declining trend");[b-iq1362wwd4]
+        }
+
+        return challenges;[b-iq1362wwd4]
+    }
+
+    string GetServiceQualityInsight()[b-iq1362wwd4]
+    {
+        var avgScore = GetTrendData().Any() ? GetTrendData().Average(t => t.Score) : 0;
+        
+        return avgScore switch
+        {
+            >= 8.5 => "Outstanding service quality - customers are highly satisfied!",
+            >= 7.5 => "Good service quality - customers are generally satisfied.",
+            >= 6.5 => "Acceptable service quality - room for improvement exists.",
+            >= 5.5 => "Below average service quality - attention needed.",
+            _ => "Service quality needs significant improvement - priority action required."
+        };[b-iq1362wwd4]
+    }
+
+    int GetPeriodResponseCount(string period)[b-iq1362wwd4]
+    {
+        var data = GetTrendData().FirstOrDefault(t => t.Period == period);
+        return data?.ResponseCount ?? 0;
+    }
+
+    // Helper methods
+    string GetMonthName(int month)[b-iq1362wwd4]
+    {
+        return new DateTime(2000, month, 1).ToString("MMMM");
+    }
+
+    // Visual chart helper methods
+    string GetTrendLinePath(List<TrendDataPoint> data)[b-iq1362wwd4]
+    {
+        if (data.Count < 2) return "";
+        
+        var points = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - (point.Score / 10.0) * 100; // Invert Y for CSS positioning
+            return $"{x}% {y}%";
+        });
+        
+        return $"clip-path: polygon({string.Join(", ", points)});";
+    }
+
+    string GetTrendAreaPath(List<TrendDataPoint> data)[b-iq1362wwd4]
+    {
+        if (data.Count < 2) return "";
+        
+        var topPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            var y = 100 - (point.Score / 10.0) * 100; // Invert Y for CSS positioning
+            return $"{x}% {y}%";
+        });
+        
+        var bottomPoints = data.Select((point, index) => {
+            var x = data.Count > 1 ? (index * 100.0 / (data.Count - 1)) : 50;
+            return $"{x}% 100%";
+        }).Reverse();
+        
+        return $"clip-path: polygon({string.Join(", ", topPoints)}, {string.Join(", ", bottomPoints)});";
+    }
+
+    string GetScoreCategory(double score)[b-iq1362wwd4]
+    {
+        return score switch
+        {
+            >= 8 => "Excellent",
+            >= 6 => "Good", 
+            >= 4 => "Average",
+            _ => "Poor"
+        };[b-iq1362wwd4]
+    }
+
+    // New methods for dual filtering system
+    void ClearAllFilters()[b-iq1362wwd4]
+    {
+        selectedSectorFilter = "all";
+        selectedCompanySizeFilter = "all";
+        StateHasChanged();
+    }
+
+    void SelectItem(string itemKey)[b-iq1362wwd4]
+    {
+        // Handle selection of satisfaction cards if needed
+        selectedSector = itemKey;
+        StateHasChanged();
+    }
+
+    string GetItemIcon(string itemKey)[b-iq1362wwd4]
+    {
+        // Determine if this is a sector or company size based on the key format
+        if (itemKey.Contains(" - "))
+        {
+            var parts = itemKey.Split(" - ");
+            if (parts.Length == 2)
+            {
+                // Combined sector-company size format
+                return "🏢🏭"; // Combined icon
+            }
+        }
+        
+        // Check if it's a known sector
+        var sectors = GetUniqueSectors();
+        if (sectors.Contains(itemKey))[b-iq1362wwd4]
+        {
+            return GetSectorIcon(itemKey);
+        }
+        
+        // Check if it's a known company size
+        var companySizes = GetUniqueCompanySizes();
+        if (companySizes.Contains(itemKey))[b-iq1362wwd4]
+        {
+            return GetCompanySizeIcon(itemKey);
+        }
+        
+        return "📊"; // Default icon[b-iq1362wwd4]
+    }
+
+    string GetItemColor(string itemKey)[b-iq1362wwd4]
+    {
+        // Determine if this is a sector or company size based on the key format
+        if (itemKey.Contains(" - "))
+        {
+            var parts = itemKey.Split(" - ");
+            if (parts.Length == 2)
+            {
+                // Use sector color for combined items
+                return GetSectorColor(parts[0]);
+            }
+        }
+        
+        // Check if it's a known sector
+        var sectors = GetUniqueSectors();
+        if (sectors.Contains(itemKey))[b-iq1362wwd4]
+        {
+            return GetSectorColor(itemKey);
+        }
+        
+        // Check if it's a known company size
+        var companySizes = GetUniqueCompanySizes();
+        if (companySizes.Contains(itemKey))[b-iq1362wwd4]
+        {
+            return GetCompanySizeColor(itemKey);
+        }
+        
+        return "#95a5a6"; // Default color[b-iq1362wwd4]
+    }
+
+    int GetFilteredResponseCount(string itemKey)[b-iq1362wwd4]
+    {
+        var responses = GetCombinedFilteredResponses();
+        
+        if (itemKey.Contains(" - "))
+        {
+            // This is a combined filter result, return the total count
+            return responses.Count();
+        }
+        
+        // For individual items[b-iq1362wwd4], filter by that specific item
+        var sectors = GetUniqueSectors();
+        var companySizes = GetUniqueCompanySizes();
+        
+        if (sectors.Contains(itemKey))[b-iq1362wwd4]
+        {
+            return responses.Where(r => r.Sector == itemKey).Count();
+        }
+        
+        if (companySizes.Contains(itemKey))[b-iq1362wwd4]
+        {
+            return responses.Where(r => r.CompanySize == itemKey).Count();
+        }
+        
+        return responses.Count();[b-iq1362wwd4]
+    }
+}
+/* _content/WebApp/Components/Pages/Survey.razor.rz.scp.css */
+.survey-container[b-rpvergvip2] {
+    min-height: 100vh;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    background: linear-gradient(135deg, #5fa8f5 0%, #5fa8f5 100%);
+    padding: 60px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.survey-form[b-rpvergvip2] {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    padding: 60px 80px;
+    max-width: 800px;
+    width: 100%;
+    backdrop-filter: blur(10px);
+}
+
+.survey-container h2[b-rpvergvip2] {
+    text-align: center;
+    margin-bottom: 50px;
+    color: #2d3748;
+    font-weight: 800;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-group[b-rpvergvip2] {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.form-group label[b-rpvergvip2] {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.form-control[b-rpvergvip2] {
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    font-size: 1.2rem;
+    margin-top: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control:focus[b-rpvergvip2] {
+    border-color: #5fa8f5;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+}
+
+.question-group[b-rpvergvip2] {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.question-group label[b-rpvergvip2] {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    color: #5fa8f5;
+    font-weight: 600;
+}
+
+.dots-row[b-rpvergvip2] {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.dot[b-rpvergvip2] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #f7fafc, #e2e8f0);
+    color: #5fa8f5;
+    font-weight: 700;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+.dot:hover[b-rpvergvip2], .dot:focus[b-rpvergvip2] {
+    background: linear-gradient(145deg, #cbd5e0, #a0aec0);
+    border-color: #5fa8f5;
+    color: #5fa8f5;
+    transform: scale(1.15);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+}
+
+.dot.selected[b-rpvergvip2] {
+    background: linear-gradient(145deg, #5fa8f5, #5fa8f5);
+    color: #fff;
+    border-color: #5fa8f5;
+    box-shadow: 0 0 0 6px #5fa8f5, 0 0 16px #5fa8f5;
+    transform: scale(1.22);
+    animation: pulse-b-rpvergvip2 0.5s;
+}
+
+@keyframes pulse-b-rpvergvip2 {
+    0% { box-shadow: 0 0 0 0 #5fa8f5; }
+    70% { box-shadow: 0 0 0 12px #5fa8f5; }
+    100% { box-shadow: 0 0 0 6px #5fa8f5; }
+}
+
+.chosen-value[b-rpvergvip2] {
+    margin-top: 8px;
+    font-size: 1.1rem;
+    color: #5fa8f5;
+    font-weight: 600;
+    text-align: center;
+    min-height: 28px;
+}
+
+.submit-btn[b-rpvergvip2] {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 40px auto 0;
+    padding: 18px 0;
+    background: linear-gradient(145deg, #5fa8f5, #5fa8f5);
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgb(124, 187, 255);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.submit-btn:hover[b-rpvergvip2] {
+    background: linear-gradient(145deg, #5fa8f5, #5fa8f5);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgb(124, 187, 255);
+}
+
+.success-message[b-rpvergvip2] {
+    margin-top: 30px;
+    text-align: center;
+    color: #38a169;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    animation: slideIn-b-rpvergvip2 0.5s ease-out;
+}
+
+.success-message span[b-rpvergvip2] {
+    font-size: 1.8rem;
+    background: #38a169;
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes slideIn-b-rpvergvip2 {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+@media (max-width: 768px) {
+    .survey-container[b-rpvergvip2] { padding: 12px 4px; }
+    .dots-row[b-rpvergvip2] { gap: 4px; }
+}
+/* _content/WebApp/Components/Pages/SurveyAdmin.razor.rz.scp.css */
+body[b-916mmfsk8t] {
+        background: #fff !important;
+    }
+
+.admin-container[b-916mmfsk8t] {
+    max-width: 1400px;
+    margin: 20px auto;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    padding: 40px;
+    min-height: 90vh;
+}
+
+.header-section[b-916mmfsk8t] {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+.header-section h1[b-916mmfsk8t] {
+    font-size: 2.8rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.stats-row[b-916mmfsk8t] {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.stat-card[b-916mmfsk8t] {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px 30px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: transform 0.3s, background 0.3s;
+}
+
+.stat-card:hover[b-916mmfsk8t] {
+    transform: translateY(-5px) scale(1.05);
+    background: rgba(255,255,255,0.25);
+}
+
+.stat-number[b-916mmfsk8t] {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.stat-label[b-916mmfsk8t] {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.9);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.loading-container[b-916mmfsk8t] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px 0;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.spinner[b-916mmfsk8t] {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255,255,255,0.3);
+    border-top: 5px solid white;
+    border-radius: 50%;
+    animation: spin-b-916mmfsk8t 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin-b-916mmfsk8t {
+    to { transform: rotate(360deg); }
+}
+
+.empty-state[b-916mmfsk8t] {
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    margin: 100px 0;
+    font-size: 1.4rem;
+}
+
+.empty-icon[b-916mmfsk8t] {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    display: block;
+    filter: grayscale(0.3);
+}
+
+.sector-section[b-916mmfsk8t] {
+    margin-bottom: 50px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.sector-header[b-916mmfsk8t] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.sector-header:hover[b-916mmfsk8t] {
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+}
+
+.sector-header h2[b-916mmfsk8t] {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.sector-count[b-916mmfsk8t] {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.company-section[b-916mmfsk8t] {
+    margin-left: 20px;
+    margin-top: 10px;
+    border-left: 2px solid rgba(255,255,255,0.1);
+    padding-left: 15px;
+}
+
+.company-header[b-916mmfsk8t] {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    color: white;
+}
+
+.company-header:hover[b-916mmfsk8t] {
+    background: rgba(255,255,255,0.05);
+}
+
+.company-header h3[b-916mmfsk8t] {
+    position: relative;
+    font-size: 1rem;
+    margin: 0;
+    padding-right: 20px;
+}
+
+.company-header h3[b-916mmfsk8t]::after {
+    content: "▶";
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    transition: transform 0.3s ease;
+}
+
+.company-section.open .company-header h3[b-916mmfsk8t]::after {
+    transform: translateY(-50%) rotate(90deg);
+    color: white;
+}
+
+.company-count[b-916mmfsk8t] {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.responses-grid[b-916mmfsk8t] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 25px;
+    margin-top: 15px;
+}
+
+.response-card[b-916mmfsk8t] {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    padding: 25px;
+    border: 3px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.response-card[b-916mmfsk8t]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+.response-card:hover[b-916mmfsk8t] {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(102,126,234,0.25);
+    border-color: rgba(102,126,234,0.3);
+}
+
+.response-card:hover[b-916mmfsk8t]::before {
+    transform: scaleX(1);
+}
+
+.response-card.selected[b-916mmfsk8t] {
+    border-color: #667eea;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 0 0 6px rgba(102,126,234,0.2), 0 20px 60px rgba(102,126,234,0.3);
+}
+
+.response-card.selected[b-916mmfsk8t]::before {
+    transform: scaleX(1);
+}
+
+.card-header[b-916mmfsk8t] {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.company-info[b-916mmfsk8t] {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.company-name[b-916mmfsk8t] {
+    font-weight: 800;
+    color: #2d3748;
+    font-size: 1.3rem;
+}
+
+.project-name[b-916mmfsk8t] {
+    color: #667eea;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.timestamp[b-916mmfsk8t] {
+    color: #a0aec0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: #f7fafc;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+.project-duration[b-916mmfsk8t] {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    color: #4a5568;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.duration-icon[b-916mmfsk8t] {
+    font-size: 1.1rem;
+}
+
+.scores-preview[b-916mmfsk8t] {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.score-summary[b-916mmfsk8t] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px;
+    border-radius: 16px;
+    min-width: 80px;
+}
+
+.overall-score[b-916mmfsk8t] {
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.score-label[b-916mmfsk8t] {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.key-scores[b-916mmfsk8t] {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.mini-score[b-916mmfsk8t] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 12px;
+    min-width: 60px;
+    border: 2px solid #e2e8f0;
+    transition: border-color 0.2s;
+}
+
+.mini-score:hover[b-916mmfsk8t] {
+    border-color: #667eea;
+}
+
+.mini-label[b-916mmfsk8t] {
+    font-size: 0.7rem;
+    color: #4a5568;
+    font-weight: 600;
+    text-align: center;
+}
+
+.mini-value[b-916mmfsk8t] {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #667eea;
+}
+
+.card-footer[b-916mmfsk8t] {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.detail-btn[b-916mmfsk8t], .delete-btn[b-916mmfsk8t] {
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-btn[b-916mmfsk8t] {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    flex: 1;
+}
+
+.detail-btn:hover[b-916mmfsk8t] {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+}
+
+.delete-btn[b-916mmfsk8t] {
+    background: #fed7d7;
+    color: #e53e3e;
+    border: 2px solid #feb2b2;
+    padding: 8px 12px;
+}
+
+.delete-btn:hover[b-916mmfsk8t] {
+    background: #e53e3e;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.load-more[b-916mmfsk8t] {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.load-more-btn[b-916mmfsk8t] {
+    background: white;
+    border: 2px solid #667eea;
+    color: #667eea;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.load-more-btn:hover[b-916mmfsk8t] {
+    background: #667eea;
+    color: white;
+}
+
+.modal-backdrop[b-916mmfsk8t] {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn-b-916mmfsk8t 0.3s;
+}
+
+@keyframes fadeIn-b-916mmfsk8t {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content[b-916mmfsk8t] {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+    padding: 40px;
+    min-width: 500px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp-b-916mmfsk8t 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp-b-916mmfsk8t {
+    from { 
+        opacity: 0; 
+        transform: translateY(60px) scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+.modal-header[b-916mmfsk8t] {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #f1f5f9;
+}
+
+.modal-title h3[b-916mmfsk8t] {
+    color: #2d3748;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 0;
+}
+
+.modal-sector[b-916mmfsk8t] {
+    color: #667eea;
+    font-size: 1rem;
+    font-weight: 600;
+    background: rgba(102,126,234,0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.close-btn[b-916mmfsk8t] {
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: #a0aec0;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    line-height: 1;
+}
+
+.close-btn:hover[b-916mmfsk8t] {
+    color: #e53e3e;
+    transform: rotate(90deg);
+}
+
+.project-info[b-916mmfsk8t] {
+    background: linear-gradient(135deg, #f8f9fa, #e2e8f0);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 2px solid #e2e8f0;
+}
+
+.info-item[b-916mmfsk8t] {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.info-item:last-child[b-916mmfsk8t] {
+    margin-bottom: 0;
+}
+
+.info-label[b-916mmfsk8t] {
+    font-weight: 700;
+    color: #4a5568;
+}
+
+.info-value[b-916mmfsk8t] {
+    color: #2d3748;
+    font-weight: 600;
+}
+
+.modal-scores[b-916mmfsk8t] {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.score-item[b-916mmfsk8t] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 16px;
+    border-left: 6px solid;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.score-item:hover[b-916mmfsk8t] {
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.score-item.excellent[b-916mmfsk8t] {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border-left-color: #28a745;
+}
+
+.score-item.good[b-916mmfsk8t] {
+    background: linear-gradient(135deg, #cce5ff, #b3d9ff);
+    border-left-color: #007bff;
+}
+
+.score-item.average[b-916mmfsk8t] {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    border-left-color: #ffc107;
+}
+
+.score-question[b-916mmfsk8t] {
+    font-weight: 700;
+    color: #2d3748;
+    font-size: 1.05rem;
+}
+
+.score-visual[b-916mmfsk8t] {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 120px;
+}
+
+.score-bar[b-916mmfsk8t] {
+    width: 80px;
+    height: 8px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.score-fill[b-916mmfsk8t] {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 4px;
+    transition: width 0.8s ease-out;
+}
+
+.score-number[b-916mmfsk8t] {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: #2d3748;
+    min-width: 25px;
+    text-align: center;
+}
+
+.modal-footer[b-916mmfsk8t] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 3px solid #f1f5f9;
+}
+
+.submitted-info[b-916mmfsk8t] {
+    color: #4a5568;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.overall-rating[b-916mmfsk8t] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 20px;
+}
+
+.overall-label[b-916mmfsk8t] {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.overall-value[b-916mmfsk8t] {
+    font-size: 1.6rem;
+    font-weight: 900;
+}
+
+@media (max-width: 1200px) {
+    .responses-grid[b-916mmfsk8t] {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-container[b-916mmfsk8t] {
+        padding: 20px;
+    }
+    .header-section h1[b-916mmfsk8t] {
+        font-size: 2rem;
+    }
+    .stats-row[b-916mmfsk8t] {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    .responses-grid[b-916mmfsk8t] {
+        grid-template-columns: 1fr;
+    }
+    .modal-content[b-916mmfsk8t] {
+        min-width: auto;
+        padding: 20px;
+    }
+}
+/* _content/WebApp/Components/Pages/SurveyDashboard.razor.rz.scp.css */
+.dashboard-header[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dashboard-logo[b-l6f1jfn67l] {
+    height: 50px;
+    margin-right: 16px;
+}
+
+.dashboard-title-group[b-l6f1jfn67l] {
+    flex: 1;
+}
+
+.dashboard-title[b-l6f1jfn67l] {
+    margin: 0;
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.dashboard-subtitle[b-l6f1jfn67l] {
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+.dashboard-actions[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-actions .export-toolbar[b-l6f1jfn67l] {
+    margin: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.dashboard-actions .export-toolbar .btn-group[b-l6f1jfn67l] {
+    gap: 8px;
+}
+
+.dashboard-actions .export-toolbar .btn[b-l6f1jfn67l] {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+}
+
+.ai-loading[b-l6f1jfn67l] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+}
+
+.ai-spinner[b-l6f1jfn67l] {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin-b-l6f1jfn67l 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin-b-l6f1jfn67l {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.ai-insights-container[b-l6f1jfn67l] {
+    padding: 20px;
+}
+
+.ai-summary-card[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.ai-card-header[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.ai-icon[b-l6f1jfn67l] {
+    font-size: 24px;
+}
+
+.confidence-score[b-l6f1jfn67l] {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-left: auto;
+}
+
+.ai-summary[b-l6f1jfn67l] {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.ai-details-grid[b-l6f1jfn67l] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.ai-detail-card[b-l6f1jfn67l] {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #007bff;
+}
+
+.ai-detail-card.trends[b-l6f1jfn67l] {
+    border-left-color: #28a745;
+}
+
+.ai-detail-card.issues[b-l6f1jfn67l] {
+    border-left-color: #dc3545;
+}
+
+.ai-detail-card.strengths[b-l6f1jfn67l] {
+    border-left-color: #17a2b8;
+}
+
+.ai-detail-card.sentiment[b-l6f1jfn67l] {
+    border-left-color: #ffc107;
+}
+
+.ai-detail-card h6[b-l6f1jfn67l] {
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.ai-detail-card ul[b-l6f1jfn67l] {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ai-detail-card li[b-l6f1jfn67l] {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.ai-detail-card li:last-child[b-l6f1jfn67l] {
+    border-bottom: none;
+}
+
+.sentiment-indicator[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.sentiment-indicator.positive[b-l6f1jfn67l] {
+    background: #d4edda;
+    color: #155724;
+}
+
+.sentiment-indicator.negative[b-l6f1jfn67l] {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.sentiment-indicator.neutral[b-l6f1jfn67l] {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.ai-recommendations-container[b-l6f1jfn67l] {
+    padding: 20px;
+}
+
+.recommendations-grid[b-l6f1jfn67l] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.recommendation-card[b-l6f1jfn67l] {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.recommendation-card.immediate[b-l6f1jfn67l] {
+    border-left: 4px solid #dc3545;
+}
+
+.recommendation-card.longterm[b-l6f1jfn67l] {
+    border-left: 4px solid #007bff;
+}
+
+.recommendation-card.sectors[b-l6f1jfn67l] {
+    border-left: 4px solid #28a745;
+}
+
+.recommendation-card.impact[b-l6f1jfn67l] {
+    border-left: 4px solid #ffc107;
+}
+
+.priority-badge[b-l6f1jfn67l] {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.priority-badge.high[b-l6f1jfn67l] {
+    background: #dc3545;
+    color: white;
+}
+
+.priority-badge.medium[b-l6f1jfn67l] {
+    background: #ffc107;
+    color: #856404;
+}
+
+.priority-badge.low[b-l6f1jfn67l] {
+    background: #28a745;
+    color: white;
+}
+
+.sector-tags[b-l6f1jfn67l] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.sector-tag[b-l6f1jfn67l] {
+    background: #007bff;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+}
+
+.ai-predictions-container[b-l6f1jfn67l] {
+    padding: 20px;
+}
+
+.predictions-header[b-l6f1jfn67l] {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.prediction-main-card[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.forecast-display[b-l6f1jfn67l] {
+    margin-top: 15px;
+}
+
+.forecast-score[b-l6f1jfn67l] {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.forecast-score.trend-up[b-l6f1jfn67l] {
+    color: #28a745;
+}
+
+.forecast-score.trend-down[b-l6f1jfn67l] {
+    color: #dc3545;
+}
+
+.forecast-score.trend-stable[b-l6f1jfn67l] {
+    color: #ffc107;
+}
+
+.forecast-trend[b-l6f1jfn67l] {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.forecast-confidence[b-l6f1jfn67l] {
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+.retention-forecast[b-l6f1jfn67l] {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.retention-percentage[b-l6f1jfn67l] {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #007bff;
+    margin: 10px 0;
+}
+
+.retention-bar[b-l6f1jfn67l] {
+    width: 100%;
+    height: 10px;
+    background: #e9ecef;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.retention-fill[b-l6f1jfn67l] {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #007bff);
+    transition: width 0.3s ease;
+}
+
+.predictions-details[b-l6f1jfn67l] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.prediction-card[b-l6f1jfn67l] {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.prediction-card.risks[b-l6f1jfn67l] {
+    border-left: 4px solid #dc3545;
+}
+
+.prediction-card.opportunities[b-l6f1jfn67l] {
+    border-left: 4px solid #28a745;
+}
+
+.ai-chat-section[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    overflow: hidden;
+}
+
+.ai-chat-section[b-l6f1jfn67l]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.chat-header-modern[b-l6f1jfn67l] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: -24px -24px 24px -24px;
+    border-radius: 16px 16px 0 0;
+}
+
+.chat-title-area[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ai-avatar[b-l6f1jfn67l] {
+    position: relative;
+}
+
+.avatar-circle[b-l6f1jfn67l] {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.ai-icon[b-l6f1jfn67l] {
+    font-size: 24px;
+}
+
+.status-indicator[b-l6f1jfn67l] {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.status-indicator.online[b-l6f1jfn67l] {
+    background: #22c55e;
+    animation: pulse-b-l6f1jfn67l 2s infinite;
+}
+
+@keyframes pulse-b-l6f1jfn67l {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.chat-title-text h4[b-l6f1jfn67l] {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.status-text[b-l6f1jfn67l] {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.chat-actions[b-l6f1jfn67l] {
+    display: flex;
+    gap: 12px;
+}
+
+.clear-chat-btn[b-l6f1jfn67l] {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.clear-chat-btn:hover[b-l6f1jfn67l] {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.enhanced-chat-container[b-l6f1jfn67l] {
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-section[b-l6f1jfn67l] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+    flex: 1;
+    justify-content: center;
+}
+
+.welcome-avatar[b-l6f1jfn67l] {
+    margin-bottom: 24px;
+}
+
+.welcome-circle[b-l6f1jfn67l] {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.welcome-ai-icon[b-l6f1jfn67l] {
+    font-size: 40px;
+    color: white;
+}
+
+.welcome-content h5[b-l6f1jfn67l] {
+    margin: 0 0 16px 0;
+    color: #1e293b;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.welcome-content p[b-l6f1jfn67l] {
+    margin: 0 0 32px 0;
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 500px;
+}
+
+.suggestion-chips[b-l6f1jfn67l] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.suggestion-chip[b-l6f1jfn67l] {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #475569;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.suggestion-chip:hover[b-l6f1jfn67l] {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+}
+
+.chip-icon[b-l6f1jfn67l] {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.chat-messages-enhanced[b-l6f1jfn67l] {
+    flex: 1;
+    padding: 20px 0;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    max-height: 400px;
+}
+
+.message-wrapper[b-l6f1jfn67l] {
+    display: flex;
+    margin-bottom: 20px;
+    animation: slideInMessage-b-l6f1jfn67l 0.3s ease-out;
+}
+
+@keyframes slideInMessage-b-l6f1jfn67l {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-wrapper.user-message[b-l6f1jfn67l] {
+    justify-content: flex-end;
+}
+
+.message-wrapper.ai-message[b-l6f1jfn67l] {
+    justify-content: flex-start;
+}
+
+.message-avatar[b-l6f1jfn67l] {
+    margin: 0 12px;
+    flex-shrink: 0;
+}
+
+.avatar-small[b-l6f1jfn67l] {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.avatar-small.user[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.avatar-small.thinking[b-l6f1jfn67l] {
+    animation: thinking-b-l6f1jfn67l 2s ease-in-out infinite;
+}
+
+@keyframes thinking-b-l6f1jfn67l {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.message-bubble[b-l6f1jfn67l] {
+    max-width: 70%;
+    border-radius: 18px;
+    padding: 0;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.user-bubble[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.ai-bubble[b-l6f1jfn67l] {
+    background: white;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.typing-bubble[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.message-content-enhanced[b-l6f1jfn67l] {
+    padding: 16px 20px;
+}
+
+.message-text-enhanced[b-l6f1jfn67l] {
+    line-height: 1.5;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.message-metadata[b-l6f1jfn67l] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.message-time-enhanced[b-l6f1jfn67l] {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.message-actions[b-l6f1jfn67l] {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.message-wrapper:hover .message-actions[b-l6f1jfn67l] {
+    opacity: 1;
+}
+
+.action-btn[b-l6f1jfn67l] {
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    color: #64748b;
+}
+
+.action-btn:hover[b-l6f1jfn67l] {
+    background: rgba(100, 116, 139, 0.1);
+    transform: scale(1.1);
+}
+
+.typing-indicator-enhanced[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+}
+
+.typing-dots[b-l6f1jfn67l] {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dots span[b-l6f1jfn67l] {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #667eea;
+    animation: typingDot-b-l6f1jfn67l 1.4s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(1)[b-l6f1jfn67l] { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2)[b-l6f1jfn67l] { animation-delay: -0.16s; }
+
+@keyframes typingDot-b-l6f1jfn67l {
+    0%, 80%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.typing-text[b-l6f1jfn67l] {
+    color: #64748b;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+.chat-input-area[b-l6f1jfn67l] {
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    padding: 20px;
+    margin: 0 -24px -24px -24px;
+    border-radius: 0 0 16px 16px;
+}
+
+.input-container-enhanced[b-l6f1jfn67l] {
+    max-width: 100%;
+}
+
+.input-wrapper[b-l6f1jfn67l] {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 8px 8px 8px 20px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.input-wrapper:focus-within[b-l6f1jfn67l] {
+    border-color: #667eea;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+}
+
+.chat-input-enhanced[b-l6f1jfn67l] {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 12px 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    background: transparent;
+    resize: none;
+    min-height: 20px;
+    max-height: 120px;
+    overflow-y: auto;
+    font-family: inherit;
+}
+
+.chat-input-enhanced[b-l6f1jfn67l]::placeholder {
+    color: #94a3b8;
+}
+
+.input-actions[b-l6f1jfn67l] {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-button[b-l6f1jfn67l] {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    color: #64748b;
+}
+
+.action-button:hover:not(:disabled)[b-l6f1jfn67l] {
+    background: #f1f5f9;
+    transform: scale(1.1);
+}
+
+.action-button:disabled[b-l6f1jfn67l] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.send-button[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.send-button:hover:not(:disabled)[b-l6f1jfn67l] {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+}
+
+.send-button:disabled[b-l6f1jfn67l],
+.send-button.disabled[b-l6f1jfn67l] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+.send-icon[b-l6f1jfn67l] {
+    font-size: 18px;
+}
+
+.spinner-small[b-l6f1jfn67l] {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin-b-l6f1jfn67l 1s linear infinite;
+}
+
+.input-footer[b-l6f1jfn67l] {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.char-count[b-l6f1jfn67l] {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+    .chat-header-modern[b-l6f1jfn67l] {
+        padding: 16px 20px;
+    }
+    
+    .chat-title-text h4[b-l6f1jfn67l] {
+        font-size: 1.1rem;
+    }
+    
+    .avatar-circle[b-l6f1jfn67l] {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .ai-icon[b-l6f1jfn67l] {
+        font-size: 20px;
+    }
+    
+    .suggestion-chips[b-l6f1jfn67l] {
+        grid-template-columns: 1fr;
+    }
+    
+    .message-bubble[b-l6f1jfn67l] {
+        max-width: 85%;
+    }
+    
+    .chat-input-area[b-l6f1jfn67l] {
+        padding: 16px;
+    }
+    
+    .welcome-content p[b-l6f1jfn67l] {
+        font-size: 0.9rem;
+    }
+}
+
+.ai-chat-container[b-l6f1jfn67l] {
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+.chat-header[b-l6f1jfn67l] {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.chat-header h6[b-l6f1jfn67l] {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.chat-header p[b-l6f1jfn67l] {
+    margin: 0;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.chat-messages[b-l6f1jfn67l] {
+    min-height: 300px;
+    padding: 15px 0;
+}
+
+.chat-message[b-l6f1jfn67l] {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.chat-message.user[b-l6f1jfn67l] {
+    flex-direction: row-reverse;
+}
+
+.message-icon[b-l6f1jfn67l] {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.message-content[b-l6f1jfn67l] {
+    max-width: 70%;
+}
+
+.chat-message.user .message-content[b-l6f1jfn67l] {
+    background: #007bff;
+    color: white;
+    border-radius: 18px 18px 4px 18px;
+    padding: 12px 16px;
+}
+
+.chat-message.ai .message-content[b-l6f1jfn67l] {
+    background: #f8f9fa;
+    color: #333;
+    border-radius: 18px 18px 18px 4px;
+    padding: 12px 16px;
+}
+
+.message-text[b-l6f1jfn67l] {
+    line-height: 1.4;
+}
+
+.message-time[b-l6f1jfn67l] {
+    font-size: 0.75em;
+    opacity: 0.7;
+    margin-top: 5px;
+}
+
+.typing-indicator[b-l6f1jfn67l] {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+}
+
+.typing-indicator span[b-l6f1jfn67l] {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #666;
+    animation: typing-b-l6f1jfn67l 1.4s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(1)[b-l6f1jfn67l] { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2)[b-l6f1jfn67l] { animation-delay: -0.16s; }
+
+@keyframes typing-b-l6f1jfn67l {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.chat-input-container[b-l6f1jfn67l] {
+    display: flex;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 2px solid #eee;
+}
+
+.chat-input[b-l6f1jfn67l] {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 0.95em;
+}
+
+.chat-input:focus[b-l6f1jfn67l] {
+    border-color: #007bff;
+}
+
+.chat-send-btn[b-l6f1jfn67l] {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-send-btn:hover:not(:disabled)[b-l6f1jfn67l] {
+    background: #0056b3;
+}
+
+.chat-send-btn:disabled[b-l6f1jfn67l] {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+.ai-actions[b-l6f1jfn67l] {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+    text-align: center;
+}
+
+.refresh-ai-btn[b-l6f1jfn67l] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.refresh-ai-btn:hover:not(:disabled)[b-l6f1jfn67l] {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.refresh-ai-btn:disabled[b-l6f1jfn67l] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 768px) {
+    .dashboard-header[b-l6f1jfn67l] {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    
+    .dashboard-title[b-l6f1jfn67l] {
+        font-size: 1.5rem;
+    }
+    
+    .dashboard-actions[b-l6f1jfn67l] {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .ai-details-grid[b-l6f1jfn67l] {
+        grid-template-columns: 1fr;
+    }
+    
+    .recommendations-grid[b-l6f1jfn67l] {
+        grid-template-columns: 1fr;
+    }
+    
+    .predictions-header[b-l6f1jfn67l] {
+        grid-template-columns: 1fr;
+    }
+    
+    .predictions-details[b-l6f1jfn67l] {
+        grid-template-columns: 1fr;
+    }
+    
+    .chat-message .message-content[b-l6f1jfn67l] {
+        max-width: 85%;
+    }
+}
+/* _content/WebApp/Components/Shared/ExportToolbar.razor.rz.scp.css */
+.export-toolbar[b-2etsg5j3zs] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 16px;
+}
+
+.export-loading[b-2etsg5j3zs] {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.export-toolbar .btn[b-2etsg5j3zs] {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.export-toolbar .btn:hover[b-2etsg5j3zs] {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.export-toolbar .btn:disabled[b-2etsg5j3zs] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+/* _content/WebApp/Components/Shared/LoadingSpinner.razor.rz.scp.css */
+.loading-overlay[b-0agfq8htc4] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn-b-0agfq8htc4 0.3s ease-out;
+}
+
+@keyframes fadeIn-b-0agfq8htc4 {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.loading-content[b-0agfq8htc4] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.spinner[b-0agfq8htc4] {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin-b-0agfq8htc4 1s linear infinite;
+}
+
+@keyframes spin-b-0agfq8htc4 {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.dots-loader[b-0agfq8htc4] {
+    display: flex;
+    gap: 8px;
+}
+
+.dot[b-0agfq8htc4] {
+    width: 12px;
+    height: 12px;
+    background: #007bff;
+    border-radius: 50%;
+    animation: pulse-b-0agfq8htc4 1.4s ease-in-out infinite both;
+}
+
+.dot:nth-child(1)[b-0agfq8htc4] { animation-delay: -0.32s; }
+.dot:nth-child(2)[b-0agfq8htc4] { animation-delay: -0.16s; }
+.dot:nth-child(3)[b-0agfq8htc4] { animation-delay: 0; }
+
+@keyframes pulse-b-0agfq8htc4 {
+    0%, 80%, 100% { 
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.pulse-loader[b-0agfq8htc4] {
+    width: 48px;
+    height: 48px;
+    background: #007bff;
+    border-radius: 50%;
+    animation: pulseScale-b-0agfq8htc4 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseScale-b-0agfq8htc4 {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+.skeleton-loader[b-0agfq8htc4] {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.skeleton-line[b-0agfq8htc4] {
+    height: 16px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    border-radius: 8px;
+    animation: shimmer-b-0agfq8htc4 1.5s infinite;
+}
+
+.skeleton-line.short[b-0agfq8htc4] {
+    width: 60%;
+}
+
+@keyframes shimmer-b-0agfq8htc4 {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.loading-message[b-0agfq8htc4] {
+    color: #495057;
+    font-weight: 500;
+    font-size: 1rem;
+    text-align: center;
+    margin: 0;
+    animation: fadeInOut-b-0agfq8htc4 2s ease-in-out infinite;
+}
+
+@keyframes fadeInOut-b-0agfq8htc4 {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+/* _content/WebApp/Components/Shared/LoginButtons.razor.rz.scp.css */
+.icon[b-wxsoq6b4hs] {
+  width: 30px;
+  cursor: pointer;
+}
+/* _content/WebApp/Components/Shared/ProgressIndicator.razor.rz.scp.css */
+.progress-indicator[b-szx6a8crdr] {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 24px;
+    border-top: 4px solid var(--primary-color, #28a745);
+}
+
+.progress-header[b-szx6a8crdr] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.progress-text[b-szx6a8crdr] {
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+}
+
+.progress-percentage[b-szx6a8crdr] {
+    font-weight: 700;
+    color: var(--primary-color, #28a745);
+    font-size: 1.1rem;
+}
+
+.progress-bar-container[b-szx6a8crdr] {
+    margin-bottom: 20px;
+}
+
+.progress-bar-bg[b-szx6a8crdr] {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.progress-bar-fill[b-szx6a8crdr] {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-fill[b-szx6a8crdr]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        transparent 100%);
+    animation: shimmer-b-szx6a8crdr 1.5s infinite;
+}
+
+@keyframes shimmer-b-szx6a8crdr {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.progress-steps[b-szx6a8crdr] {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 8px 0;
+}
+
+.progress-step[b-szx6a8crdr] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+    position: relative;
+}
+
+.step-circle[b-szx6a8crdr] {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9ecef;
+    color: #6c757d;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.4s ease;
+    margin-bottom: 8px;
+    border: 3px solid transparent;
+}
+
+.progress-step.completed .step-circle[b-szx6a8crdr] {
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.progress-step.current .step-circle[b-szx6a8crdr] {
+    color: white;
+    border-color: rgba(255,255,255,0.3);
+    transform: scale(1.15);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    animation: pulse-b-szx6a8crdr 2s infinite;
+}
+
+@keyframes pulse-b-szx6a8crdr {
+    0%, 100% { transform: scale(1.15); }
+    50% { transform: scale(1.25); }
+}
+
+.step-check[b-szx6a8crdr] {
+    animation: checkmark-b-szx6a8crdr 0.4s ease-in-out;
+}
+
+@keyframes checkmark-b-szx6a8crdr {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.step-number[b-szx6a8crdr] {
+    transition: all 0.3s ease;
+}
+
+.step-label[b-szx6a8crdr] {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.2;
+    max-width: 80px;
+    word-wrap: break-word;
+}
+
+.progress-step.completed .step-label[b-szx6a8crdr],
+.progress-step.current .step-label[b-szx6a8crdr] {
+    color: var(--primary-color, #28a745);
+    font-weight: 600;
+}
+
+.progress-footer[b-szx6a8crdr] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #e9ecef;
+    font-size: 0.9rem;
+}
+
+.step-counter[b-szx6a8crdr] {
+    color: #495057;
+    font-weight: 500;
+}
+
+.remaining-text[b-szx6a8crdr] {
+    color: #6c757d;
+}
+
+.complete-text[b-szx6a8crdr] {
+    color: var(--primary-color, #28a745);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .progress-indicator[b-szx6a8crdr] {
+        padding: 16px;
+    }
+    
+    .progress-steps[b-szx6a8crdr] {
+        gap: 8px;
+        justify-content: flex-start;
+    }
+    
+    .progress-step[b-szx6a8crdr] {
+        min-width: 50px;
+    }
+    
+    .step-circle[b-szx6a8crdr] {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+    
+    .step-label[b-szx6a8crdr] {
+        font-size: 0.7rem;
+        max-width: 60px;
+    }
+    
+    .progress-footer[b-szx6a8crdr] {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .step-label[b-szx6a8crdr] {
+        display: none;
+    }
+    
+    .progress-steps[b-szx6a8crdr] {
+        justify-content: space-between;
+    }
+}
+/* _content/WebApp/Components/Shared/SearchToolbar.razor.rz.scp.css */
+.search-toolbar[b-6yn4a368ie] {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 24px;
+    position: relative;
+    border-top: 3px solid #28a745;
+}
+
+.search-container[b-6yn4a368ie] {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.search-input-group[b-6yn4a368ie] {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon[b-6yn4a368ie] {
+    position: absolute;
+    left: 16px;
+    color: #6c757d;
+    font-size: 1.1rem;
+    z-index: 2;
+}
+
+.search-input[b-6yn4a368ie] {
+    width: 100%;
+    padding: 14px 48px 14px 48px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.search-input:focus[b-6yn4a368ie] {
+    outline: none;
+    border-color: #28a745;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(40,167,69,0.1);
+}
+
+.clear-search[b-6yn4a368ie] {
+    position: absolute;
+    right: 12px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.clear-search:hover[b-6yn4a368ie] {
+    background: #495057;
+}
+
+.search-filters[b-6yn4a368ie] {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.filter-select[b-6yn4a368ie] {
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-select:hover[b-6yn4a368ie], .filter-select:focus[b-6yn4a368ie] {
+    border-color: #28a745;
+    outline: none;
+}
+
+.search-results[b-6yn4a368ie] {
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+    border-radius: 0 0 16px 16px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.results-header[b-6yn4a368ie] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.results-count[b-6yn4a368ie] {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.close-results[b-6yn4a368ie] {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6c757d;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.close-results:hover[b-6yn4a368ie] {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.results-list[b-6yn4a368ie] {
+    padding: 8px;
+}
+
+.result-item[b-6yn4a368ie] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.result-item:hover[b-6yn4a368ie] {
+    background: #f8f9fa;
+    border-left-color: #28a745;
+    transform: translateX(4px);
+}
+
+.result-customer[b-6yn4a368ie] { border-left-color: #007bff; }
+.result-project[b-6yn4a368ie] { border-left-color: #28a745; }
+.result-sector[b-6yn4a368ie] { border-left-color: #ffc107; }
+.result-survey[b-6yn4a368ie] { border-left-color: #dc3545; }
+
+.result-icon[b-6yn4a368ie] {
+    font-size: 1.4rem;
+    opacity: 0.8;
+}
+
+.result-content[b-6yn4a368ie] {
+    flex: 1;
+}
+
+.result-title[b-6yn4a368ie] {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.result-subtitle[b-6yn4a368ie] {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+.result-meta[b-6yn4a368ie] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.result-score[b-6yn4a368ie] {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+}
+
+.result-score.excellent[b-6yn4a368ie] { background: #28a745; }
+.result-score.good[b-6yn4a368ie] { background: #17a2b8; }
+.result-score.average[b-6yn4a368ie] { background: #ffc107; color: #333; }
+.result-score.poor[b-6yn4a368ie] { background: #dc3545; }
+
+.result-date[b-6yn4a368ie] {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.more-results[b-6yn4a368ie] {
+    text-align: center;
+    padding: 12px;
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.no-results[b-6yn4a368ie] {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.no-results-icon[b-6yn4a368ie] {
+    font-size: 3rem;
+    opacity: 0.5;
+    margin-bottom: 16px;
+}
+
+.no-results-text[b-6yn4a368ie] {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.no-results-suggestions[b-6yn4a368ie] {
+    font-size: 0.9rem;
+}
+
+.suggestion[b-6yn4a368ie] {
+    color: #28a745;
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0 4px;
+}
+
+.suggestion:hover[b-6yn4a368ie] {
+    color: #1e7e34;
+}
+
+@media (max-width: 768px) {
+    .search-container[b-6yn4a368ie] {
+        padding: 16px;
+    }
+    
+    .search-filters[b-6yn4a368ie] {
+        flex-direction: column;
+    }
+    
+    .filter-select[b-6yn4a368ie] {
+        width: 100%;
+    }
+    
+    .result-meta[b-6yn4a368ie] {
+        display: none;
+    }
+    
+    .result-item[b-6yn4a368ie] {
+        padding: 16px 12px;
+    }
+}
+/* _content/WebApp/Components/Shared/ToastNotification.razor.rz.scp.css */
+.toast-container[b-e69eqzluzn] {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    pointer-events: none;
+}
+
+.toast[b-e69eqzluzn] {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    border-left: 4px solid #007bff;
+    overflow: hidden;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: auto;
+    min-width: 320px;
+}
+
+.toast.show[b-e69eqzluzn] {
+    transform: translateX(0);
+    opacity: 1;
+    animation: slideInRight-b-e69eqzluzn 0.4s ease-out forwards;
+}
+
+@keyframes slideInRight-b-e69eqzluzn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-header[b-e69eqzluzn] {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px 8px 16px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.toast-icon[b-e69eqzluzn] {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.toast-title[b-e69eqzluzn] {
+    flex: 1;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.toast-close[b-e69eqzluzn] {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.toast-close:hover[b-e69eqzluzn] {
+    background: rgba(0,0,0,0.05);
+    color: #666;
+}
+
+.toast-body[b-e69eqzluzn] {
+    padding: 8px 16px 12px 16px;
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.toast-success[b-e69eqzluzn] {
+    border-left-color: #28a745;
+}
+
+.toast-error[b-e69eqzluzn] {
+    border-left-color: #dc3545;
+}
+
+.toast-warning[b-e69eqzluzn] {
+    border-left-color: #ffc107;
+}
+
+.toast-info[b-e69eqzluzn] {
+    border-left-color: #17a2b8;
+}
+
+@media (max-width: 768px) {
+    .toast-container[b-e69eqzluzn] {
+        left: 20px;
+        right: 20px;
+        top: 80px;
+    }
+    
+    .toast[b-e69eqzluzn] {
+        min-width: auto;
+    }
+}
